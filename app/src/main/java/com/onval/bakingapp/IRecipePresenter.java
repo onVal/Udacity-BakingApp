@@ -5,5 +5,5 @@ package com.onval.bakingapp;
  */
 
 public interface IRecipePresenter {
-    void fetchRecipes();
+    void loadRecipes();
 }
