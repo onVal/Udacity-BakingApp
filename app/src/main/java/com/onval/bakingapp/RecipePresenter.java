@@ -10,19 +10,25 @@ public class RecipePresenter implements IRecipePresenter {
     private final View view;
     private final IFetcher model;
 
-    RecipePresenter(View view) {
+    public RecipePresenter(View view) {
         this.view = view;
         model = new Fetcher(this);
     }
 
     @Override
     public void loadRecipes() {
-        Set<Recipe> recipeSet = model.fetchRecipes();
-        view.onAddRecipes(recipeSet);
+        if (NetworkUtilities.isOnline()) {
+            //todo: will this return null? beware!
+            Set<Recipe> recipeSet = model.fetchRecipes();
+            view.onAddRecipes(recipeSet);
+        } else {
+            view.onNoInternetConnection();
+        }
     }
-
+    
     // interface for View
     public interface View {
+        void onNoInternetConnection();
         void onAddRecipes(Set<Recipe> recipes);
     }
 }

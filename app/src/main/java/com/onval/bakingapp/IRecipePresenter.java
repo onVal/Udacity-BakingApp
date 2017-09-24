@@ -6,4 +6,8 @@ package com.onval.bakingapp;
 
 public interface IRecipePresenter {
     void loadRecipes();
+
+    interface Callback {
+        void onNoConnection();
+    }
 }
