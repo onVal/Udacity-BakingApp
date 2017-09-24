@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.onval.bakingapp.ui.StepDetailActivity">
+    tools:context="com.onval.bakingapp.main.ui.StepDetailActivity">
 
 </android.support.constraint.ConstraintLayout>

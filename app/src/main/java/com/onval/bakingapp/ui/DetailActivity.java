@@ -1,7 +1,7 @@
 package com.onval.bakingapp.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.onval.bakingapp.R;
 
