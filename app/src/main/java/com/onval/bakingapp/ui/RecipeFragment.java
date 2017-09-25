@@ -28,7 +28,7 @@ public class RecipeFragment extends Fragment implements RecipePresenter.View {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        presenter = new RecipePresenter(this);
+        presenter = new RecipePresenter(this, null);
         presenter.loadRecipes();
 
         return root;

@@ -7,6 +7,6 @@ package com.onval.bakingapp;
 public class NetworkUtilities {
     public static boolean isOnline() {
         //todo: to implement
-        return false;
+        return true;
     }
 }
