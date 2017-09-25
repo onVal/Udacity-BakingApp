@@ -42,6 +42,11 @@ public class RecipeFragment extends Fragment implements RecipePresenter.View {
     }
 
     @Override
+    public void displayNoRecipe() {
+
+    }
+
+    @Override
     public void onNoInternetConnection() {
         Toast.makeText(getContext(), "Couldn't load recipes. No internet connection.",
                 Toast.LENGTH_SHORT).show();

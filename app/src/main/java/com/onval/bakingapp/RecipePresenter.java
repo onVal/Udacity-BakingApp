@@ -19,12 +19,17 @@ public class RecipePresenter implements IRecipePresenter {
     public void loadRecipes() {
         //todo: should it check for internet connection with isOnline method here?
         Set<Recipe> recipeSet = model.fetchRecipes(); //todo: will this return null? beware!
-        view.onAddRecipes(recipeSet);
+
+        if (recipeSet.size() > 0)
+            view.onAddRecipes(recipeSet);
+        else
+            view.displayNoRecipe();
     }
     
     // interface for View
     public interface View {
         void onNoInternetConnection();
         void onAddRecipes(Set<Recipe> recipes);
+        void displayNoRecipe();
     }
 }
