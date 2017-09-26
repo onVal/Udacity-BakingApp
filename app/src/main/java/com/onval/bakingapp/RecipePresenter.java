@@ -1,35 +1,51 @@
 package com.onval.bakingapp;
 
-import java.util.Set;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
+
+import java.util.HashSet;
 
 /**
  * Created by gval on 24/09/2017.
  */
 
 public class RecipePresenter implements IRecipePresenter {
-    private final View view;
+    private final IView IView;
     private final IFetcher model;
 
-    public RecipePresenter(View view, IFetcher model) {
-        this.view = view;
+    public RecipePresenter(IView IView, IFetcher model) {
+        this.IView = IView;
         this.model = model;
     }
 
     @Override
     public void loadRecipes() {
         //todo: should it check for internet connection with isOnline method here?
-        Set<Recipe> recipeSet = model.fetchRecipes(); //todo: will this return null? beware!
 
-        if (recipeSet.size() > 0)
-            view.onAddRecipes(recipeSet);
-        else
-            view.displayNoRecipe();
-    }
-    
-    // interface for View
-    public interface View {
-        void onNoInternetConnection();
-        void onAddRecipes(Set<Recipe> recipes);
-        void displayNoRecipe();
+        Response.Listener<JSONObject> response = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                HashSet<Recipe> recipes = model.parseRecipes(response);
+
+                if (recipes == null)
+                    //todo: handle this
+
+                if (recipes.size() > 0)
+                    IView.onAddRecipes(recipes);
+                else
+                    IView.displayNoRecipe();
+            }
+        };
+
+        Response.ErrorListener error = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //TODO: handle error
+            }
+        };
+
+        model.fetchRecipes(response, error); //todo: will this return null? beware!
     }
 }

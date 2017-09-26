@@ -1,11 +1,18 @@
 package com.onval.bakingapp;
 
-import java.util.Set;
+import com.android.volley.Response;
+
+import org.json.JSONObject;
+
+import java.util.HashSet;
 
 /**
  * Created by gval on 25/09/2017.
  */
 
 public interface IFetcher {
-    Set<Recipe> fetchRecipes();
+    void fetchRecipes(Response.Listener<JSONObject> responseListener,
+                      Response.ErrorListener errorListener);
+
+    HashSet<Recipe> parseRecipes(JSONObject json);
 }

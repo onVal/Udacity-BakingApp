@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.onval.bakingapp.Fetcher;
 import com.onval.bakingapp.IRecipePresenter;
+import com.onval.bakingapp.IView;
 import com.onval.bakingapp.R;
 import com.onval.bakingapp.Recipe;
 import com.onval.bakingapp.RecipePresenter;
@@ -16,7 +18,7 @@ import com.onval.bakingapp.RecipePresenter;
 import java.util.Set;
 
 
-public class RecipeFragment extends Fragment implements RecipePresenter.View {
+public class RecipeFragment extends Fragment implements IView {
     IRecipePresenter presenter;
 
     public RecipeFragment() {
@@ -28,7 +30,7 @@ public class RecipeFragment extends Fragment implements RecipePresenter.View {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        presenter = new RecipePresenter(this, null);
+        presenter = new RecipePresenter(this, new Fetcher(getActivity()));
         presenter.loadRecipes();
 
         return root;
@@ -43,7 +45,8 @@ public class RecipeFragment extends Fragment implements RecipePresenter.View {
 
     @Override
     public void displayNoRecipe() {
-
+        Toast.makeText(getContext(), "No recipes available",
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
