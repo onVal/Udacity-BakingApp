@@ -3,6 +3,7 @@ package com.onval.bakingapp.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,14 +40,15 @@ public class RecipeFragment extends Fragment implements IView {
     @Override
     public void onAddRecipes(Set<Recipe> recipes) {
         //todo: to implement
-        Toast.makeText(getContext(), "Adding recipes...!!!",
+        Toast.makeText(getContext(), "Add " + recipes.size() + " recipes!",
                 Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void displayNoRecipe() {
-        Toast.makeText(getContext(), "No recipes available",
+    public void displayErrorMsg(String msg) {
+        Toast.makeText(getContext(), msg,
                 Toast.LENGTH_SHORT).show();
+        Log.d("TAG", msg);
     }
 
     @Override

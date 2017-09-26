@@ -9,5 +9,5 @@ import java.util.Set;
 public interface IView {
     void onNoInternetConnection();
     void onAddRecipes(Set<Recipe> recipes);
-    void displayNoRecipe();
+    void displayErrorMsg(String msg);
 }

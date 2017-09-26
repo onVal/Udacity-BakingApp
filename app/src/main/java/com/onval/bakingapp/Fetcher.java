@@ -1,12 +1,14 @@
 package com.onval.bakingapp;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashSet;
@@ -18,23 +20,17 @@ import java.util.HashSet;
 public class Fetcher implements IFetcher {
     private Context context;
 
-    private HashSet<Recipe> recipes;
-
     public Fetcher(Context context) {
         this.context = context;
-        recipes = new HashSet<>();
     }
 
     @Override
-    public void fetchRecipes(Response.Listener<JSONObject> responseListener,
-                                    Response.ErrorListener errorListener) {
+    public void fetchFromServer(Response.Listener<JSONArray> responseListener,
+                                Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        recipes.clear();
-
-        JsonObjectRequest request = new JsonObjectRequest(
+        JsonArrayRequest request = new JsonArrayRequest(
                 NetworkUtilities.RECIPE_URL,
-                null,
                 responseListener,
                 errorListener
         );
@@ -43,7 +39,25 @@ public class Fetcher implements IFetcher {
     }
 
     @Override
-    public HashSet<Recipe> parseRecipes(JSONObject json) {
-        return null;
+    public HashSet<Recipe> parseRecipes(JSONArray json) {
+        HashSet<Recipe> recipes = new HashSet<>();
+        Recipe recipe;
+
+        for (int i = 0; ; i++) {
+            JSONObject current = json.optJSONObject(i);
+
+            if (current == null)
+                break;
+
+            String name = current.optString("name");
+            String image = current.optString("image");
+            int servings = current.optInt("servings");
+
+            Log.d("RECIPE", name + " " + image + " " + servings);
+            recipe = new Recipe(name, image, servings);
+            recipes.add(recipe);
+        }
+
+        return recipes;
     }
 }

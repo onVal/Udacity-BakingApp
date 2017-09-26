@@ -2,7 +2,7 @@ package com.onval.bakingapp;
 
 import com.android.volley.Response;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.util.HashSet;
 
@@ -11,8 +11,8 @@ import java.util.HashSet;
  */
 
 public interface IFetcher {
-    void fetchRecipes(Response.Listener<JSONObject> responseListener,
-                      Response.ErrorListener errorListener);
+    void fetchFromServer(Response.Listener<JSONArray> responseListener,
+                         Response.ErrorListener errorListener);
 
-    HashSet<Recipe> parseRecipes(JSONObject json);
+    HashSet<Recipe> parseRecipes(JSONArray json);
 }
