@@ -13,7 +13,8 @@ import com.onval.bakingapp.Recipe;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gval on 25/09/2017.
@@ -41,8 +42,8 @@ public class Fetcher implements IFetcher {
     }
 
     @Override
-    public HashSet<Recipe> parseRecipes(JSONArray json) {
-        HashSet<Recipe> recipes = new HashSet<>();
+    public List<Recipe> parseRecipes(JSONArray json) {
+        ArrayList<Recipe> recipes = new ArrayList<>();
         Recipe recipe;
 
         for (int i = 0; ; i++) {

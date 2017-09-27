@@ -12,8 +12,8 @@ import org.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gval on 25/09/2017.
@@ -61,7 +61,7 @@ public class RecipePresenterTest {
         boolean displayErrorMsgCalled;
 
         @Override
-        public void onAddRecipes(Set<Recipe> recipes) {
+        public void onAddRecipes(List<Recipe> recipes) {
             numOfRecipes = recipes.size();
         }
 
@@ -84,8 +84,8 @@ public class RecipePresenterTest {
         }
 
         @Override
-        public HashSet<Recipe> parseRecipes(JSONArray json) {
-            HashSet<Recipe> recipes = new HashSet<>();
+        public ArrayList<Recipe> parseRecipes(JSONArray json) {
+            ArrayList<Recipe> recipes = new ArrayList<>();
 
             recipes.add(new Recipe("cake", "", 3));
             recipes.add(new Recipe("meat", "", 5));
@@ -104,7 +104,7 @@ public class RecipePresenterTest {
         }
 
         @Override
-        public HashSet<Recipe> parseRecipes(JSONArray json) {
+        public ArrayList<Recipe> parseRecipes(JSONArray json) {
             return null;
         }
     }

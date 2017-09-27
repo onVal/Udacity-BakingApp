@@ -1,16 +1,14 @@
 package com.onval.bakingapp.presenter;
 
-import android.util.Log;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.onval.bakingapp.view.IView;
 import com.onval.bakingapp.Recipe;
 import com.onval.bakingapp.model.IFetcher;
+import com.onval.bakingapp.view.IView;
 
 import org.json.JSONArray;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Created by gval on 24/09/2017.
@@ -32,7 +30,7 @@ public class RecipePresenter implements IRecipePresenter {
         Response.Listener<JSONArray> response = new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                HashSet<Recipe> recipes = model.parseRecipes(response);
+                ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
 
                 if (recipes.size() > 0)
                     IView.onAddRecipes(recipes);
@@ -46,7 +44,6 @@ public class RecipePresenter implements IRecipePresenter {
             @Override
             public void onErrorResponse(VolleyError error) {
                 IView.displayErrorMsg("Couldn't load recipes");
-                Log.e("Response.ErrorListener", error.toString());
             }
         };
 

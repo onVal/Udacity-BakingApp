@@ -2,7 +2,7 @@ package com.onval.bakingapp.view;
 
 import com.onval.bakingapp.Recipe;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by gval on 26/09/2017.
@@ -10,6 +10,6 @@ import java.util.Set;
 
 public interface IView {
     void onNoInternetConnection();
-    void onAddRecipes(Set<Recipe> recipes);
+    void onAddRecipes(List<Recipe> recipes);
     void displayErrorMsg(String msg);
 }

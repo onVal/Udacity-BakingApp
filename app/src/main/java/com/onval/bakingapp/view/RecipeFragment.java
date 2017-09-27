@@ -3,23 +3,30 @@ package com.onval.bakingapp.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.onval.bakingapp.model.Fetcher;
-import com.onval.bakingapp.presenter.IRecipePresenter;
 import com.onval.bakingapp.R;
 import com.onval.bakingapp.Recipe;
+import com.onval.bakingapp.RecipeAdapter;
+import com.onval.bakingapp.model.Fetcher;
+import com.onval.bakingapp.presenter.IRecipePresenter;
 import com.onval.bakingapp.presenter.RecipePresenter;
 
-import java.util.Set;
+import java.util.List;
 
 
 public class RecipeFragment extends Fragment implements IView {
-    IRecipePresenter presenter;
+    private IRecipePresenter presenter;
+
+    private RecyclerView recyclerView;
+    private RecipeAdapter adapter;
+    private LinearLayoutManager layoutManager;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -30,15 +37,25 @@ public class RecipeFragment extends Fragment implements IView {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
 
+        //todo: should I use dependency injection for this?
         presenter = new RecipePresenter(this, new Fetcher(getActivity()));
-        presenter.loadRecipes();
+
+        if (recyclerView == null) {
+            recyclerView = (RecyclerView) root.findViewById(R.id.recipes_recyclerview);
+            presenter.loadRecipes();
+        }
 
         return root;
     }
 
     @Override
-    public void onAddRecipes(Set<Recipe> recipes) {
-        //todo: to implement
+    public void onAddRecipes(List<Recipe> recipes) {
+        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        adapter = new RecipeAdapter(getContext(), recipes);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
         Toast.makeText(getContext(), "Add " + recipes.size() + " recipes!",
                 Toast.LENGTH_SHORT).show();
     }
