@@ -55,9 +55,6 @@ public class RecipeFragment extends Fragment implements IView {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
-        Toast.makeText(getContext(), "Add " + recipes.size() + " recipes!",
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override

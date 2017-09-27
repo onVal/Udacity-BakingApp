@@ -10,14 +10,10 @@
     android:layout_height="wrap_content"
     android:minHeight="150dp"
 
-
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
+    android:layout_marginTop="3dp"
 
     card_view:contentPadding="10dp"
-    card_view:cardBackgroundColor="@color/cardview_dark_background"
+    card_view:cardBackgroundColor="#ef6c00"
     card_view:cardCornerRadius="3dp">
 
     <TextView
