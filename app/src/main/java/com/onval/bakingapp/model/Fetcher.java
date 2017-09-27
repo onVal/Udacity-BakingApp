@@ -1,4 +1,4 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.model;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,6 +7,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.onval.bakingapp.NetworkUtilities;
+import com.onval.bakingapp.Recipe;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.onval.bakingapp.ui;
+package com.onval.bakingapp.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

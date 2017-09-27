@@ -1,4 +1,4 @@
-package com.onval.bakingapp.ui;
+package com.onval.bakingapp.view;
 
 
 import android.os.Bundle;
@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.onval.bakingapp.Fetcher;
-import com.onval.bakingapp.IRecipePresenter;
-import com.onval.bakingapp.IView;
+import com.onval.bakingapp.model.Fetcher;
+import com.onval.bakingapp.presenter.IRecipePresenter;
 import com.onval.bakingapp.R;
 import com.onval.bakingapp.Recipe;
-import com.onval.bakingapp.RecipePresenter;
+import com.onval.bakingapp.presenter.RecipePresenter;
 
 import java.util.Set;
 

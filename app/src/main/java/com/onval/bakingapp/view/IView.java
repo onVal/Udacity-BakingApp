@@ -1,4 +1,6 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.view;
+
+import com.onval.bakingapp.Recipe;
 
 import java.util.Set;
 

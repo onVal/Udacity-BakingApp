@@ -1,6 +1,7 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.model;
 
 import com.android.volley.Response;
+import com.onval.bakingapp.Recipe;
 
 import org.json.JSONArray;
 

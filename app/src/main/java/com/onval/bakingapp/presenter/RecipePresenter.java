@@ -1,9 +1,12 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.presenter;
 
 import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.onval.bakingapp.view.IView;
+import com.onval.bakingapp.Recipe;
+import com.onval.bakingapp.model.IFetcher;
 
 import org.json.JSONArray;
 
@@ -14,7 +17,7 @@ import java.util.HashSet;
  */
 
 public class RecipePresenter implements IRecipePresenter {
-    private final IView IView;
+    private final com.onval.bakingapp.view.IView IView;
     private final IFetcher model;
 
     public RecipePresenter(IView IView, IFetcher model) {

@@ -3,4 +3,4 @@
     android:id="@+id/recipe_fragment"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    class="com.onval.bakingapp.ui.RecipeFragment" />
+    class="com.onval.bakingapp.view.RecipeFragment" />
