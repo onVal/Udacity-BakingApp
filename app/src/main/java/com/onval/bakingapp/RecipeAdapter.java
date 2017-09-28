@@ -18,11 +18,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     private Context context;
 
     private ArrayList<Recipe> recipes;
+    private View.OnClickListener listener;
 
 
-    public RecipeAdapter(Context context, List<Recipe> recipes) {
+    public RecipeAdapter(Context context, List<Recipe> recipes, View.OnClickListener listener) {
         this.context = context;
         this.recipes = (ArrayList<Recipe>) recipes;
+        this.listener = listener;
     }
 
     @Override
@@ -48,6 +50,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
             super(view);
 
             recipeName = (TextView) view.findViewById(R.id.recipe_name);
+            view.setOnClickListener(listener);
         }
 
         void bind(int position) {

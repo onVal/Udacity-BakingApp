@@ -11,5 +11,9 @@ public class StepDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.step_detail_container, new StepDetailFragment())
+                .commit();
     }
 }

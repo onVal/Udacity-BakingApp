@@ -1,6 +1,7 @@
 package com.onval.bakingapp.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +22,7 @@ import com.onval.bakingapp.presenter.RecipePresenter;
 import java.util.List;
 
 
-public class RecipeFragment extends Fragment implements IView {
+public class RecipeFragment extends Fragment implements IView, View.OnClickListener {
     private IRecipePresenter presenter;
 
     private RecyclerView recyclerView;
@@ -51,7 +52,7 @@ public class RecipeFragment extends Fragment implements IView {
     @Override
     public void onAddRecipes(List<Recipe> recipes) {
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        adapter = new RecipeAdapter(getContext(), recipes);
+        adapter = new RecipeAdapter(getContext(), recipes, this);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -68,5 +69,11 @@ public class RecipeFragment extends Fragment implements IView {
     public void onNoInternetConnection() {
         Toast.makeText(getContext(), "Couldn't load recipes. No internet connection.",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(getContext(), StepDetailActivity.class);
+        startActivity(intent);
     }
 }
