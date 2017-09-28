@@ -55,7 +55,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
         void bind(int position) {
             Recipe recipe = recipes.get(position);
-            recipeName.setText(recipe.name);
+            recipeName.setText(recipe.getName());
         }
     }
 }

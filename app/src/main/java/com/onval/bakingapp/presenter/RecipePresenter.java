@@ -15,11 +15,11 @@ import java.util.ArrayList;
  */
 
 public class RecipePresenter implements IRecipePresenter {
-    private final com.onval.bakingapp.view.IView IView;
+    private final IView view;
     private final IFetcher model;
 
-    public RecipePresenter(IView IView, IFetcher model) {
-        this.IView = IView;
+    public RecipePresenter(IView view, IFetcher model) {
+        this.view = view;
         this.model = model;
     }
 
@@ -33,17 +33,17 @@ public class RecipePresenter implements IRecipePresenter {
                 ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
 
                 if (recipes.size() > 0)
-                    IView.onAddRecipes(recipes);
+                    view.onAddRecipes(recipes);
 
                 else
-                    IView.displayErrorMsg("No recipes returned.");
+                    view.displayErrorMsg("No recipes returned.");
             }
         };
 
         Response.ErrorListener error = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                IView.displayErrorMsg("Couldn't load recipes");
+                view.displayErrorMsg("Couldn't load recipes");
             }
         };
 

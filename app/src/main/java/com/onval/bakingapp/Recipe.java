@@ -5,13 +5,50 @@ package com.onval.bakingapp;
  */
 
 public class Recipe {
-    String name;
-    String image;
-    int servings;
+    private final String name;
+    private final String imagePath;
+    private final int servingsNum;
 
-    public Recipe(String name, String image, int servings) {
-        this.name = name;
-        this.image = image;
-        this.servings = servings;
+    private Recipe(Builder builder) {
+        this.name = builder.name;
+        this.imagePath = builder.imagePath;
+        this.servingsNum = builder.servingsNum;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImage() {
+        return imagePath;
+    }
+
+    public int getServings() {
+        return servingsNum;
+    }
+
+
+    public static class Builder {
+        private String name;
+        private String imagePath;
+        private int servingsNum;
+
+        public Builder(String name) {
+            this.name = name;
+        }
+
+        public Builder image(String imagePath) {
+            this.imagePath = imagePath;
+            return this;
+        }
+
+        public Builder servings(int servingsNum) {
+            this.servingsNum = servingsNum;
+            return this;
+        }
+
+        public Recipe build() {
+            return new Recipe(this);
+        }
     }
 }

@@ -57,7 +57,13 @@ public class Fetcher implements IFetcher {
             int servings = current.optInt("servings");
 
             Log.d("RECIPE", name + " " + image + " " + servings);
-            recipe = new Recipe(name, image, servings);
+
+
+            recipe = new Recipe.Builder(name)
+                    .image(image)
+                    .servings(servings)
+                    .build();
+
             recipes.add(recipe);
         }
 
