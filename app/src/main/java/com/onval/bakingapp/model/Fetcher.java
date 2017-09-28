@@ -52,6 +52,7 @@ public class Fetcher implements IFetcher {
             if (current == null)
                 break;
 
+            int id = current.optInt("id");
             String name = current.optString("name");
             String image = current.optString("image");
             int servings = current.optInt("servings");
@@ -59,7 +60,7 @@ public class Fetcher implements IFetcher {
             Log.d("RECIPE", name + " " + image + " " + servings);
 
 
-            recipe = new Recipe.Builder(name)
+            recipe = new Recipe.Builder(id, name)
                     .image(image)
                     .servings(servings)
                     .build();

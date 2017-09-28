@@ -45,17 +45,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     class RecipeHolder extends RecyclerView.ViewHolder {
         TextView recipeName;
+        TextView recipeServings;
 
         RecipeHolder (View view) {
             super(view);
 
             recipeName = (TextView) view.findViewById(R.id.recipe_name);
+            recipeServings = (TextView) view.findViewById(R.id.recipe_servings);
             view.setOnClickListener(listener);
         }
 
         void bind(int position) {
             Recipe recipe = recipes.get(position);
             recipeName.setText(recipe.getName());
+            recipeServings.setText("Servings: " + recipe.getServingsNum());
         }
     }
 }
