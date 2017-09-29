@@ -33,7 +33,7 @@ public class RecipePresenter implements IRecipePresenter {
                 ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
 
                 if (recipes.size() > 0)
-                    view.onAddRecipes(recipes);
+                    view.addRecipes(recipes);
 
                 else
                     view.displayErrorMsg("No recipes returned.");

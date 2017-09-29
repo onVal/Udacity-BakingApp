@@ -9,7 +9,11 @@ import java.util.List;
  */
 
 public interface IView {
-    void onNoInternetConnection();
-    void onAddRecipes(List<Recipe> recipes);
+    void addRecipes(List<Recipe> recipes);
     void displayErrorMsg(String msg);
+    void onNoInternetConnection();
+
+    interface Listener {
+        void onRecipeClicked(int recipeId);
+    }
 }

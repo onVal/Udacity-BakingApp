@@ -21,8 +21,10 @@ import com.onval.bakingapp.presenter.RecipePresenter;
 
 import java.util.List;
 
+import static com.onval.bakingapp.Recipe.RECIPE_PARCEL;
 
-public class RecipeFragment extends Fragment implements IView, View.OnClickListener {
+
+public class RecipeFragment extends Fragment implements IView, IView.Listener {
     private IRecipePresenter presenter;
 
     private RecyclerView recyclerView;
@@ -50,7 +52,7 @@ public class RecipeFragment extends Fragment implements IView, View.OnClickListe
     }
 
     @Override
-    public void onAddRecipes(List<Recipe> recipes) {
+    public void addRecipes(List<Recipe> recipes) {
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         adapter = new RecipeAdapter(getContext(), recipes, this);
 
@@ -71,9 +73,15 @@ public class RecipeFragment extends Fragment implements IView, View.OnClickListe
                 Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onClick(View view) {
+    public void onRecipeClicked(int idRecipe) {
         Intent intent = new Intent(getContext(), StepDetailActivity.class);
+
+        //I'm using the recipe id field returned from the server
+        //as an unique key identifier of a recipe
+        Recipe recipe = adapter.findRecipeById(idRecipe);
+        intent.putExtra(RECIPE_PARCEL, recipe);
+
         startActivity(intent);
+
     }
 }

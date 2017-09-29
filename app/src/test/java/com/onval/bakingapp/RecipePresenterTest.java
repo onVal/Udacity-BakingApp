@@ -39,7 +39,7 @@ public class RecipePresenterTest {
 
         presenter.loadRecipes();
 
-        Assert.assertEquals(4, ((MockView) view).numOfRecipes);
+        Assert.assertEquals(5, ((MockView) view).numOfRecipes);
 
     }
 
@@ -61,7 +61,7 @@ public class RecipePresenterTest {
         boolean displayErrorMsgCalled;
 
         @Override
-        public void onAddRecipes(List<Recipe> recipes) {
+        public void addRecipes(List<Recipe> recipes) {
             numOfRecipes = recipes.size();
         }
 
@@ -87,10 +87,11 @@ public class RecipePresenterTest {
         public ArrayList<Recipe> parseRecipes(JSONArray json) {
             ArrayList<Recipe> recipes = new ArrayList<>();
 
-            recipes.add(new Recipe("cake", "", 3));
-            recipes.add(new Recipe("meat", "", 5));
-            recipes.add(new Recipe("fish", "", 7));
-            recipes.add(new Recipe("rice", "", 9));
+            recipes.add(new Recipe.Builder(0, "cake").build());
+            recipes.add(new Recipe.Builder(4, "fish").build());
+            recipes.add(new Recipe.Builder(2, "meat").build());
+            recipes.add(new Recipe.Builder(9, "coke").build());
+            recipes.add(new Recipe.Builder(3, "eggs").build());
 
             return recipes;
         }
