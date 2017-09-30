@@ -66,7 +66,6 @@ implements View.OnClickListener
     public Recipe findRecipeById(int id) {
         Recipe recipe;
 
-        //Performs a standard search if ids happen not to be ordered
         for (int i = 0; i <= recipes.size(); i++) {
             recipe = recipes.get(i);
 
@@ -86,7 +85,7 @@ implements View.OnClickListener
         RecipeHolder (View view) {
             super(view);
 
-            // holds a reference to the view to be able to access it through the ViewHolder
+            // Holds a reference to the view to be able to access it through the ViewHolder
             // in order to apply the on click listener from the onBindViewHolder method
             this.view = view;
 

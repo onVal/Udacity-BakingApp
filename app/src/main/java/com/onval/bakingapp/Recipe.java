@@ -3,7 +3,7 @@ package com.onval.bakingapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by gval on 24/09/2017.
@@ -14,10 +14,21 @@ public class Recipe implements Parcelable {
 
     private int id;
     private String name;
-    private List<Ingredient> ingredients;
-    private List<Step> steps;
+    private ArrayList<Ingredient> ingredients;
+    private ArrayList<Step> steps;
     private int servingsNum;
     private String imagePath;
+
+    @SuppressWarnings("unchecked")
+    private Recipe(Parcel parcel) {
+        this.id = parcel.readInt();
+        this.name = parcel.readString();
+        //TODO: understand this stuff about ClassLoader properly
+        this.ingredients = parcel.readArrayList(Ingredient.class.getClassLoader());
+        this.steps = parcel.readArrayList(Step.class.getClassLoader());
+        this.servingsNum = parcel.readInt();
+        this.imagePath = parcel.readString();
+    }
 
     private Recipe(Builder builder) {
         this.id = builder.id;
@@ -37,19 +48,7 @@ public class Recipe implements Parcelable {
 
                 @Override
                 public Recipe createFromParcel(Parcel parcel) {
-//                    id = parcel.readInt();
-//                    name = parcel.readString();
-//                    parcel.readList(ingredients, null);
-//                    parcel.readList(steps, null);
-//                    servingsNum = parcel.readInt();
-//                    imagePath = parcel.readString();
-
-                    return new Builder(parcel.readInt(), parcel.readString())
-//                            .ingredients(ingredients)
-//                            .steps(steps)
-                            .servings(parcel.readInt())
-                            .image(parcel.readString())
-                            .build();
+                    return new Recipe(parcel);
                 }
             };
 
@@ -76,11 +75,11 @@ public class Recipe implements Parcelable {
         return name;
     }
 
-    public List<Ingredient> getIngredients() {
+    public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public List<Step> getSteps() {
+    public ArrayList<Step> getSteps() {
         return steps;
     }
 
@@ -96,8 +95,8 @@ public class Recipe implements Parcelable {
     public static class Builder {
         private int id; //required
         private String name; //required
-        private List<Ingredient> ingredients; //optional
-        private List<Step> steps; //optional
+        private ArrayList<Ingredient> ingredients; //optional
+        private ArrayList<Step> steps; //optional
         private int servingsNum; //optional
         private String imagePath; //optional
 
@@ -107,12 +106,12 @@ public class Recipe implements Parcelable {
             this.name = name;
         }
 
-        public Builder ingredients(List<Ingredient> ingredients) {
+        public Builder ingredients(ArrayList<Ingredient> ingredients) {
             this.ingredients = ingredients;
             return this;
         }
 
-        public Builder steps(List<Step> steps) {
+        public Builder steps(ArrayList<Step> steps) {
             this.steps = steps;
             return this;
         }

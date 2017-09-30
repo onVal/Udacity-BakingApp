@@ -2,14 +2,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <TextView
-        android:id="@+id/steps_ingredients"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="INGREDIENTS"
-        />
+        android:background="#fff3e0"
+        >
+        <TextView
+            android:id="@+id/steps_ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            tools:text="INGREDIENTS"
+            />
+    </FrameLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/steps_recyclerview"
