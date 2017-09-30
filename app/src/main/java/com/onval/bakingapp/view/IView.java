@@ -1,6 +1,6 @@
 package com.onval.bakingapp.view;
 
-import com.onval.bakingapp.Recipe;
+import com.onval.bakingapp.data.Recipe;
 
 import java.util.List;
 

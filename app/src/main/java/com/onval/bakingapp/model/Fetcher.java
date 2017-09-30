@@ -6,10 +6,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.onval.bakingapp.Ingredient;
-import com.onval.bakingapp.NetworkUtilities;
-import com.onval.bakingapp.Recipe;
-import com.onval.bakingapp.Step;
+import com.onval.bakingapp.data.Ingredient;
+import com.onval.bakingapp.utils.NetworkUtilities;
+import com.onval.bakingapp.data.Recipe;
+import com.onval.bakingapp.data.Step;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

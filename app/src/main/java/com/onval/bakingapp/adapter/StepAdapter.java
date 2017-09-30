@@ -1,4 +1,4 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.onval.bakingapp.R;
+import com.onval.bakingapp.data.Step;
 
 import java.util.ArrayList;
 import java.util.List;

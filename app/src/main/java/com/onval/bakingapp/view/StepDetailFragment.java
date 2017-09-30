@@ -11,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.onval.bakingapp.Ingredient;
+import com.onval.bakingapp.data.Ingredient;
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.Recipe;
-import com.onval.bakingapp.StepAdapter;
+import com.onval.bakingapp.data.Recipe;
+import com.onval.bakingapp.adapter.StepAdapter;
 
 import java.util.ArrayList;
 
-import static com.onval.bakingapp.Recipe.RECIPE_PARCEL;
+import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 
 
 public class StepDetailFragment extends Fragment implements View.OnClickListener {

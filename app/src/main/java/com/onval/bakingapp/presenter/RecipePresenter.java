@@ -2,7 +2,7 @@ package com.onval.bakingapp.presenter;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.onval.bakingapp.Recipe;
+import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.model.IFetcher;
 import com.onval.bakingapp.view.IView;
 

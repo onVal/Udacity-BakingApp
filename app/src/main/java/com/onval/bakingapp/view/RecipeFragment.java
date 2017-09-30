@@ -13,15 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.Recipe;
-import com.onval.bakingapp.RecipeAdapter;
+import com.onval.bakingapp.data.Recipe;
+import com.onval.bakingapp.adapter.RecipeAdapter;
 import com.onval.bakingapp.model.Fetcher;
 import com.onval.bakingapp.presenter.IRecipePresenter;
 import com.onval.bakingapp.presenter.RecipePresenter;
 
 import java.util.List;
 
-import static com.onval.bakingapp.Recipe.RECIPE_PARCEL;
+import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 
 
 public class RecipeFragment extends Fragment implements IView, IView.Listener {

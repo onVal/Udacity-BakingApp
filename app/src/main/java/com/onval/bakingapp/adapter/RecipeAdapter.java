@@ -1,4 +1,4 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.onval.bakingapp.R;
+import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.view.IView;
 
 import java.util.ArrayList;

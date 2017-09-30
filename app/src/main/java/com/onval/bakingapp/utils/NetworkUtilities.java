@@ -1,4 +1,4 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.utils;
 
 /**
  * Created by gval on 25/09/2017.

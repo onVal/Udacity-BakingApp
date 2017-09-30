@@ -1,4 +1,4 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
