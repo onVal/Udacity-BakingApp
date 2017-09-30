@@ -59,11 +59,11 @@ public class Fetcher implements IFetcher {
             int servings = current.optInt("servings");
 
             List<Ingredient> ingredients = parseIngredients(current.optJSONArray("ingredients"));
-//            List<Step> steps = parseSteps(current.optJSONArray("steps"));
+            List<Step> steps = parseSteps(current.optJSONArray("steps"));
 
             recipe = new Recipe.Builder(id, name)
                     .ingredients((ArrayList<Ingredient>) ingredients)
-//                    .steps((ArrayList<Step>) steps)
+                    .steps((ArrayList<Step>) steps)
                     .image(image)
                     .servings(servings)
                     .build();
@@ -104,11 +104,13 @@ public class Fetcher implements IFetcher {
             if (current == null)
                 break;
 
-//            String name = current.optString("ingredient");
-//            String measure = current.optString("measure");
-//            int quantity = current.optInt("quantity");
+            int id = current.optInt("id");
+            String shortDescription = current.optString("shortDescription");
+            String description = current.optString("description");
+            String videoURL = current.optString("videoURL");
+            String thumbnailURL = current.optString("thumbnailURL");
 
-//            steps.add(new Ingredient(name, measure, quantity))
+            steps.add(new Step(id, shortDescription, description, videoURL, thumbnailURL));
         }
 
         return steps;

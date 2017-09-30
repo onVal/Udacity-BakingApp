@@ -12,12 +12,12 @@ public class Step implements Parcelable {
             new Parcelable.Creator<Step>() {
         @Override
         public Step createFromParcel(Parcel parcel) {
-            return null;
+            return new Step(parcel);
         }
 
         @Override
         public Step[] newArray(int i) {
-            return new Step[0];
+            return new Step[i];
         }
     };
 
@@ -27,13 +27,54 @@ public class Step implements Parcelable {
     private String videoURL;
     private String thumbnailURL;
 
+    public Step(int id, String shortDescription,
+                String description, String videoURL, String thumbnailURL) {
+        this.id = id;
+        this.shortDescription = shortDescription;
+        this.description = description;
+        this.videoURL = videoURL;
+        this.thumbnailURL = thumbnailURL;
+    }
+
+    private Step(Parcel parcel) {
+        id = parcel.readInt();
+        shortDescription = parcel.readString();
+        description = parcel.readString();
+        videoURL = parcel.readString();
+        thumbnailURL = parcel.readString();
+    }
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
+        parcel.writeInt(id);
+        parcel.writeString(shortDescription);
+        parcel.writeString(description);
+        parcel.writeString(videoURL);
+        parcel.writeString(thumbnailURL);
     }
 
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getVideoURL() {
+        return videoURL;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
     }
 }
