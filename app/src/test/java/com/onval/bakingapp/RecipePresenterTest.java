@@ -5,7 +5,7 @@ import com.android.volley.VolleyError;
 import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.model.IFetcher;
 import com.onval.bakingapp.presenter.RecipePresenter;
-import com.onval.bakingapp.view.IView;
+import com.onval.bakingapp.view.IRecipeView;
 
 import junit.framework.Assert;
 
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class RecipePresenterTest {
 
-    IView view;
+    IRecipeView view;
     IFetcher model;
     RecipePresenter presenter;
 
@@ -33,31 +33,31 @@ public class RecipePresenterTest {
 
     @Test
     public void shouldPassRecipesToView() {
-        view = new MockView();
+        view = new MockRecipeView();
         model = new MockFetcher();
 
         presenter = new RecipePresenter(view, model);
 
         presenter.loadRecipes();
 
-        Assert.assertEquals(5, ((MockView) view).numOfRecipes);
+        Assert.assertEquals(5, ((MockRecipeView) view).numOfRecipes);
 
     }
 
     @Test
     public void shouldHandleNoRecipes() {
-        view = new MockView();
+        view = new MockRecipeView();
         model = new NoFetcher();
 
         presenter = new RecipePresenter(view, model);
 
         presenter.loadRecipes();
 
-        Assert.assertTrue(((MockView) view).displayErrorMsgCalled);
+        Assert.assertTrue(((MockRecipeView) view).displayErrorMsgCalled);
     }
 
     //Mock classes
-    private class MockView implements IView {
+    private class MockRecipeView implements IRecipeView {
         int numOfRecipes;
         boolean displayErrorMsgCalled;
 

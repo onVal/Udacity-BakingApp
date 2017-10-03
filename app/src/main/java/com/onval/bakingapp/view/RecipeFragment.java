@@ -24,7 +24,7 @@ import java.util.List;
 import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 
 
-public class RecipeFragment extends Fragment implements IView, IView.Listener {
+public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView.Listener {
     private IRecipePresenter presenter;
 
     private RecyclerView recyclerView;

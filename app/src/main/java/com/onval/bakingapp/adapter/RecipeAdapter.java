@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.onval.bakingapp.R;
 import com.onval.bakingapp.data.Recipe;
-import com.onval.bakingapp.view.IView;
+import com.onval.bakingapp.view.IRecipeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +24,10 @@ implements View.OnClickListener
     private Context context;
 
     private ArrayList<Recipe> recipes;
-    private IView.Listener listener;
+    private IRecipeView.Listener listener;
 
 
-    public RecipeAdapter(Context context, List<Recipe> recipes, IView.Listener listener) {
+    public RecipeAdapter(Context context, List<Recipe> recipes, IRecipeView.Listener listener) {
         this.context = context;
         this.recipes = (ArrayList<Recipe>) recipes;
         this.listener = listener;

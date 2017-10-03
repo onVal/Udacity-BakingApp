@@ -4,7 +4,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.model.IFetcher;
-import com.onval.bakingapp.view.IView;
+import com.onval.bakingapp.view.IRecipeView;
 
 import org.json.JSONArray;
 
@@ -15,10 +15,10 @@ import java.util.ArrayList;
  */
 
 public class RecipePresenter implements IRecipePresenter {
-    private final IView view;
+    private final IRecipeView view;
     private final IFetcher model;
 
-    public RecipePresenter(IView view, IFetcher model) {
+    public RecipePresenter(IRecipeView view, IFetcher model) {
         this.view = view;
         this.model = model;
     }

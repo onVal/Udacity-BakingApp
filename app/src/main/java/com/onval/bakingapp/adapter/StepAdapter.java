@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.onval.bakingapp.R;
 import com.onval.bakingapp.data.Step;
+import com.onval.bakingapp.view.IStepDetailView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,13 @@ import java.util.List;
  */
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
-    Context context;
-    ArrayList<Step> stepList;
-    View.OnClickListener listener;
+    private Context context;
+    private ArrayList<Step> stepList;
+    private IStepDetailView.Listener listener;
 
 
     public StepAdapter(Context context, List<Step> stepList,
-                       View.OnClickListener listener) {
+                       IStepDetailView.Listener listener) {
         this.context = context;
         this.stepList = (ArrayList<Step>) stepList;
         this.listener = listener;
@@ -35,8 +36,16 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         TextView view = (TextView) LayoutInflater.from(context)
                 .inflate(R.layout.single_step, parent, false);
 
-        return new StepHolder(view);
+        final StepHolder holder = new StepHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                listener.onStepClicked(stepList.get(position).getId());
+            }
+        });
 
+        return holder;
     }
 
     @Override
@@ -47,19 +56,31 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
     @Override
     public void onBindViewHolder(StepHolder holder, int position) {
         holder.bind(position);
-
     }
 
-    public class StepHolder extends RecyclerView.ViewHolder {
+    public Step findStepById(int id) {
+        Step step;
+
+        for (int i = 0; i <= stepList.size(); i++) {
+            step = stepList.get(i);
+
+            if (step.getId() == id)
+                return step;
+        }
+
+        //This should never be called
+        return null;
+    }
+
+    class StepHolder extends RecyclerView.ViewHolder {
         TextView stepDescription;
 
-        public StepHolder(View view) {
+        StepHolder(View view) {
             super(view);
-            view.setOnClickListener(listener);
             stepDescription = (TextView) view; //todo: is this cool?
         }
 
-        public void bind(int position) {
+        void bind(int position) {
             stepDescription.setText(stepList.get(position).getShortDescription());
         }
 

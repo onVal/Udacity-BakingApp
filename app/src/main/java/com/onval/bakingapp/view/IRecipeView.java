@@ -8,7 +8,7 @@ import java.util.List;
  * Created by gval on 26/09/2017.
  */
 
-public interface IView {
+public interface IRecipeView {
     void addRecipes(List<Recipe> recipes);
     void displayErrorMsg(String msg);
     void onNoInternetConnection();

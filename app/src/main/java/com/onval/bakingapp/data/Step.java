@@ -2,6 +2,7 @@ package com.onval.bakingapp.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 /**
  * Created by gval on 29/09/2017.
@@ -28,7 +29,7 @@ public class Step implements Parcelable {
     private String thumbnailURL;
 
     public Step(int id, String shortDescription,
-                String description, String videoURL, String thumbnailURL) {
+                String description, @NonNull String videoURL, @NonNull String thumbnailURL) {
         this.id = id;
         this.shortDescription = shortDescription;
         this.description = description;

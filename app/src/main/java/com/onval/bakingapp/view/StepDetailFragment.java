@@ -21,13 +21,17 @@ import java.util.ArrayList;
 import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 
 
-public class StepDetailFragment extends Fragment implements View.OnClickListener {
+public class StepDetailFragment extends Fragment implements IStepDetailView.Listener {
     TextView ingredientsTV;
     int servings;
+
+    public static final String STEP_INSTRUCTION_TAG = "step-instruction";
 
     RecyclerView stepsView;
     StepAdapter adapter;
     LinearLayoutManager layoutManager;
+
+    Recipe recipeParcel;
 
     public StepDetailFragment() {
         // Required empty public constructor
@@ -38,8 +42,8 @@ public class StepDetailFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_step_detail, container, false);
-        Recipe recipeParcel = getActivity().getIntent().getExtras().getParcelable(RECIPE_PARCEL);
 
+        recipeParcel = getActivity().getIntent().getExtras().getParcelable(RECIPE_PARCEL);
 
         servings = recipeParcel.getServingsNum();
 
@@ -78,9 +82,9 @@ public class StepDetailFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View view) {
+    public void onStepClicked(int recipeId) {
         Intent intent = new Intent(getContext(), DetailActivity.class);
-        //todo: make this right
+        intent.putExtra(STEP_INSTRUCTION_TAG, adapter.findStepById(recipeId));
         startActivity(intent);
     }
 }
