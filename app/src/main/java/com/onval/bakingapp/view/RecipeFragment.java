@@ -2,8 +2,10 @@ package com.onval.bakingapp.view;
 
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,8 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.adapter.RecipeAdapter;
+import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.model.Fetcher;
 import com.onval.bakingapp.presenter.IRecipePresenter;
 import com.onval.bakingapp.presenter.RecipePresenter;
@@ -29,7 +31,7 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
 
     private RecyclerView recyclerView;
     private RecipeAdapter adapter;
-    private LinearLayoutManager layoutManager;
+    private RecyclerView.LayoutManager layoutManager;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -41,23 +43,38 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
 
         //todo: should I use dependency injection for this?
-        presenter = new RecipePresenter(this, new Fetcher(getActivity()));
+        if (presenter == null)
+            presenter = new RecipePresenter(this, new Fetcher(getActivity()));
+
+        if (adapter == null)
+            adapter = new RecipeAdapter(getContext(), this);
 
         if (recyclerView == null) {
             recyclerView = (RecyclerView) root.findViewById(R.id.recipes_recyclerview);
-            presenter.loadRecipes();
+            presenter.loadRecipes(); //calls addAllRecipes when finishes
+            recyclerView.setAdapter(adapter);
         }
 
         return root;
     }
 
     @Override
-    public void addRecipes(List<Recipe> recipes) {
-        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        adapter = new RecipeAdapter(getContext(), recipes, this);
+    public void onResume() {
+        super.onResume();
+
+        //Use linearlayout on portrait, and gridlayout on landspace
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        else
+            layoutManager = new GridLayoutManager(getContext(), 2);
 
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void addRecipes(List<Recipe> recipes) {
+        adapter.addAllRecipes(recipes);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -82,6 +99,5 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         intent.putExtra(RECIPE_PARCEL, recipe);
 
         startActivity(intent);
-
     }
 }

@@ -26,6 +26,9 @@ implements View.OnClickListener
     private ArrayList<Recipe> recipes;
     private IRecipeView.Listener listener;
 
+    public RecipeAdapter(Context context, IRecipeView.Listener listener) {
+        this(context, new ArrayList<Recipe>(), listener);
+    }
 
     public RecipeAdapter(Context context, List<Recipe> recipes, IRecipeView.Listener listener) {
         this.context = context;
@@ -77,6 +80,13 @@ implements View.OnClickListener
 
         //This should never be called
         return null;
+    }
+
+    public void addAllRecipes(List<Recipe> recipes) {
+        if (this.recipes != null)
+            this.recipes.clear();
+
+        this.recipes = (ArrayList<Recipe>) recipes;
     }
 
     class RecipeHolder extends RecyclerView.ViewHolder {
