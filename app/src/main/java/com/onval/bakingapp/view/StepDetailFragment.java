@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +23,13 @@ import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 
 
 public class StepDetailFragment extends Fragment implements IStepDetailView.Listener {
-    TextView ingredientsTV;
-    int servings;
-
     public static final String STEP_INSTRUCTION_TAG = "step-instruction";
 
-    RecyclerView stepsView;
-    StepAdapter adapter;
-    LinearLayoutManager layoutManager;
+    public TextView ingredientsTV;
+
+    private RecyclerView stepsView;
+    private StepAdapter adapter;
+    private LinearLayoutManager layoutManager;
 
     Recipe recipeParcel;
 
@@ -41,24 +41,26 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Log.d("StepDetailFragment", "onCreateView inside StepDetailFragment has been called!");
         View root = inflater.inflate(R.layout.fragment_step_detail, container, false);
 
+        ingredientsTV = (TextView) root.findViewById(R.id.steps_ingredients);
+        stepsView = (RecyclerView) root.findViewById(R.id.steps_recyclerview);
+
+        //get the recipe info for this particular fragment
         recipeParcel = getActivity().getIntent().getExtras().getParcelable(RECIPE_PARCEL);
 
-        servings = recipeParcel.getServingsNum();
+        //Show ingredients
+        if (ingredientsTV.getText().equals(""))
+            ingredientsTV.setText(formatIngredients(recipeParcel.getIngredients()));
 
-        ingredientsTV = (TextView) root.findViewById(R.id.steps_ingredients);
-
-        ArrayList<Ingredient> ingredients = recipeParcel.getIngredients();
-        ingredientsTV.setText(formatIngredients(ingredients));
-
-        stepsView = (RecyclerView) root.findViewById(R.id.steps_recyclerview);
-        adapter = new StepAdapter(getContext(), recipeParcel.getSteps(), this);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        //set layoutManager for step list
+        layoutManager = new LinearLayoutManager(getContext());
         stepsView.setLayoutManager(layoutManager);
-        stepsView.setAdapter(adapter);
 
+        //set adapter for step list
+        adapter = new StepAdapter(getContext(), recipeParcel.getSteps(), this);
+        stepsView.setAdapter(adapter);
 
         return root;
     }
@@ -68,7 +70,7 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
 
         //TODO: use SpannableStringBuilder to improve formatting
         //todo: is there a better way to display 'servings' without having it as a field member?
-        ingredientString.append("INGREDIENTS (for ").append(servings).append(" people)\n");
+        ingredientString.append("INGREDIENTS (for ").append(recipeParcel.getServingsNum()).append(" people)\n");
 
         for (Ingredient i : ingredients) {
             ingredientString

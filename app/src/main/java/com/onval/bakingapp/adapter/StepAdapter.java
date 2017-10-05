@@ -33,8 +33,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
     @Override
     public StepHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView view = (TextView) LayoutInflater.from(context)
-                .inflate(R.layout.single_step, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_step, parent, false);
 
         final StepHolder holder = new StepHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +76,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
         StepHolder(View view) {
             super(view);
-            stepDescription = (TextView) view; //todo: is this cool?
+            stepDescription = (TextView) view.findViewById(R.id.single_step_tv);
         }
 
         void bind(int position) {
