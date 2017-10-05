@@ -6,16 +6,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.onval.bakingapp.data.Ingredient;
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.adapter.StepAdapter;
+import com.onval.bakingapp.data.Ingredient;
+import com.onval.bakingapp.data.Recipe;
 
 import java.util.ArrayList;
 
@@ -51,8 +54,7 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
         recipeParcel = getActivity().getIntent().getExtras().getParcelable(RECIPE_PARCEL);
 
         //Show ingredients
-        if (ingredientsTV.getText().equals(""))
-            ingredientsTV.setText(formatIngredients(recipeParcel.getIngredients()));
+        ingredientsTV.setText(formatIngredients(recipeParcel.getIngredients()));
 
         //set layoutManager for step list
         layoutManager = new LinearLayoutManager(getContext());
@@ -65,22 +67,32 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
         return root;
     }
 
-    private String formatIngredients(ArrayList<Ingredient> ingredients) {
-        StringBuilder ingredientString = new StringBuilder();
+    private SpannableStringBuilder formatIngredients(ArrayList<Ingredient> ingredients) {
+        SpannableStringBuilder ingredientString = new SpannableStringBuilder();
 
-        //TODO: use SpannableStringBuilder to improve formatting
-        //todo: is there a better way to display 'servings' without having it as a field member?
-        ingredientString.append("INGREDIENTS (for ").append(recipeParcel.getServingsNum()).append(" people)\n");
+        String servings = String.valueOf(recipeParcel.getServingsNum());
 
+        //Title: INGREDIENTS (for n people)
+        ingredientString.append("INGREDIENTS (for ")
+                .append(servings)
+                .append(" people)\n")
+                .setSpan( //todo: it should be working :-(
+                new StyleSpan(android.graphics.Typeface.BOLD), 0, ingredientString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        //Build the ingredient list
         for (Ingredient i : ingredients) {
             ingredientString
-                    .append("\u2022 ") //bullet point
+                    .append("\t\u2022 ") //tab followed by a bullet point
                     .append(i.getName()).append(" (")
-                    .append(i.getQuantity()).append(" ")
+                    .append(i.getQuantity() + "").append(" ")
                     .append(i.getMeasure()).append(")\n");
         }
 
-        return ingredientString.toString();
+        //remove final trailing '\n'
+        ingredientString.delete(ingredientString.length()-1, ingredientString.length());
+
+        return ingredientString;
     }
 
     @Override

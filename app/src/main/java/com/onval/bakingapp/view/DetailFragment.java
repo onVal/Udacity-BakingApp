@@ -74,5 +74,16 @@ public class DetailFragment extends Fragment {
         return root;
     }
 
-    //todo: set ondestroy too and fix bugs related to video playback
+    private String formatStepInstructions(String instructions) {
+        String []separatedInstructions = instructions.split(".");
+        return null;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        player.setPlayWhenReady(false);
+        player.release();
+    }
 }
