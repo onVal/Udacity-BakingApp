@@ -1,16 +1,14 @@
 package com.onval.bakingapp.view;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -22,20 +20,33 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.onval.bakingapp.R;
+import com.onval.bakingapp.adapter.StepAdapter;
 import com.onval.bakingapp.data.Step;
 import com.onval.bakingapp.utils.FormatUtils;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.onval.bakingapp.view.StepDetailFragment.STEP_ID_TAG;
+import static com.onval.bakingapp.view.StepDetailFragment.STEP_INSTRUCTION_TAG;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements IDetailView.Listener {
 
-    SimpleExoPlayerView exoPlayerView;
-    SimpleExoPlayer player;
-    TextView title;
-    TextView instruction;
-    Button previousBtn, nextBtn;
+    ArrayList<Step> stepList;
+    int stepId;
+
+    @BindView(R.id.exoplayer_view) SimpleExoPlayerView exoPlayerView;
+    @BindView(R.id.step_title) TextView title;
+    @BindView(R.id.step_instruction) TextView instruction;
+
+    private SimpleExoPlayer player;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -45,14 +56,13 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_detail, container, false);
+        ButterKnife.bind(this, root);
 
-        exoPlayerView = (SimpleExoPlayerView) root.findViewById(R.id.exoplayer_view);
-        title = (TextView) root.findViewById(R.id.step_title);
-        instruction = (TextView) root.findViewById(R.id.step_instruction);
-        previousBtn = (Button) root.findViewById(R.id.btn_previous);
-        nextBtn = (Button) root.findViewById(R.id.btn_next);
-
-        Step step = getActivity().getIntent().getExtras().getParcelable(StepDetailFragment.STEP_INSTRUCTION_TAG);
+        //Get current step from intent extras
+        Bundle extras = getActivity().getIntent().getExtras();
+        stepList = extras.getParcelableArrayList(STEP_INSTRUCTION_TAG);
+        stepId = extras.getInt(STEP_ID_TAG);
+        Step step = StepAdapter.findStepById(stepList, stepId);
 
         title.setText(step.getShortDescription());
         instruction.setText(FormatUtils.formatStepInstructions(step.getDescription()));
@@ -62,11 +72,10 @@ public class DetailFragment extends Fragment {
         if (uri.toString().equals(""))
             uri = Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4");
 
-        Log.d("URI", uri.toString());
-
         MediaSource source = new ExtractorMediaSource(
                     uri,
-                    new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "BakingRecipes")),
+                    new DefaultDataSourceFactory(getContext(),
+                            Util.getUserAgent(getContext(), getString(R.string.recipe_list_title))),
                     new DefaultExtractorsFactory(),
                     null,
                     null
@@ -80,25 +89,31 @@ public class DetailFragment extends Fragment {
 
         exoPlayerView.setPlayer(player);
 
-        previousBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //todo: maybe use singleton fragment stuff to pass in the parameters?
-                //todo: another solution, pass the entire steps arraylist to this fragment
-
-                Toast.makeText(getContext(), "prev btn", Toast.LENGTH_SHORT).show();;
-            }
-        });
-
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "next btn", Toast.LENGTH_SHORT).show();;
-
-            }
-        });
-
         return root;
+    }
+
+    //todo: also set some sort of deactivate method for buttons
+    //todo: I'M NOT LIKING THIS (BESIDES IT'S NOT WORKING CORRECTLY): CHECK OUT SINGLETONS FRAGMENTS
+    @Override
+    @OnClick(R.id.btn_previous)
+    public void onPreviousClicked() {
+        if (stepId > 0) {
+            Intent intent = new Intent(getContext(), DetailActivity.class);
+            intent.putExtra(STEP_INSTRUCTION_TAG, stepList);
+            intent.putExtra(STEP_ID_TAG, stepId - 1); //todo: this is bad, but should work regardless
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    @OnClick(R.id.btn_next)
+    public void onNextClicked() {
+        if (stepId < stepList.size()) {
+            Intent intent = new Intent(getContext(), DetailActivity.class);
+            intent.putExtra(STEP_INSTRUCTION_TAG, stepList);
+            intent.putExtra(STEP_ID_TAG, stepId + 1); //todo: this is bad, but should work regardless
+            startActivity(intent);
+        }
     }
 
     @Override

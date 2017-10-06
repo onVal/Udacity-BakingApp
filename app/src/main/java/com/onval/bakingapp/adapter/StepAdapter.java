@@ -57,7 +57,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         holder.bind(position);
     }
 
-    public Step findStepById(int id) {
+    public static Step findStepById(List<Step> stepList, int id) {
         Step step;
 
         for (int i = 0; i <= stepList.size(); i++) {
@@ -69,6 +69,10 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
         //This should never be called
         return null;
+    }
+
+    public ArrayList<Step> getStepList() {
+        return stepList;
     }
 
     class StepHolder extends RecyclerView.ViewHolder {
