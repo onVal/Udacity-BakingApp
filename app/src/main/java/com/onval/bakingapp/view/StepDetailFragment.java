@@ -4,6 +4,7 @@ package com.onval.bakingapp.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -63,6 +64,11 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
         //set adapter for step list
         adapter = new StepAdapter(getContext(), recipeParcel.getSteps(), this);
         stepsView.setAdapter(adapter);
+
+        //set divider for recycler view
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
+                layoutManager.getOrientation());
+        stepsView.addItemDecoration(dividerItemDecoration);
 
         return root;
     }

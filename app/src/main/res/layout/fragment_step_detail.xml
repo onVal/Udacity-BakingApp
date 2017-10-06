@@ -1,14 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff3e0"
+        app:cardBackgroundColor="#fff3e0"
         >
         <TextView
             android:id="@+id/steps_ingredients"
@@ -18,7 +18,7 @@
             android:textSize="16sp"
             tools:text="INGREDIENTS"
             />
-    </FrameLayout>
+    </android.support.v7.widget.CardView>
 
 
     <android.support.v7.widget.RecyclerView
