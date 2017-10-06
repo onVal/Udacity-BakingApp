@@ -23,13 +23,17 @@ import com.onval.bakingapp.presenter.RecipePresenter;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 
 
 public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView.Listener {
     private IRecipePresenter presenter;
 
-    private RecyclerView recyclerView;
+    @BindView(R.id.recipes_recyclerview) RecyclerView recyclerView;
+
     private RecipeAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -41,19 +45,15 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
+        ButterKnife.bind(this, root);
 
         //todo: should I use dependency injection for this?
-        if (presenter == null)
-            presenter = new RecipePresenter(this, new Fetcher(getActivity()));
+        presenter = new RecipePresenter(this, new Fetcher(getActivity()));
 
-        if (adapter == null)
-            adapter = new RecipeAdapter(getContext(), this);
+        adapter = new RecipeAdapter(getContext(), this);
 
-        if (recyclerView == null) {
-            recyclerView = (RecyclerView) root.findViewById(R.id.recipes_recyclerview);
-            presenter.loadRecipes(); //calls addAllRecipes when finishes
-            recyclerView.setAdapter(adapter);
-        }
+        presenter.loadRecipes(); //calls addAllRecipes when finishes
+        recyclerView.setAdapter(adapter);
 
         return root;
     }

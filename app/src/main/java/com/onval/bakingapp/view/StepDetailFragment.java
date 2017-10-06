@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +22,19 @@ import com.onval.bakingapp.data.Recipe;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 
 
 public class StepDetailFragment extends Fragment implements IStepDetailView.Listener {
     public static final String STEP_INSTRUCTION_TAG = "step-instruction";
+    public static final String STEP_ID_TAG = "step-position-tag";
 
-    public TextView ingredientsTV;
+    @BindView(R.id.steps_ingredients) TextView ingredientsTV;
+    @BindView(R.id.steps_recyclerview) RecyclerView stepsView;
 
-    private RecyclerView stepsView;
     private StepAdapter adapter;
     private LinearLayoutManager layoutManager;
 
@@ -45,11 +48,9 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d("StepDetailFragment", "onCreateView inside StepDetailFragment has been called!");
         View root = inflater.inflate(R.layout.fragment_step_detail, container, false);
 
-        ingredientsTV = (TextView) root.findViewById(R.id.steps_ingredients);
-        stepsView = (RecyclerView) root.findViewById(R.id.steps_recyclerview);
+        ButterKnife.bind(this, root);
 
         //get the recipe info for this particular fragment
         recipeParcel = getActivity().getIntent().getExtras().getParcelable(RECIPE_PARCEL);
@@ -102,9 +103,10 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
     }
 
     @Override
-    public void onStepClicked(int recipeId) {
+    public void onStepClicked(int stepId) {
         Intent intent = new Intent(getContext(), DetailActivity.class);
-        intent.putExtra(STEP_INSTRUCTION_TAG, adapter.findStepById(recipeId));
+        intent.putExtra(STEP_INSTRUCTION_TAG, adapter.getStepList());
+        intent.putExtra(STEP_ID_TAG, stepId);
         startActivity(intent);
     }
 }
