@@ -82,7 +82,7 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
         ingredientString.append("INGREDIENTS (for ")
                 .append(servings)
                 .append(" people)\n")
-                .setSpan( //todo: it should be working :-(
+                .setSpan(
                 new StyleSpan(android.graphics.Typeface.BOLD), 0, ingredientString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 

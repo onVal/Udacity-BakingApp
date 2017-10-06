@@ -80,8 +80,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         }
 
         void bind(int position) {
-            stepDescription.setText(stepList.get(position).getShortDescription());
+            stepDescription.setText(position + ". " + stepList.get(position).getShortDescription());
         }
-
     }
 }

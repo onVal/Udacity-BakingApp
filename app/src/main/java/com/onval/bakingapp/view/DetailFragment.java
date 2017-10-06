@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -21,6 +23,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.onval.bakingapp.R;
 import com.onval.bakingapp.data.Step;
+import com.onval.bakingapp.utils.FormatUtils;
 
 
 /**
@@ -30,7 +33,9 @@ public class DetailFragment extends Fragment {
 
     SimpleExoPlayerView exoPlayerView;
     SimpleExoPlayer player;
+    TextView title;
     TextView instruction;
+    Button previousBtn, nextBtn;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -39,15 +44,18 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_detail, container, false);
 
         exoPlayerView = (SimpleExoPlayerView) root.findViewById(R.id.exoplayer_view);
+        title = (TextView) root.findViewById(R.id.step_title);
         instruction = (TextView) root.findViewById(R.id.step_instruction);
+        previousBtn = (Button) root.findViewById(R.id.btn_previous);
+        nextBtn = (Button) root.findViewById(R.id.btn_next);
 
         Step step = getActivity().getIntent().getExtras().getParcelable(StepDetailFragment.STEP_INSTRUCTION_TAG);
 
-        instruction.setText(step.getShortDescription() + "\n\n" + step.getDescription());
+        title.setText(step.getShortDescription());
+        instruction.setText(FormatUtils.formatStepInstructions(step.getDescription()));
 
         Uri uri = Uri.parse(step.getVideoURL());
 
@@ -67,16 +75,30 @@ public class DetailFragment extends Fragment {
         player = ExoPlayerFactory.newSimpleInstance(getContext(), new DefaultTrackSelector());
 
         player.prepare(source);
+        //todo: after playing switch automatically to the next step
         player.setPlayWhenReady(true);
 
         exoPlayerView.setPlayer(player);
 
-        return root;
-    }
+        previousBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo: maybe use singleton fragment stuff to pass in the parameters?
+                //todo: another solution, pass the entire steps arraylist to this fragment
 
-    private String formatStepInstructions(String instructions) {
-        String []separatedInstructions = instructions.split(".");
-        return null;
+                Toast.makeText(getContext(), "prev btn", Toast.LENGTH_SHORT).show();;
+            }
+        });
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "next btn", Toast.LENGTH_SHORT).show();;
+
+            }
+        });
+
+        return root;
     }
 
     @Override
