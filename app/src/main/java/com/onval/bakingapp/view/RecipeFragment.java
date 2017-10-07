@@ -63,10 +63,14 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         super.onResume();
 
         //Use linearlayout on portrait, and gridlayout on landspace
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-            layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        else
+        // (and on tablets, regardless of orientation)
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ||
+                getResources().getBoolean(R.bool.isTablet))
             layoutManager = new GridLayoutManager(getContext(), 2);
+
+        else
+            layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+
 
         recyclerView.setLayoutManager(layoutManager);
     }
