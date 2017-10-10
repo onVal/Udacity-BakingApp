@@ -94,7 +94,6 @@ public class Fetcher implements IFetcher {
         return ingredients;
     }
 
-    //todo: finish this implementation
     private List<Step> parseSteps(JSONArray json) {
         ArrayList<Step> steps = new ArrayList<>();
 

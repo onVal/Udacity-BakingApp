@@ -1,7 +1,6 @@
 package com.onval.bakingapp.view;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -28,15 +27,17 @@ import butterknife.ButterKnife;
 import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 
 
-public class StepDetailFragment extends Fragment implements IStepDetailView.Listener {
-    public static final String STEP_INSTRUCTION_TAG = "step-instruction";
-    public static final String STEP_ID_TAG = "step-position-tag";
+public class StepDetailFragment extends Fragment {
+    public static final String STEP_LIST_TAG = "step-instruction";
+    public static final String STEP_POSITION_TAG = "step-position-tag";
+    public static final String STEP_ID_TAG = "step-id-tag";
 
     @BindView(R.id.steps_ingredients) TextView ingredientsTV;
     @BindView(R.id.steps_recyclerview) RecyclerView stepsView;
 
     private StepAdapter adapter;
     private LinearLayoutManager layoutManager;
+    private
 
     Recipe recipeParcel;
 
@@ -63,8 +64,9 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
         stepsView.setLayoutManager(layoutManager);
 
         //set adapter for step list
-        adapter = new StepAdapter(getContext(), recipeParcel.getSteps(), this);
-        stepsView.setAdapter(adapter);
+//        adapter = new StepAdapter(getContext(), recipeParcel.getSteps(), getActivity());
+//        stepsView.setAdapter(adapter);
+        //
 
         //set divider for recycler view
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
@@ -102,11 +104,7 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
         return ingredientString;
     }
 
-    @Override
-    public void onStepClicked(int stepId) {
-        Intent intent = new Intent(getContext(), DetailActivity.class);
-        intent.putExtra(STEP_INSTRUCTION_TAG, adapter.getStepList());
-        intent.putExtra(STEP_ID_TAG, stepId);
-        startActivity(intent);
+    public interface OnStepClickListener {
+            void onStepClicked(int stepId);
     }
 }

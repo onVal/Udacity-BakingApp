@@ -4,6 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.onval.bakingapp.R;
+import com.onval.bakingapp.data.Step;
+
+import java.util.ArrayList;
+
+import static com.onval.bakingapp.view.StepDetailFragment.STEP_LIST_TAG;
+import static com.onval.bakingapp.view.StepDetailFragment.STEP_POSITION_TAG;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -12,8 +18,21 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        //Since I want the fragment itself to contain the arraylist of steps and the position
+        //in order to manage the twopane option (when I don't create an activity for the fragment)
+        //I 'transform' the intent extras into arguments to pass to the fragment
+        ArrayList<Step> steps = getIntent().getExtras().getParcelableArrayList(STEP_LIST_TAG);
+        int position = getIntent().getExtras().getInt(STEP_POSITION_TAG);
+
+        DetailFragment fragment = new DetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(STEP_LIST_TAG, steps);
+        bundle.putInt(STEP_POSITION_TAG, position);
+
+        fragment.setArguments(bundle);
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.detail_container, new DetailFragment())
+                .replace(R.id.detail_container, fragment)
                 .commit();
     }
 }

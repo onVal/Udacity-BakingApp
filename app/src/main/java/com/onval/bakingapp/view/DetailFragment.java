@@ -20,7 +20,6 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.adapter.StepAdapter;
 import com.onval.bakingapp.data.Step;
 import com.onval.bakingapp.utils.FormatUtils;
 
@@ -31,7 +30,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.onval.bakingapp.view.StepDetailFragment.STEP_ID_TAG;
-import static com.onval.bakingapp.view.StepDetailFragment.STEP_INSTRUCTION_TAG;
+import static com.onval.bakingapp.view.StepDetailFragment.STEP_LIST_TAG;
+import static com.onval.bakingapp.view.StepDetailFragment.STEP_POSITION_TAG;
 
 
 /**
@@ -40,7 +40,7 @@ import static com.onval.bakingapp.view.StepDetailFragment.STEP_INSTRUCTION_TAG;
 public class DetailFragment extends Fragment implements IDetailView.Listener {
 
     ArrayList<Step> stepList;
-    int stepId;
+    int stepPosition;
 
     @BindView(R.id.exoplayer_view) SimpleExoPlayerView exoPlayerView;
     @BindView(R.id.step_title) TextView title;
@@ -52,17 +52,28 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
         // Required empty public constructor
     }
 
+//    public static DetailFragment newInstance(ArrayList<Step> steplist, int stepPosition) {
+//        DetailFragment fragment = new DetailFragment();
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelableArrayList(STEP_LIST_TAG, steplist);
+//        bundle.putInt(STEP_ID_TAG, stepPosition);
+//
+//        fragment.setArguments(bundle);
+//        return fragment;
+//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, root);
 
-        //Get current step from intent extras
-        Bundle extras = getActivity().getIntent().getExtras();
-        stepList = extras.getParcelableArrayList(STEP_INSTRUCTION_TAG);
-        stepId = extras.getInt(STEP_ID_TAG);
-        Step step = StepAdapter.findStepById(stepList, stepId);
+        //Get current step from fragment arguments
+        Bundle args = getArguments();
+        stepList = args.getParcelableArrayList(STEP_LIST_TAG);
+        stepPosition = args.getInt(STEP_POSITION_TAG);
+        Step step = stepList.get(stepPosition);
 
         title.setText(step.getShortDescription());
         instruction.setText(FormatUtils.formatStepInstructions(step.getDescription()));
@@ -93,14 +104,14 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
     }
 
     //todo: also set some sort of deactivate method for buttons
-    //todo: I'M NOT LIKING THIS (BESIDES IT'S NOT WORKING CORRECTLY): CHECK OUT SINGLETONS FRAGMENTS
+    //todo: I'M NOT LIKING THIS (BESIDES IT'S NOT WORKING CORRECTLY)
     @Override
     @OnClick(R.id.btn_previous)
     public void onPreviousClicked() {
-        if (stepId > 0) {
+        if (stepPosition > 0) {
             Intent intent = new Intent(getContext(), DetailActivity.class);
-            intent.putExtra(STEP_INSTRUCTION_TAG, stepList);
-            intent.putExtra(STEP_ID_TAG, stepId - 1); //todo: this is bad, but should work regardless
+            intent.putExtra(STEP_LIST_TAG, stepList);
+            intent.putExtra(STEP_POSITION_TAG, stepPosition - 1);
             startActivity(intent);
         }
     }
@@ -108,10 +119,10 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
     @Override
     @OnClick(R.id.btn_next)
     public void onNextClicked() {
-        if (stepId < stepList.size()) {
+        if (stepPosition < stepList.size()) {
             Intent intent = new Intent(getContext(), DetailActivity.class);
-            intent.putExtra(STEP_INSTRUCTION_TAG, stepList);
-            intent.putExtra(STEP_ID_TAG, stepId + 1); //todo: this is bad, but should work regardless
+            intent.putExtra(STEP_LIST_TAG, stepList);
+            intent.putExtra(STEP_ID_TAG, stepPosition + 1);
             startActivity(intent);
         }
     }

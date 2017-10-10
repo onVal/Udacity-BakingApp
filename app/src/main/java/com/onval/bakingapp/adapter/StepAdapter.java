@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.onval.bakingapp.R;
+import com.onval.bakingapp.StepNotFoundException;
 import com.onval.bakingapp.data.Step;
-import com.onval.bakingapp.view.IStepDetailView;
+import com.onval.bakingapp.view.StepDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +22,11 @@ import java.util.List;
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
     private Context context;
     private ArrayList<Step> stepList;
-    private IStepDetailView.Listener listener;
+    private StepDetailFragment.OnStepClickListener listener;
 
 
     public StepAdapter(Context context, List<Step> stepList,
-                       IStepDetailView.Listener listener) {
+                       StepDetailFragment.OnStepClickListener listener) {
         this.context = context;
         this.stepList = (ArrayList<Step>) stepList;
         this.listener = listener;
@@ -57,7 +58,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         holder.bind(position);
     }
 
-    public static Step findStepById(List<Step> stepList, int id) {
+    public static Step findStepById(List<Step> stepList, int id)
+        throws StepNotFoundException {
         Step step;
 
         for (int i = 0; i <= stepList.size(); i++) {
@@ -68,7 +70,19 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         }
 
         //This should never be called
-        return null;
+        throw new StepNotFoundException();
+    }
+
+    public static int findStepPositionById(List<Step> stepList, int id)
+            throws StepNotFoundException {
+
+        for (int i = 0; i <= stepList.size(); i++) {
+            if (stepList.get(i).getId() == id)
+                return i;
+        }
+
+        //shouldn't happen
+        throw new StepNotFoundException();
     }
 
     public ArrayList<Step> getStepList() {
