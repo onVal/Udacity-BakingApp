@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.adapter.StepAdapter;
 import com.onval.bakingapp.data.Ingredient;
 import com.onval.bakingapp.data.Recipe;
 
@@ -35,7 +34,6 @@ public class StepDetailFragment extends Fragment {
     @BindView(R.id.steps_ingredients) TextView ingredientsTV;
     @BindView(R.id.steps_recyclerview) RecyclerView stepsView;
 
-    private StepAdapter adapter;
     private LinearLayoutManager layoutManager;
     private
 
@@ -63,10 +61,8 @@ public class StepDetailFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         stepsView.setLayoutManager(layoutManager);
 
-        //set adapter for step list
-//        adapter = new StepAdapter(getContext(), recipeParcel.getSteps(), getActivity());
-//        stepsView.setAdapter(adapter);
-        //
+        //set parent activity's adapter
+        stepsView.setAdapter(((StepDetailActivity)getActivity()).getAdapter());
 
         //set divider for recycler view
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),

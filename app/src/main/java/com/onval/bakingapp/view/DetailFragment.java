@@ -29,7 +29,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.onval.bakingapp.view.StepDetailFragment.STEP_ID_TAG;
 import static com.onval.bakingapp.view.StepDetailFragment.STEP_LIST_TAG;
 import static com.onval.bakingapp.view.StepDetailFragment.STEP_POSITION_TAG;
 
@@ -52,16 +51,16 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
         // Required empty public constructor
     }
 
-//    public static DetailFragment newInstance(ArrayList<Step> steplist, int stepPosition) {
-//        DetailFragment fragment = new DetailFragment();
-//
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList(STEP_LIST_TAG, steplist);
-//        bundle.putInt(STEP_ID_TAG, stepPosition);
-//
-//        fragment.setArguments(bundle);
-//        return fragment;
-//    }
+    public static DetailFragment newInstance(ArrayList<Step> steplist, int stepPosition) {
+        DetailFragment fragment = new DetailFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(STEP_LIST_TAG, steplist);
+        bundle.putInt(STEP_POSITION_TAG, stepPosition);
+
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,6 +111,7 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
             Intent intent = new Intent(getContext(), DetailActivity.class);
             intent.putExtra(STEP_LIST_TAG, stepList);
             intent.putExtra(STEP_POSITION_TAG, stepPosition - 1);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
     }
@@ -119,10 +119,11 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
     @Override
     @OnClick(R.id.btn_next)
     public void onNextClicked() {
-        if (stepPosition < stepList.size()) {
+        if (stepPosition < stepList.size()-1) {
             Intent intent = new Intent(getContext(), DetailActivity.class);
             intent.putExtra(STEP_LIST_TAG, stepList);
-            intent.putExtra(STEP_ID_TAG, stepPosition + 1);
+            intent.putExtra(STEP_POSITION_TAG, stepPosition + 1);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
     }
