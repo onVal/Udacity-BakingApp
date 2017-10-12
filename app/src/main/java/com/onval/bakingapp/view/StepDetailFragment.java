@@ -29,7 +29,6 @@ import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 public class StepDetailFragment extends Fragment {
     public static final String STEP_LIST_TAG = "step-instruction";
     public static final String STEP_POSITION_TAG = "step-position-tag";
-    public static final String STEP_ID_TAG = "step-id-tag";
 
     @BindView(R.id.steps_ingredients) TextView ingredientsTV;
     @BindView(R.id.steps_recyclerview) RecyclerView stepsView;
@@ -62,7 +61,7 @@ public class StepDetailFragment extends Fragment {
         stepsView.setLayoutManager(layoutManager);
 
         //set parent activity's adapter
-        stepsView.setAdapter(((StepDetailActivity)getActivity()).getAdapter());
+        stepsView.setAdapter(((StepDetailActivity)getActivity()).getStepAdapter());
 
         //set divider for recycler view
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),

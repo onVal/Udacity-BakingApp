@@ -1,6 +1,7 @@
 package com.onval.bakingapp.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.StepNotFoundException;
 import com.onval.bakingapp.data.Step;
 import com.onval.bakingapp.view.StepDetailFragment;
 
@@ -24,12 +24,16 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
     private ArrayList<Step> stepList;
     private StepDetailFragment.OnStepClickListener listener;
 
+    private int selectedItem;
+
 
     public StepAdapter(Context context, List<Step> stepList,
                        StepDetailFragment.OnStepClickListener listener) {
         this.context = context;
         this.stepList = (ArrayList<Step>) stepList;
         this.listener = listener;
+
+        selectedItem = 0; //when creating adapter for the first time select the first item
     }
 
     @Override
@@ -42,6 +46,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
                 listener.onStepClicked(stepList.get(position).getId());
+
+                //after clicking on an item, update both the old and the new ones
+                notifyItemChanged(selectedItem);
+                selectedItem = position;
+                notifyItemChanged(selectedItem);
             }
         });
 
@@ -53,42 +62,37 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         return stepList.size();
     }
 
+    //todo: retain state selection upon rotation (probably not only from here)
     @Override
     public void onBindViewHolder(StepHolder holder, int position) {
+        if (position == selectedItem) {
+            holder.stepDescription.setTextColor(Color.WHITE);
+            holder.stepDescription.setBackgroundColor(
+                    context.getResources().getColor(R.color.selectedListItemBackground));
+        }
+        else {
+            holder.stepDescription.setTextColor(Color.BLACK);
+            holder.stepDescription.setBackgroundColor(Color.TRANSPARENT);
+        }
+
         holder.bind(position);
     }
 
-    public static Step findStepById(List<Step> stepList, int id)
-        throws StepNotFoundException {
-        Step step;
-
-        for (int i = 0; i <= stepList.size(); i++) {
-            step = stepList.get(i);
-
-            if (step.getId() == id)
-                return step;
-        }
-
-        //This should never be called
-        throw new StepNotFoundException();
-    }
-
-    public static int findStepPositionById(List<Step> stepList, int id)
-            throws StepNotFoundException {
+    //returns -1 if it doesn't find it
+    public static int findStepPositionById(List<Step> stepList, int id) {
 
         for (int i = 0; i <= stepList.size(); i++) {
             if (stepList.get(i).getId() == id)
                 return i;
         }
-
-        //shouldn't happen
-        throw new StepNotFoundException();
+        return -1;
     }
 
     public ArrayList<Step> getStepList() {
         return stepList;
     }
 
+    //View holder //////////////////////////////////////////////////////////////////////////////
     class StepHolder extends RecyclerView.ViewHolder {
         TextView stepDescription;
 

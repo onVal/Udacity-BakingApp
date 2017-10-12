@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.StepNotFoundException;
 import com.onval.bakingapp.adapter.StepAdapter;
 import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.data.Step;
@@ -20,11 +19,9 @@ public class StepDetailActivity extends AppCompatActivity
         implements StepDetailFragment.OnStepClickListener {
 
     private boolean twoPane;
-    private FragmentTransaction ft;
-    private Recipe recipe;
     private ArrayList<Step> steps;
 
-    private StepAdapter adapter;
+    private StepAdapter stepAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +31,12 @@ public class StepDetailActivity extends AppCompatActivity
         if (getResources().getBoolean(R.bool.isTablet))
             twoPane = true;
 
-        ft = getSupportFragmentManager().beginTransaction();
-        recipe = getIntent().getExtras().getParcelable(Recipe.RECIPE_PARCEL);
-
-        //I set the step adapter in the activity to be able to control twopane
-        adapter = new StepAdapter(this, recipe.getSteps(), this);
-
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Recipe recipe = getIntent().getExtras().getParcelable(Recipe.RECIPE_PARCEL);
         steps = recipe.getSteps();
+
+        //I set the step stepAdapter in the activity to be able to control twopane
+        stepAdapter = new StepAdapter(this, steps, this);
 
         if (twoPane) {
             ft.replace(R.id.step_detail_container, new StepDetailFragment())
@@ -56,27 +52,28 @@ public class StepDetailActivity extends AppCompatActivity
     //This method implements the master-detail pattern so it changes behavior based on device config
     @Override
     public void onStepClicked(int stepId) {
-        int stepPosition = 0;
+        int stepPosition = StepAdapter.findStepPositionById(steps, stepId);
 
-        try {
-            stepPosition = StepAdapter.findStepPositionById(recipe.getSteps(), stepId);
-        } catch (StepNotFoundException e) {e.printStackTrace();}
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        if (stepPosition == -1)
+            return;
 
         if (twoPane) {
-            ft.replace(R.id.frame_detail_container,
-                    DetailFragment.newInstance(steps, stepPosition));
+            ft.replace(R.id.frame_detail_container, DetailFragment.newInstance(steps, stepPosition))
+                    .commit();
         }
         else {
 
             Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra(STEP_LIST_TAG, recipe.getSteps());
+            intent.putExtra(STEP_LIST_TAG, steps);
             intent.putExtra(STEP_POSITION_TAG, stepPosition);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
     }
 
-    public StepAdapter getAdapter() {
-        return adapter;
+    public StepAdapter getStepAdapter() {
+        return stepAdapter;
     }
 }
