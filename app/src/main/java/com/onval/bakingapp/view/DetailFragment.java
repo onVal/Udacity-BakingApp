@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -45,6 +46,9 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
     @BindView(R.id.step_title) TextView title;
     @BindView(R.id.step_instruction) TextView instruction;
 
+    @BindView(R.id.btn_previous) Button previous;
+    @BindView(R.id.btn_next) Button next;
+
     private SimpleExoPlayer player;
 
     public DetailFragment() {
@@ -74,9 +78,24 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
         stepPosition = args.getInt(STEP_POSITION_TAG);
         Step step = stepList.get(stepPosition);
 
+        //hide previous and next buttons if on a tablet
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            previous.setVisibility(View.GONE);
+            next.setVisibility(View.GONE);
+        }
+
+        //disable prev and next buttons on edges
+        //as extra control and ux improvement
+        if (stepPosition == 0)
+            previous.setVisibility(View.GONE);
+        if (stepPosition == stepList.size()-1)
+            next.setVisibility(View.GONE);
+
+        //set the step description
         title.setText(step.getShortDescription());
         instruction.setText(FormatUtils.formatStepInstructions(step.getDescription()));
 
+        //set up the video player
         Uri uri = Uri.parse(step.getVideoURL());
 
         if (uri.toString().equals(""))

@@ -18,6 +18,7 @@ import static com.onval.bakingapp.view.StepDetailFragment.STEP_POSITION_TAG;
 public class StepDetailActivity extends AppCompatActivity
         implements StepDetailFragment.OnStepClickListener {
 
+    private static final String SELECTED_ITEM_POS = "selected-item-position";
     private boolean twoPane;
     private ArrayList<Step> steps;
 
@@ -35,18 +36,30 @@ public class StepDetailActivity extends AppCompatActivity
         Recipe recipe = getIntent().getExtras().getParcelable(Recipe.RECIPE_PARCEL);
         steps = recipe.getSteps();
 
+        //this restores selected item upon config. changes
+        int restoredItemPosition = (savedInstanceState != null) ?
+                savedInstanceState.getInt(SELECTED_ITEM_POS) : 0;
+
         //I set the step stepAdapter in the activity to be able to control twopane
-        stepAdapter = new StepAdapter(this, steps, this);
+        stepAdapter = new StepAdapter(this, steps, this, restoredItemPosition);
 
         if (twoPane) {
             ft.replace(R.id.step_detail_container, new StepDetailFragment())
-                    .replace(R.id.frame_detail_container, DetailFragment.newInstance(steps, 0))
+                    .replace(R.id.frame_detail_container,
+                            DetailFragment.newInstance(steps, restoredItemPosition))
                     .commit();
         }
         else {
             ft.replace(R.id.step_detail_container, new StepDetailFragment())
                     .commit();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(SELECTED_ITEM_POS, stepAdapter.getSelectedItem());
     }
 
     //This method implements the master-detail pattern so it changes behavior based on device config

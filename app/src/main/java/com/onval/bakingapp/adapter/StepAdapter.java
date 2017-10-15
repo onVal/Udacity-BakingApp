@@ -26,7 +26,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
     private int selectedItem;
 
-
     public StepAdapter(Context context, List<Step> stepList,
                        StepDetailFragment.OnStepClickListener listener) {
         this.context = context;
@@ -34,6 +33,13 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         this.listener = listener;
 
         selectedItem = 0; //when creating adapter for the first time select the first item
+    }
+
+    //alternative constructor to allow to mantain selection state across config changes
+    public StepAdapter(Context context, List<Step> stepList,
+                       StepDetailFragment.OnStepClickListener listener, int selectedItem) {
+        this(context, stepList, listener);
+        this.selectedItem = selectedItem;
     }
 
     @Override
@@ -65,17 +71,22 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
     //todo: retain state selection upon rotation (probably not only from here)
     @Override
     public void onBindViewHolder(StepHolder holder, int position) {
-        if (position == selectedItem) {
-            holder.stepDescription.setTextColor(Color.WHITE);
-            holder.stepDescription.setBackgroundColor(
-                    context.getResources().getColor(R.color.selectedListItemBackground));
-        }
-        else {
-            holder.stepDescription.setTextColor(Color.BLACK);
-            holder.stepDescription.setBackgroundColor(Color.TRANSPARENT);
+        if (context.getResources().getBoolean(R.bool.isTablet)) {
+            if (position == selectedItem) {
+                holder.stepDescription.setTextColor(Color.WHITE);
+                holder.stepDescription.setBackgroundColor(
+                        context.getResources().getColor(R.color.selectedListItemBackground));
+            } else {
+                holder.stepDescription.setTextColor(Color.BLACK);
+                holder.stepDescription.setBackgroundColor(Color.TRANSPARENT);
+            }
         }
 
         holder.bind(position);
+    }
+
+    public int getSelectedItem() {
+        return selectedItem;
     }
 
     //returns -1 if it doesn't find it

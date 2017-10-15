@@ -24,7 +24,6 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/steps_recyclerview"
-        android:padding="16dp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
