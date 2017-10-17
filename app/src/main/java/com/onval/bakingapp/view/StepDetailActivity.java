@@ -43,15 +43,16 @@ public class StepDetailActivity extends AppCompatActivity
         //I set the step stepAdapter in the activity to be able to control twopane
         stepAdapter = new StepAdapter(this, steps, this, restoredItemPosition);
 
-        if (twoPane) {
-            ft.replace(R.id.step_detail_container, new StepDetailFragment())
-                    .replace(R.id.frame_detail_container,
-                            DetailFragment.newInstance(steps, restoredItemPosition))
-                    .commit();
-        }
-        else {
-            ft.replace(R.id.step_detail_container, new StepDetailFragment())
-                    .commit();
+        if (savedInstanceState == null) {
+            if (twoPane) {
+                ft.replace(R.id.step_detail_container, new StepDetailFragment())
+                        .replace(R.id.frame_detail_container,
+                                DetailFragment.newInstance(steps, restoredItemPosition))
+                        .commit();
+            } else {
+                ft.replace(R.id.step_detail_container, new StepDetailFragment())
+                        .commit();
+            }
         }
     }
 

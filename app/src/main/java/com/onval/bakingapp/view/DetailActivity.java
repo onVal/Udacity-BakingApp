@@ -24,9 +24,11 @@ public class DetailActivity extends AppCompatActivity {
         ArrayList<Step> steps = getIntent().getExtras().getParcelableArrayList(STEP_LIST_TAG);
         int position = getIntent().getExtras().getInt(STEP_POSITION_TAG);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.detail_container,
-                        DetailFragment.newInstance(steps, position))
-                .commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.detail_container,
+                            DetailFragment.newInstance(steps, position))
+                    .commit();
+        }
     }
 }
