@@ -18,6 +18,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
         //Since I want the fragment itself to contain the arraylist of steps and the position
         //in order to manage the twopane option (when I don't create an activity for the fragment)
         //I 'transform' the intent extras into arguments to pass to the fragment
