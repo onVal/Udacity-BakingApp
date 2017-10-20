@@ -102,7 +102,7 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
         //retrieve video uri
         videoUri = Uri.parse(step.getVideoURL());
 
-        if (!thereIsNoVideoUri()) {
+        if (thereIsNoVideoUri()) {
             exoPlayerView.setDefaultArtwork(null);
         }
         else {
