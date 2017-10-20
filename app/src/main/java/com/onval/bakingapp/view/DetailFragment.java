@@ -11,12 +11,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -50,6 +53,7 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
     @BindView(R.id.btn_next) Button next;
 
     private SimpleExoPlayer player;
+    private Uri videoUri;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -84,7 +88,7 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
             next.setVisibility(View.GONE);
         }
 
-        //disable prev and next buttons on edges
+        //disable prev and next buttons if not needed
         //as extra control and ux improvement
         if (stepPosition == 0)
             previous.setVisibility(View.GONE);
@@ -95,34 +99,54 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
         title.setText(step.getShortDescription());
         instruction.setText(FormatUtils.formatStepInstructions(step.getDescription()));
 
-        //set up the video player
-        Uri uri = Uri.parse(step.getVideoURL());
+        //retrieve video uri
+        videoUri = Uri.parse(step.getVideoURL());
 
-        if (uri.toString().equals(""))
-            uri = Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4");
-
-        MediaSource source = new ExtractorMediaSource(
-                    uri,
-                    new DefaultDataSourceFactory(getContext(),
-                            Util.getUserAgent(getContext(), getString(R.string.recipe_list_title))),
-                    new DefaultExtractorsFactory(),
-                    null,
-                    null
-            );
-
-        player = ExoPlayerFactory.newSimpleInstance(getContext(), new DefaultTrackSelector());
-
-        player.prepare(source);
-        //todo: after playing switch automatically to the next step
-        player.setPlayWhenReady(true);
-
-        exoPlayerView.setPlayer(player);
+        if (!thereIsNoVideoUri()) {
+            exoPlayerView.setDefaultArtwork(null);
+        }
+        else {
+            initializePlayer();
+        }
 
         return root;
     }
 
-    //todo: also set some sort of deactivate method for buttons
-    //todo: I'M NOT LIKING THIS (BESIDES IT'S NOT WORKING CORRECTLY)
+    private void initializePlayer() {
+        TrackSelector trackSelector = new DefaultTrackSelector();
+        LoadControl loadControl = new DefaultLoadControl();
+
+        player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+        exoPlayerView.setPlayer(player);
+
+        //prepare the MediaSource
+        String userAgent = Util.getUserAgent(getContext(), getString(R.string.recipe_list_title));
+
+        MediaSource mediaSource = new ExtractorMediaSource(
+                videoUri,
+                new DefaultDataSourceFactory(getContext(), userAgent),
+                new DefaultExtractorsFactory(),
+                null,
+                null
+        );
+
+        player.prepare(mediaSource);
+        player.setPlayWhenReady(true);
+    }
+
+    private void releasePlayer() {
+        if (player != null) {
+            player.setPlayWhenReady(false);
+            player.release();
+            player = null;
+        }
+    }
+
+    //I just don't like how that line looks, so i wrapped it in a method, derp
+    private boolean thereIsNoVideoUri() {
+        return videoUri.toString().equals("");
+    }
+
     @Override
     @OnClick(R.id.btn_previous)
     public void onPreviousClicked() {
@@ -150,8 +174,6 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
     @Override
     public void onStop() {
         super.onStop();
-
-        player.setPlayWhenReady(false);
-        player.release();
+        releasePlayer();
     }
 }
