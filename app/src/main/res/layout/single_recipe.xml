@@ -9,6 +9,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="155dp"
+    android:maxHeight="155dp"
+
     android:minWidth="300dp"
     android:maxWidth="300dp"
 
@@ -21,14 +23,19 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="1dp"
 
-    card_view:contentPadding="10dp"
-    card_view:cardBackgroundColor="#01579b"
-    card_view:cardCornerRadius="10dp"
     >
+
+    <ImageView
+        android:id="@+id/recipe_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/recipe_image"
+        android:scaleType="centerCrop"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         >
         <TextView
@@ -36,8 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
             android:textColor="#fff"
             android:textSize="20sp"
+            android:paddingTop="16dp"
+            android:background="#444"
             tools:text="Hello"
             />
 
@@ -45,9 +55,14 @@
             android:id="@+id/recipe_servings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+
             android:textAlignment="center"
             android:textColor="#fff"
             android:textSize="14sp"
+            android:background="#444"
+            android:paddingBottom="16dp"
+
             tools:text="8 servings"
             />
 

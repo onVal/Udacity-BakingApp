@@ -26,6 +26,8 @@ public class DetailActivity extends AppCompatActivity {
         ArrayList<Step> steps = getIntent().getExtras().getParcelableArrayList(STEP_LIST_TAG);
         int position = getIntent().getExtras().getInt(STEP_POSITION_TAG);
 
+        setTitle(steps.get(position).getId() + ". " + steps.get(position).getShortDescription());
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_container,

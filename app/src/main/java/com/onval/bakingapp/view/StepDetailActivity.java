@@ -32,9 +32,12 @@ public class StepDetailActivity extends AppCompatActivity
         if (getResources().getBoolean(R.bool.isTablet))
             twoPane = true;
 
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Recipe recipe = getIntent().getExtras().getParcelable(Recipe.RECIPE_PARCEL);
         steps = recipe.getSteps();
+
+        setTitle(recipe.getName());
 
         //this restores selected item upon config. changes
         int restoredItemPosition = (savedInstanceState != null) ?

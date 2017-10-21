@@ -5,11 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.onval.bakingapp.R;
 import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.view.IRecipeView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +95,8 @@ implements View.OnClickListener
         View view;
         TextView recipeName;
         TextView recipeServings;
+        ImageView recipeImg;
+
 
         RecipeHolder (View view) {
             super(view);
@@ -103,12 +107,30 @@ implements View.OnClickListener
 
             recipeName = (TextView) view.findViewById(R.id.recipe_name);
             recipeServings = (TextView) view.findViewById(R.id.recipe_servings);
+            recipeImg = (ImageView) view.findViewById(R.id.recipe_img);
         }
 
         void bind(int position) {
             Recipe recipe = recipes.get(position);
             recipeName.setText(recipe.getName());
             recipeServings.setText("Servings: " + recipe.getServingsNum());
+
+            //So...the idea is that if the recipe has an image associated with it,
+            //it will show in the cardview...and that would be pretty common in real
+            //life situation (I hope)...but since in this small sample json no recipe
+            //has an image...I decided to show a kitchen one, taken from google.
+            //Kinda ugly but whatever.
+            String imageUrl = recipe.getImagePath();
+            if (!imageUrl.equals("")) {
+                Picasso.with(context)
+                        .load(imageUrl)
+                        .into(recipeImg);
+            }
+            else {
+                recipeImg.setImageResource(R.drawable.kitchen);
+            }
+
+
         }
     }
 }
