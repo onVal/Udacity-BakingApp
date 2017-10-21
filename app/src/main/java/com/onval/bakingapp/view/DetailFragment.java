@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -26,6 +27,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.onval.bakingapp.R;
 import com.onval.bakingapp.data.Step;
 import com.onval.bakingapp.utils.FormatUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -46,6 +48,8 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
     int stepPosition;
 
     @BindView(R.id.exoplayer_view) SimpleExoPlayerView exoPlayerView;
+    @BindView(R.id.thumbnail_img) ImageView thumbnailView;
+
     @BindView(R.id.step_title) TextView title;
     @BindView(R.id.step_instruction) TextView instruction;
 
@@ -102,17 +106,28 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
         //retrieve video uri
         videoUri = Uri.parse(step.getVideoURL());
 
-        if (thereIsNoVideoUri()) {
-            exoPlayerView.setDefaultArtwork(null);
+        if (videoUri.toString().equals("")) { //if there's no video uri
+            exoPlayerView.setVisibility(View.INVISIBLE);
+            thumbnailView.setVisibility(View.VISIBLE);
+
+            String stepImageUrl = step.getThumbnailURL();
+
+            if (!stepImageUrl.equals("")) //if there's an image url
+                Picasso.with(getContext())
+                        .load(stepImageUrl)
+                        .into(thumbnailView);
+            else //otherwise load a default 'no media message'
+                thumbnailView.setImageResource(R.drawable.no_media);
+
         }
-        else {
-            initializePlayer();
+        else { // if there is a video uri...
+            initializePlayer(videoUri);
         }
 
         return root;
     }
 
-    private void initializePlayer() {
+    private void initializePlayer(Uri uri) {
         TrackSelector trackSelector = new DefaultTrackSelector();
         LoadControl loadControl = new DefaultLoadControl();
 
@@ -123,7 +138,7 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
         String userAgent = Util.getUserAgent(getContext(), getString(R.string.recipe_list_title));
 
         MediaSource mediaSource = new ExtractorMediaSource(
-                videoUri,
+                uri,
                 new DefaultDataSourceFactory(getContext(), userAgent),
                 new DefaultExtractorsFactory(),
                 null,
@@ -140,11 +155,6 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
             player.release();
             player = null;
         }
-    }
-
-    //I just don't like how that line looks, so i wrapped it in a method, derp
-    private boolean thereIsNoVideoUri() {
-        return videoUri.toString().equals("");
     }
 
     @Override
