@@ -8,8 +8,8 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="155dp"
-    android:maxHeight="155dp"
+    android:minHeight="145dp"
+    android:maxHeight="145dp"
 
     android:minWidth="300dp"
     android:maxWidth="300dp"
@@ -47,7 +47,7 @@
             android:textColor="#fff"
             android:textSize="20sp"
             android:paddingTop="16dp"
-            android:background="#444"
+            android:background="#EE444444"
             tools:text="Hello"
             />
 
@@ -60,7 +60,7 @@
             android:textAlignment="center"
             android:textColor="#fff"
             android:textSize="14sp"
-            android:background="#444"
+            android:background="#EE444444"
             android:paddingBottom="16dp"
 
             tools:text="8 servings"

@@ -66,7 +66,8 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         // (and on tablets, regardless of orientation)
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ||
                 getResources().getBoolean(R.bool.isTablet))
-            layoutManager = new GridLayoutManager(getContext(), 2);
+            layoutManager = new GridLayoutManager(getContext(), 3);
+
 
         else
             layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
