@@ -1,5 +1,7 @@
 package com.onval.bakingapp.presenter;
 
+import android.support.test.espresso.idling.CountingIdlingResource;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.onval.bakingapp.data.Recipe;
@@ -15,8 +17,12 @@ import java.util.ArrayList;
  */
 
 public class RecipePresenter implements IRecipePresenter {
+    private static final String IDLING_RESOURCE_TAG = "load_recipes";
+
     private final IRecipeView view;
     private final IFetcher model;
+    static public CountingIdlingResource idlingResource =
+            new CountingIdlingResource(IDLING_RESOURCE_TAG);
 
     public RecipePresenter(IRecipeView view, IFetcher model) {
         this.view = view;
@@ -30,6 +36,8 @@ public class RecipePresenter implements IRecipePresenter {
         Response.Listener<JSONArray> response = new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                idlingResource.decrement();
+
                 ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
 
                 if (recipes.size() > 0)
@@ -47,6 +55,7 @@ public class RecipePresenter implements IRecipePresenter {
             }
         };
 
+        idlingResource.increment(); //this is for testing purposes
         model.fetchFromServer(response, error);
     }
 }

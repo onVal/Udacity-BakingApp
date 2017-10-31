@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Baking App</string>
 
-    <string name="recipe_list_title"> BakingRecipes </string>
+    <string name="recipe_list_title"> Recipes </string>
     <string name="previous_step_btn">prev</string>
     <string name="next_step_btn">next</string>
 
