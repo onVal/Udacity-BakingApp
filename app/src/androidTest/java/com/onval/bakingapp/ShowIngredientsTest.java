@@ -18,6 +18,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtraWithKey;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
@@ -28,6 +29,8 @@ import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 
 @RunWith(AndroidJUnit4.class)
 public class ShowIngredientsTest {
+    static final private int CHEESECAKE_POSITION = 3;
+
     @Rule
     public IntentsTestRule<RecipeActivity> testRule =
             new IntentsTestRule<>(RecipeActivity.class);
@@ -65,5 +68,18 @@ public class ShowIngredientsTest {
 
         onView(withId(R.id.steps_ingredients))
                 .check(matches(withText(nutellaPieIngredients)));
+    }
+
+    public void testIfVideoIsShowing() {
+        onView(withId(R.id.recipes_recyclerview))
+                .perform(RecyclerViewActions.scrollToPosition(CHEESECAKE_POSITION))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(CHEESECAKE_POSITION, click()));
+
+        onView(withId(R.id.steps_recyclerview))
+                .perform(RecyclerViewActions.scrollToPosition(CHEESECAKE_POSITION))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        onView(withId(R.id.exoplayer_view))
+                .check(matches(isDisplayed()));
     }
 }
