@@ -18,16 +18,17 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.onval.bakingapp.TestUtils.TestUtilities.NUTELLAPIE_POSITION;
 
 /**
- * Created by gval on 23/10/2017.
+ * Created by gval on 03/11/2017.
  */
 
 @RunWith(AndroidJUnit4.class)
-public class ShowIngredientsTest {
+public class ThumbnailTest {
+
     @Rule
     public ActivityTestRule<RecipeActivity> testRule =
             new ActivityTestRule<>(RecipeActivity.class);
@@ -38,24 +39,17 @@ public class ShowIngredientsTest {
     }
 
     @Test
-    public void areIngredientsShowingCorrectly() {
-
-        final String nutellaPieIngredients = "INGREDIENTS (for 8 people)\n" +
-                "\t• Graham Cracker crumbs (2 CUP)\n" +
-                "\t• unsalted butter, melted (6 TBLSP)\n" +
-                "\t• granulated sugar (0 CUP)\n" +
-                "\t• salt (1 TSP)\n" +
-                "\t• vanilla (5 TBLSP)\n" +
-                "\t• Nutella or other chocolate-hazelnut spread (1 K)\n" +
-                "\t• Mascapone Cheese(room temperature) (500 G)\n" +
-                "\t• heavy cream(cold) (1 CUP)\n" +
-                "\t• cream cheese(softened) (4 OZ)";
-
+    public void isThumbnailDisplayed() {
         onView(withId(R.id.recipes_recyclerview))
+                .perform(RecyclerViewActions.scrollToPosition(NUTELLAPIE_POSITION))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(NUTELLAPIE_POSITION, click()));
 
-        onView(withId(R.id.steps_ingredients))
-                .check(matches(withText(nutellaPieIngredients)));
+        onView(withId(R.id.steps_recyclerview))
+                .perform(RecyclerViewActions.scrollToPosition(1))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        onView(withId(R.id.thumbnail_img))
+                .check(matches(isDisplayed()));
     }
 
     @After

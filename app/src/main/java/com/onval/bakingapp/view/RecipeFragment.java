@@ -52,6 +52,9 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
 
         adapter = new RecipeAdapter(getContext(), this);
 
+        //        if (idlingResource != null)
+//            idlingResource.increment();
+
         presenter.loadRecipes(); //calls addAllRecipes when finishes
         recyclerView.setAdapter(adapter);
 
@@ -80,6 +83,10 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
     public void addRecipes(List<Recipe> recipes) {
         adapter.addAllRecipes(recipes);
         adapter.notifyDataSetChanged();
+
+        //this will be true only in testing
+//        if (idlingResource != null)
+//            idlingResource.decrement();
     }
 
     @Override

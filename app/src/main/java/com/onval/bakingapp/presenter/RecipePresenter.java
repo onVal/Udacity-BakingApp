@@ -17,10 +17,11 @@ import java.util.ArrayList;
  */
 
 public class RecipePresenter implements IRecipePresenter {
-    private static final String IDLING_RESOURCE_TAG = "load_recipes";
-
     private final IRecipeView view;
     private final IFetcher model;
+
+    private static final String IDLING_RESOURCE_TAG = "load_recipes";
+
     static public CountingIdlingResource idlingResource =
             new CountingIdlingResource(IDLING_RESOURCE_TAG);
 
