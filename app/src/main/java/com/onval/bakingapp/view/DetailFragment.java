@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,6 +107,13 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
         //retrieve video uri
         videoUri = Uri.parse(step.getVideoURL());
 
+        //since the data i'm retrieving from is kind of messed up, sometimes thumbnailView
+        //actually contains the video url.
+        //if that's the case, put the url in the videoUri variable so that it gets loaded properly
+        //The solution is a bit spartan, but for the purposes of this project it should work
+        if (step.getThumbnailURL().endsWith("mp4"))
+            videoUri = Uri.parse(step.getThumbnailURL());
+
         if (videoUri.toString().equals("")) { //if there's no video uri
             exoPlayerView.setVisibility(View.INVISIBLE);
             thumbnailView.setVisibility(View.VISIBLE);
@@ -121,6 +129,7 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
 
         }
         else { // if there is a video uri...
+            Log.d("DERPO", videoUri.toString());
             initializePlayer(videoUri);
         }
 

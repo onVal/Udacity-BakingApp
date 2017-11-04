@@ -1,6 +1,7 @@
 package com.onval.bakingapp;
 
 import android.content.Intent;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static com.onval.bakingapp.view.StepDetailFragment.STEP_LIST_TAG;
 import static com.onval.bakingapp.view.StepDetailFragment.STEP_POSITION_TAG;
@@ -42,14 +43,15 @@ public class DetailRecipeUrlTest {
     @Test
     public void testIfThumbnailIsShowingWhenInvalidVideoUrl() {
         onView(withId(R.id.thumbnail_img))
-                .check(matches(isDisplayed()));
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
     }
 
     private ArrayList<Step> makeMockStepWithInvalidUrl() {
-        final String invalidUrl = "http://fakeimg.pl/300/";
+        final String invalidThumbnailUrl =
+                "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4";
 
         ArrayList<Step> mockSteps = new ArrayList<>();
-        mockSteps.add(new Step(0, "", "", invalidUrl, ""));
+        mockSteps.add(new Step(0, "", "", "", invalidThumbnailUrl));
 
         return mockSteps;
 
