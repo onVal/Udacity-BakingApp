@@ -52,8 +52,11 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
 
         adapter = new RecipeAdapter(getContext(), this);
 
-        //        if (idlingResource != null)
-//            idlingResource.increment();
+        if (RecipePresenter.idlingResource != null)
+            Log.d("B_LOAD", "Before launching loadrecipes: Recipe res is idle? " + RecipePresenter.idlingResource.isIdleNow());
+        else
+            Log.d("B_LOAD", "Before launching loadrecipes: Recipe res is null ");
+
 
         presenter.loadRecipes(); //calls addAllRecipes when finishes
         recyclerView.setAdapter(adapter);

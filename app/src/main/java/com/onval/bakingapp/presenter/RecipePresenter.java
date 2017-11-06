@@ -20,7 +20,7 @@ public class RecipePresenter implements IRecipePresenter {
     private final IRecipeView view;
     private final IFetcher model;
 
-    private static final String IDLING_RESOURCE_TAG = "load_recipes";
+    public static final String IDLING_RESOURCE_TAG = "load_recipes";
 
     static public CountingIdlingResource idlingResource =
             new CountingIdlingResource(IDLING_RESOURCE_TAG);
@@ -37,7 +37,8 @@ public class RecipePresenter implements IRecipePresenter {
         Response.Listener<JSONArray> response = new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                idlingResource.decrement();
+                if (idlingResource != null)
+                    idlingResource.decrement();
 
                 ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
 
@@ -52,11 +53,14 @@ public class RecipePresenter implements IRecipePresenter {
         Response.ErrorListener error = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if (idlingResource != null)
+                    idlingResource.decrement();
                 view.displayErrorMsg("Couldn't load recipes");
             }
         };
 
-        idlingResource.increment(); //this is for testing purposes
+        if (idlingResource != null)
+            idlingResource.increment(); //this is for testing purposes
         model.fetchFromServer(response, error);
     }
 }
