@@ -34,6 +34,7 @@ public class RecipePresenter implements IRecipePresenter {
     public void loadRecipes() {
         //todo: should it check for internet connection with isOnline method here?
 
+        //Preparing callback methods
         Response.Listener<JSONArray> response = new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -59,6 +60,7 @@ public class RecipePresenter implements IRecipePresenter {
             }
         };
 
+        //THIS IS WHERE THIS METHOD STARTS!
         if (idlingResource != null)
             idlingResource.increment(); //this is for testing purposes
         model.fetchFromServer(response, error);
