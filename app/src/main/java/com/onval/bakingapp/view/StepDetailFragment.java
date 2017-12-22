@@ -6,24 +6,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.data.Ingredient;
 import com.onval.bakingapp.data.Recipe;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
+import static com.onval.bakingapp.utils.FormatUtils.formatIngredients;
 
 
 <<<<<<< HEAD
@@ -36,6 +31,7 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
     public static final String STEP_ID_TAG = "step-position-tag";
 >>>>>>> 5f7ac598b913e4fc7afbc3abd375a0d2f6e56a70
 
+    @BindView(R.id.steps_ingredients_title)TextView titleTV;
     @BindView(R.id.steps_ingredients) TextView ingredientsTV;
     @BindView(R.id.steps_recyclerview) RecyclerView stepsView;
 
@@ -64,6 +60,7 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
         recipeParcel = getActivity().getIntent().getExtras().getParcelable(RECIPE_PARCEL);
 
         //Show ingredients
+        titleTV.setText("INGREDIENTS (" + recipeParcel.getServingsNum() + " servings)");
         ingredientsTV.setText(formatIngredients(recipeParcel.getIngredients()));
 
         //set layoutManager for step list
@@ -81,33 +78,6 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
         return root;
     }
 
-    private SpannableStringBuilder formatIngredients(ArrayList<Ingredient> ingredients) {
-        SpannableStringBuilder ingredientString = new SpannableStringBuilder();
-
-        String servings = String.valueOf(recipeParcel.getServingsNum());
-
-        //Title: INGREDIENTS (for n people)
-        ingredientString.append("INGREDIENTS (for ")
-                .append(servings)
-                .append(" people)\n")
-                .setSpan(
-                new StyleSpan(android.graphics.Typeface.BOLD), 0, ingredientString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-
-        //Build the ingredient list
-        for (Ingredient i : ingredients) {
-            ingredientString
-                    .append("\t\u2022 ") //tab followed by a bullet point
-                    .append(i.getName()).append(" (")
-                    .append(i.getQuantity() + "").append(" ")
-                    .append(i.getMeasure()).append(")\n");
-        }
-
-        //remove final trailing '\n'
-        ingredientString.delete(ingredientString.length()-1, ingredientString.length());
-
-        return ingredientString;
-    }
 
 <<<<<<< HEAD
     public interface OnStepClickListener {

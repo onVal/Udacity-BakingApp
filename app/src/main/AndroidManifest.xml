@@ -13,14 +13,27 @@
         <activity android:name=".view.RecipeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.DetailActivity"
-            />
-        <activity android:name=".view.StepDetailActivity"
-            android:parentActivityName=".view.RecipeActivity"
-            />
+        <activity android:name=".view.DetailActivity" />
+        <activity
+            android:name=".view.StepDetailActivity"
+            android:parentActivityName=".view.RecipeActivity" />
+
+        <receiver android:name=".RecipeIngredientsWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_ingredients_widget_info" />
+        </receiver>
+
+        <service android:name=".adapter.WidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
