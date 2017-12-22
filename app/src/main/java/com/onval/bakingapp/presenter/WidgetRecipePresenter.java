@@ -10,7 +10,6 @@ import com.onval.bakingapp.RecipeIngredientsWidget;
 import com.onval.bakingapp.data.Ingredient;
 import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.model.IFetcher;
-import com.onval.bakingapp.utils.FormatUtils;
 
 import org.json.JSONArray;
 
@@ -41,13 +40,14 @@ public class WidgetRecipePresenter {
                 ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
 
                 if (recipes.size() > 0) {
-                    ArrayList<Ingredient> ingredients1 = recipes.get(1).getIngredients();
-                    String ingredient = FormatUtils.formatIngredientsForWidget(ingredients1);
-
-
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                     int[] appWidgetId = appWidgetManager.getAppWidgetIds(new ComponentName(context, RecipeIngredientsWidget.class));
-                    view.loadRecipeIngredient(context, appWidgetManager, appWidgetId, "", ingredient);
+
+                    view.storeRecipes(recipes); // stores recipes for future updates
+
+                    view.loadRecipeIngredient(context, appWidgetManager, appWidgetId,
+                            recipes.get(0).getName(), //todo: change this to remember last recipe selected
+                            extractIngredientNames(recipes.get(0).getIngredients()));
                 }
 
 //                else
@@ -65,4 +65,13 @@ public class WidgetRecipePresenter {
         model.fetchFromServer(response, error);
     }
 
+    private String[] extractIngredientNames(ArrayList<Ingredient> ingr) {
+        String[] names = new String[ingr.size()];
+
+        for (int i = 0; i < ingr.size(); i++) {
+            names[i] = ingr.get(i).getName();
+        }
+
+        return names;
+    }
 }

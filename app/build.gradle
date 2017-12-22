@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.onval.bakingapp"
         minSdkVersion 16
@@ -40,4 +39,5 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.5'
     compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
     compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'com.android.support:design:25.3.1'
 }
