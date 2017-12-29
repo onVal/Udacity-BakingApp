@@ -20,25 +20,15 @@ import butterknife.ButterKnife;
 import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
 import static com.onval.bakingapp.utils.FormatUtils.formatIngredients;
 
-
-<<<<<<< HEAD
 public class StepDetailFragment extends Fragment {
     public static final String STEP_LIST_TAG = "step-instruction";
     public static final String STEP_POSITION_TAG = "step-position-tag";
-=======
-public class StepDetailFragment extends Fragment implements IStepDetailView.Listener {
-    public static final String STEP_INSTRUCTION_TAG = "step-instruction";
-    public static final String STEP_ID_TAG = "step-position-tag";
->>>>>>> 5f7ac598b913e4fc7afbc3abd375a0d2f6e56a70
+
 
     @BindView(R.id.steps_ingredients_title)TextView titleTV;
     @BindView(R.id.steps_ingredients) TextView ingredientsTV;
     @BindView(R.id.steps_recyclerview) RecyclerView stepsView;
 
-<<<<<<< HEAD
-=======
-    private StepAdapter adapter;
->>>>>>> 5f7ac598b913e4fc7afbc3abd375a0d2f6e56a70
     private LinearLayoutManager layoutManager;
     private
 
@@ -79,16 +69,7 @@ public class StepDetailFragment extends Fragment implements IStepDetailView.List
     }
 
 
-<<<<<<< HEAD
     public interface OnStepClickListener {
-            void onStepClicked(int stepId);
-=======
-    @Override
-    public void onStepClicked(int stepId) {
-        Intent intent = new Intent(getContext(), DetailActivity.class);
-        intent.putExtra(STEP_INSTRUCTION_TAG, adapter.getStepList());
-        intent.putExtra(STEP_ID_TAG, stepId);
-        startActivity(intent);
->>>>>>> 5f7ac598b913e4fc7afbc3abd375a0d2f6e56a70
+        void onStepClicked(int stepId);
     }
 }

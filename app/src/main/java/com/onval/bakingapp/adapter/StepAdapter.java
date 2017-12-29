@@ -85,17 +85,13 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         holder.bind(position);
     }
 
-<<<<<<< HEAD
     public int getSelectedItem() {
         return selectedItem;
     }
 
     //returns -1 if it doesn't find it
     public static int findStepPositionById(List<Step> stepList, int id) {
-=======
-    public static Step findStepById(List<Step> stepList, int id) {
-        Step step;
->>>>>>> 5f7ac598b913e4fc7afbc3abd375a0d2f6e56a70
+
 
         for (int i = 0; i <= stepList.size(); i++) {
             if (stepList.get(i).getId() == id)
@@ -108,14 +104,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         return stepList;
     }
 
-<<<<<<< HEAD
     //View holder //////////////////////////////////////////////////////////////////////////////
-=======
-    public ArrayList<Step> getStepList() {
-        return stepList;
-    }
 
->>>>>>> 5f7ac598b913e4fc7afbc3abd375a0d2f6e56a70
     class StepHolder extends RecyclerView.ViewHolder {
         TextView stepDescription;
 
