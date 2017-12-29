@@ -3,9 +3,11 @@ package com.onval.bakingapp.presenter;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.onval.bakingapp.R;
 import com.onval.bakingapp.RecipeIngredientsWidget;
 import com.onval.bakingapp.data.Ingredient;
 import com.onval.bakingapp.data.Recipe;
@@ -14,6 +16,8 @@ import com.onval.bakingapp.model.IFetcher;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+
+import static com.onval.bakingapp.RecipeIngredientsWidget.DISPLAYED_RECIPE_ID;
 
 /**
  * Created by gval on 14/11/2017.
@@ -41,13 +45,21 @@ public class WidgetRecipePresenter {
 
                 if (recipes.size() > 0) {
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                    int[] appWidgetId = appWidgetManager.getAppWidgetIds(new ComponentName(context, RecipeIngredientsWidget.class));
+                    int[] appWidgetId = appWidgetManager.getAppWidgetIds(
+                            new ComponentName(context, RecipeIngredientsWidget.class));
 
-                    view.storeRecipes(recipes); // stores recipes for future updates
+                    SharedPreferences pref = context.getSharedPreferences
+                            (context.getString(R.string.widget_shared_prefs), 0);
+
+                    if (!pref.contains(DISPLAYED_RECIPE_ID)) {
+                        pref.edit().putInt(DISPLAYED_RECIPE_ID, 0).apply();
+                    }
+
+                    Recipe currentRecipe = recipes.get(pref.getInt(DISPLAYED_RECIPE_ID, 0));
 
                     view.loadRecipeIngredient(context, appWidgetManager, appWidgetId,
-                            recipes.get(0).getName(), //todo: change this to remember last recipe selected
-                            extractIngredientNames(recipes.get(0).getIngredients()));
+                            currentRecipe.getName(),
+                            extractIngredientNames(currentRecipe.getIngredients()));
                 }
 
 //                else

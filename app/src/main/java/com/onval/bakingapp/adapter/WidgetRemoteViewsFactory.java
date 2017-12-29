@@ -1,7 +1,6 @@
 package com.onval.bakingapp.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -18,13 +17,10 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
     public WidgetRemoteViewsFactory(Context context, String[] ingredients) {
         this.context = context;
         this.ingredients = ingredients;
-        Log.d("WOW", "REMOTEVIEWFACTORY BEING CREATED!");
-
     }
 
     @Override
     public void onCreate() {
-//        Log.d("WOW", FormatUtils.formatIngredients(ingredients));
     }
 
     @Override
@@ -45,7 +41,6 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
 
     @Override
     public RemoteViews getViewAt(int i) {
-        Log.d("WOW", "getViewAt is being called");
         if (ingredients == null || ingredients.length == 0)
             return null;
 
@@ -64,7 +59,6 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
 
     @Override
     public void onDestroy() {
-
     }
 
     @Override

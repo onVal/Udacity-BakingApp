@@ -5,10 +5,12 @@
     <string name="previous_step_btn">prev</string>
     <string name="next_step_btn">next</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recipe_image">Recipe image</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="mock_ingredients">INGREDIENTS (for 8 people) \n• Graham Cracker crumbs (2 CUP)\n• unsalted butter, melted (6 TBLSP) \n• granulated sugar (0 CUP) \n• salt (1 TSP) \n• vanilla \n• Nutella or other chocolate-hazelnut spread (1 K) \n• Mascapone Cheese(room temperature) (500 G)</string>
+
+    <string name="widget_shared_prefs">widget_shared_prefs</string>
+    <string name="current_recipe_id">widget_display_recipe_id</string>
 </resources>

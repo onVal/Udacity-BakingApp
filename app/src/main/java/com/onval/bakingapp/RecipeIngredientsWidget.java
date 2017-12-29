@@ -21,6 +21,7 @@ import java.util.ArrayList;
  */
 public class RecipeIngredientsWidget extends AppWidgetProvider implements IWidgetView {
 
+    public static final String DISPLAYED_RECIPE_ID = "display_recipe_id";
     public static final String WIDGET_INGREDIENT = "widget-ingredient";
 
     ArrayList<Recipe> widgetRecipes;
