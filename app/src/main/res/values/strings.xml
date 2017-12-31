@@ -13,4 +13,6 @@
 
     <string name="widget_shared_prefs">widget_shared_prefs</string>
     <string name="current_recipe_id">widget_display_recipe_id</string>
+    <string name="actionClickPreviousWidget">click_prev</string>
+    <string name="actionClickNextWidget">click_next</string>
 </resources>

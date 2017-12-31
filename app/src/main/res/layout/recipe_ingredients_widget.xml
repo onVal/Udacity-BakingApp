@@ -22,6 +22,8 @@
             android:background="@drawable/ic_navigate_before_black_24dp"
             android:backgroundTint="@color/cardview_dark_background" />
 
+        />
+
 
         <TextView
             android:id="@+id/widget_recipe_title"

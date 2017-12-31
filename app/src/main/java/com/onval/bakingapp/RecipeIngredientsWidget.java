@@ -1,6 +1,7 @@
 package com.onval.bakingapp;
 
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -24,7 +25,7 @@ public class RecipeIngredientsWidget extends AppWidgetProvider implements IWidge
     public static final String DISPLAYED_RECIPE_ID = "display_recipe_id";
     public static final String WIDGET_INGREDIENT = "widget-ingredient";
 
-    ArrayList<Recipe> widgetRecipes;
+    ArrayList<Recipe> widgetRecipes; //todo: do I need this? am I using it?
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -40,10 +41,22 @@ public class RecipeIngredientsWidget extends AppWidgetProvider implements IWidge
         views.setRemoteAdapter(R.id.widget_recipe_ingredient_list, intent);
         //todo: handle empty view with views.setEmptyView()
 
-        //todo: handle onclick events with pendingintents
-//        PendingIntent pendingIntent =
-//                PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        views.setOnClickPendingIntent(R.id.widget_recipe_ingredients, pendingIntent);
+        //handling onClick events with Pending Intents
+
+        //create pending intent for previous button
+        Intent onclickIntent = new Intent(context, WidgetOnClickService.class);
+        onclickIntent.setAction(context.getString(R.string.actionClickPreviousWidget));
+        PendingIntent clickPreviousPI =
+                PendingIntent.getService(context, 0, onclickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //create pending intent for next button
+        onclickIntent.setAction(context.getString(R.string.actionClickNextWidget));
+        PendingIntent clickNextPI =
+                PendingIntent.getService(context, 0, onclickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //set the two pendingintents
+        views.setOnClickPendingIntent(R.id.btn_widget_previous, clickPreviousPI);
+        views.setOnClickPendingIntent(R.id.btn_widget_next, clickNextPI);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

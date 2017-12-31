@@ -48,7 +48,6 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
                 new RemoteViews(context.getPackageName(), R.layout.single_widget_ingredient);
         views.setTextViewText(R.id.single_widget_ingredient, ingredients[i]);
 
-        //could add the intent for listening to click events...or not...
         return views;
     }
 

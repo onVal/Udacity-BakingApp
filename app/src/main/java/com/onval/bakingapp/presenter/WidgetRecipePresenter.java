@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -43,6 +44,8 @@ public class WidgetRecipePresenter {
             public void onResponse(JSONArray response) {
                 ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
 
+
+                Log.d("derp", "a call to the server is being made");
                 if (recipes.size() > 0) {
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                     int[] appWidgetId = appWidgetManager.getAppWidgetIds(
@@ -55,7 +58,8 @@ public class WidgetRecipePresenter {
                         pref.edit().putInt(DISPLAYED_RECIPE_ID, 0).apply();
                     }
 
-                    Recipe currentRecipe = recipes.get(pref.getInt(DISPLAYED_RECIPE_ID, 0));
+                    int index = pref.getInt(DISPLAYED_RECIPE_ID, 0);
+                    Recipe currentRecipe = recipes.get(Math.abs(index % 4));
 
                     view.loadRecipeIngredient(context, appWidgetManager, appWidgetId,
                             currentRecipe.getName(),
