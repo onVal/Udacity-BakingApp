@@ -21,6 +21,11 @@
         <activity
             android:name=".view.StepDetailActivity"
             android:parentActivityName=".view.RecipeActivity" />
+        
+        <provider
+            android:authorities="com.onval.bakingapp.provider.RecipeProvider"
+            android:name=".provider.RecipeProvider"
+            android:exported="false" />
 
         <receiver android:name=".RecipeIngredientsWidget">
             <intent-filter>
