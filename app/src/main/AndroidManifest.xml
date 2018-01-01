@@ -22,7 +22,7 @@
             android:name=".view.StepDetailActivity"
             android:parentActivityName=".view.RecipeActivity" />
 
-        <receiver android:name=".RecipeIngredientsWidget">
+        <receiver android:name=".widget.RecipeIngredientsWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -32,10 +32,10 @@
                 android:resource="@xml/recipe_ingredients_widget_info" />
         </receiver>
 
-        <service android:name=".adapter.WidgetRemoteViewsService"
+        <service android:name=".widget.WidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <service android:name=".WidgetOnClickService" />
+        <service android:name=".widget.WidgetOnClickService" />
     </application>
 
 </manifest>

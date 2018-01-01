@@ -1,4 +1,4 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.widget;
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import static com.onval.bakingapp.RecipeIngredientsWidget.DISPLAYED_RECIPE_ID;
+import com.onval.bakingapp.R;
 
 /**
  * Created by gval on 29/12/2017.
@@ -24,9 +24,9 @@ public class WidgetOnClickService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.widget_shared_prefs), 0);
-        int currentValue = preferences.getInt(DISPLAYED_RECIPE_ID, 0);
+        int currentValue = preferences.getInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, 0);
 
-        Log.d("debug", "previous value of pref: " + preferences.getInt(DISPLAYED_RECIPE_ID, 0));
+        Log.d("debug", "previous value of pref: " + preferences.getInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, 0));
 
         String action = intent.getAction();
 
@@ -36,16 +36,16 @@ public class WidgetOnClickService extends IntentService {
         if (action.equals(getString(R.string.actionClickPreviousWidget))) {
             Log.d("debug", "click left");
             if (currentValue > 0)
-                preferences.edit().putInt(DISPLAYED_RECIPE_ID, currentValue-1).commit();
+                preferences.edit().putInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, currentValue-1).commit();
 
         }
         else if (action.equals(getString(R.string.actionClickNextWidget))) {
             Log.d("debug", "click right");
-            preferences.edit().putInt(DISPLAYED_RECIPE_ID, currentValue+1).commit();
+            preferences.edit().putInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, currentValue+1).commit();
 
         }
 
-        Log.d("debug", "now pref is: " + preferences.getInt(DISPLAYED_RECIPE_ID, 0));
+        Log.d("debug", "now pref is: " + preferences.getInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, 0));
 
         //call widget update
         Intent updateIntent = new Intent(getApplication(), RecipeIngredientsWidget.class);

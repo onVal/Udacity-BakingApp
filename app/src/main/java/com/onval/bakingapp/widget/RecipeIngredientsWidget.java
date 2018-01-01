@@ -1,4 +1,4 @@
-package com.onval.bakingapp;
+package com.onval.bakingapp.widget;
 
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.widget.RemoteViews;
 
-import com.onval.bakingapp.adapter.WidgetRemoteViewsService;
+import com.onval.bakingapp.R;
 import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.model.Fetcher;
 import com.onval.bakingapp.presenter.IWidgetView;

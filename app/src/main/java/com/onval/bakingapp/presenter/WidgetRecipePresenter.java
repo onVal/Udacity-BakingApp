@@ -9,7 +9,7 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.RecipeIngredientsWidget;
+import com.onval.bakingapp.widget.RecipeIngredientsWidget;
 import com.onval.bakingapp.data.Ingredient;
 import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.model.IFetcher;
@@ -18,7 +18,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-import static com.onval.bakingapp.RecipeIngredientsWidget.DISPLAYED_RECIPE_ID;
+import static com.onval.bakingapp.widget.RecipeIngredientsWidget.DISPLAYED_RECIPE_ID;
 
 /**
  * Created by gval on 14/11/2017.
