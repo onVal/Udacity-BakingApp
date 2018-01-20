@@ -5,8 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.onval.bakingapp.provider.RecipeContract.DB_NAME;
-import static com.onval.bakingapp.provider.RecipeContract.DB_VERSION;
 import static com.onval.bakingapp.provider.RecipeContract.IngredientsTable;
 import static com.onval.bakingapp.provider.RecipeContract.RecipesTable;
 import static com.onval.bakingapp.provider.RecipeContract.StepsTable;
@@ -19,21 +17,22 @@ import static com.onval.bakingapp.provider.RecipeContract.StepsTable;
  */
 
 public class RecipeSqliteHelper extends SQLiteOpenHelper {
+    private static final String DB_NAME = "baking.db";
+    private static final int DB_VERSION = 3;
+
     RecipeSqliteHelper(Context context) {
         super(context, DB_NAME, null,  DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        final String createDatabaseSQL = "CREATE DATABASE " + DB_NAME + ";";
-
-        final String recipeTableSQL = "CREATE TABLE " + DB_NAME + "." + RecipesTable.NAME + " (" +
+        final String recipeTableSQL = "CREATE TABLE " + RecipesTable.NAME + " (" +
                 RecipesTable._ID + " INT PRIMARY KEY NOT NULL, " +
                 RecipesTable.NAME_COLUMN + " TEXT NOT NULL," +
                 RecipesTable.SERVINGS_COLUMN + " INT NOT NULL, " +
                 RecipesTable.IMAGE_COLUMN + " TEXT);";
 
-        final String ingredientTableSQL = "CREATE TABLE " + DB_NAME + "." + IngredientsTable.NAME + " (" +
+        final String ingredientTableSQL = "CREATE TABLE " + IngredientsTable.NAME + " (" +
                 IngredientsTable._ID + "INT PRIMARY KEY NOT NULL, " +
                 IngredientsTable.QUANTITY_COLUMN + " INT, " +
                 IngredientsTable.MEASURE_COLUMN + " TEXT, " +
@@ -43,7 +42,7 @@ public class RecipeSqliteHelper extends SQLiteOpenHelper {
                 "REFERENCES " + RecipesTable.NAME + "(" + RecipesTable._ID + "));";
 
 
-        final String stepsTableSQL = "CREATE TABLE " + DB_NAME + "." + StepsTable.NAME +
+        final String stepsTableSQL = "CREATE TABLE " + StepsTable.NAME + " (" +
                 StepsTable._ID + " INT PRIMARY KEY NOT NULL, " +
                 StepsTable.SHORT_DESC_COLUMN + " TEXT NOT NULL, " +
                 StepsTable.DESC_COLUMN + " TEXT NOT NULL, " +
@@ -53,7 +52,6 @@ public class RecipeSqliteHelper extends SQLiteOpenHelper {
                         "FOREIGN KEY (" + StepsTable.RECIPE_ID_COLUMN + ") " +
                         "REFERENCES " + RecipesTable.NAME + "(" + RecipesTable._ID + "));";
 
-        sqLiteDatabase.execSQL(createDatabaseSQL);
         sqLiteDatabase.execSQL(recipeTableSQL);
         sqLiteDatabase.execSQL(ingredientTableSQL);
         sqLiteDatabase.execSQL(stepsTableSQL);
