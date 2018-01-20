@@ -5,9 +5,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.test.ProviderTestCase2;
 
+import com.onval.bakingapp.TestUtils.TestUtilities;
 import com.onval.bakingapp.data.Recipe;
 
+import static com.onval.bakingapp.provider.RecipeContract.IngredientsTable;
 import static com.onval.bakingapp.provider.RecipeContract.RecipesTable;
+import static com.onval.bakingapp.provider.RecipeContract.StepsTable;
+
+
 
 /**
  * Created by gval on 08/01/2018.
@@ -86,43 +91,64 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
     }
 
     public void testInsertRecipe() {
-        Recipe mockRecipe;
+        Recipe mockRecipe = TestUtilities.mockRecipe();
 
-        //initialize mockrecipe;
+        //call method to test
+        RecipeProvider.insertRecipe(getMockContext(), mockRecipe);
 
         //test that stuff was inserted properly
+        //query the three tables and assert that data is valid
+        Cursor c = getMockContentResolver().query(RecipesTable.RECIPE_URI, null,
+                null, null, null);
 
+        //test recipe table
+        assertTrue("Cursor shouldn't be null", c != null);
+        assertTrue("Cursor shouldn't be empty", c.moveToFirst());
+        assertEquals("There should be only one recipe", 1, c.getCount());
+        assertEquals("Incorrect recipe name",
+                "Pancake", c.getString(c.getColumnIndex(RecipesTable.NAME_COLUMN)));
+
+        c.close();
+
+        //test ingredient
+        c = getMockContentResolver().query(IngredientsTable.INGREDIENTS_URI, null,
+                null, null, null);
+
+        //test ingredient table
+        assertTrue("Cursor shouldn't be null", c != null);
+        assertTrue("Cursor shouldn't be empty", c.moveToFirst());
+        assertEquals("There should be three ingredients", 3, c.getCount());
+
+        assertEquals("Incorrect recipe name",
+                "Yog", c.getString(c.getColumnIndex(IngredientsTable.INGREDIENT_COLUMN)));
+
+        c.moveToNext();
+        assertEquals("Incorrect recipe name",
+                "Oat", c.getString(c.getColumnIndex(IngredientsTable.INGREDIENT_COLUMN)));
+
+        c.moveToNext();
+        assertEquals("Incorrect recipe name",
+                1, c.getInt(c.getColumnIndex(IngredientsTable.QUANTITY_COLUMN)));
+
+        assertFalse("There is no other element", c.moveToNext());
+
+        c.close();
+
+        //test steps
+        c = getMockContentResolver().query(StepsTable.STEPS_URI, null,
+                null, null, null);
+
+        //test steps table
+        assertTrue("Cursor shouldn't be null", c != null);
+        assertTrue("Cursor shouldn't be empty", c.moveToFirst());
+        assertEquals("There should be four ingredients", 4, c.getCount());
+
+        c.moveToPosition(3);
+        assertEquals("Incorrect recipe name",
+                "Three", c.getString(c.getColumnIndex(StepsTable.SHORT_DESC_COLUMN)));
+
+        assertFalse("There is no other element", c.moveToNext());
+
+        c.close();
     }
-
-//    public void testQuery() throws Exception {
-//        // get elements from database
-//        Cursor cursor = getMockContentResolver().query(uri, null, null, null, null);
-//
-//        // assert if you've really inserted the elements
-//        assertTrue("Query returned null", cursor != null);
-//
-//        // assert cursor isn't empty
-//        assertTrue(cursor.moveToFirst());
-//
-//        //assert that the cursor contains only two elements
-//        cursor.moveToPosition(1);
-//        assertTrue(cursor.isLast());
-//
-//        // assert that the elements inserted are the right ones
-//        cursor.moveToPosition(0);
-//        assertEquals("Meat", cursor.getString(cursor.getColumnIndex(RecipesTable.NAME_COLUMN)));
-//        assertEquals("", cursor.getString(cursor.getColumnIndex(RecipesTable.IMAGE_COLUMN)));
-//        assertEquals(5, cursor.getInt(cursor.getColumnIndex(RecipesTable.NAME_COLUMN)));
-//
-//        //close the cursor
-//        cursor.close();
-//
-//    }
-
-//    public void testUpdate() throws Exception {
-//
-//    }
-//
-//    public void testDelete() throws Exception {
-//    }
 }

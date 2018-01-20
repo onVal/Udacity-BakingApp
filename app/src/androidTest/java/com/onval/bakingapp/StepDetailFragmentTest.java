@@ -4,17 +4,13 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.onval.bakingapp.data.Ingredient;
-import com.onval.bakingapp.data.Recipe;
-import com.onval.bakingapp.data.Step;
+import com.onval.bakingapp.TestUtils.TestUtilities;
 import com.onval.bakingapp.view.StepDetailActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.ArrayList;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -39,7 +35,7 @@ public class StepDetailFragmentTest {
     public void setUp() {
         //pass a mock recipe to the activity
         Intent intent = new Intent();
-        intent.putExtra(RECIPE_PARCEL, mockRecipe());
+        intent.putExtra(RECIPE_PARCEL, TestUtilities.mockRecipe());
         testRule.launchActivity(intent);
     }
 
@@ -56,22 +52,5 @@ public class StepDetailFragmentTest {
 
         onView(withRecyclerView(R.id.steps_recyclerview).atPosition(2))
                 .check(matches(withText("2. Two")));
-    }
-
-    private Recipe mockRecipe() {
-        ArrayList<Step> mockSteps = new ArrayList<>();
-        ArrayList<Ingredient> mockIngredients = new ArrayList<>();
-
-        mockIngredients.add(new Ingredient("Yog", "oz", 20));
-
-        mockSteps.add(new Step(0, "Zero", "", "", ""));
-        mockSteps.add(new Step(1, "One", "", "", ""));
-        mockSteps.add(new Step(2, "Two", "", "", ""));
-
-
-        return new Recipe.Builder(0, "Yogurt")
-                .steps(mockSteps)
-                .ingredients(mockIngredients)
-                .build();
     }
 }
