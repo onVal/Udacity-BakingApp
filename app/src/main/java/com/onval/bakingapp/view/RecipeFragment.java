@@ -48,7 +48,7 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         ButterKnife.bind(this, root);
 
         //todo: should I use dependency injection for this?
-        presenter = new RecipePresenter(this, new Fetcher(getActivity()));
+        presenter = new RecipePresenter(getContext(), this, new Fetcher(getActivity()));
 
         adapter = new RecipeAdapter(getContext(), this);
 

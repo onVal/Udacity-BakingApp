@@ -94,7 +94,7 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
         Recipe mockRecipe = TestUtilities.mockRecipe();
 
         //call method to test
-        RecipeProvider.insertRecipe(getMockContext(), mockRecipe);
+        RecipeProvider.insertRecipe(getMockContentResolver(), mockRecipe);
 
         //test that stuff was inserted properly
         //query the three tables and assert that data is valid

@@ -43,10 +43,10 @@ public class TestUtilities {
         mockIngredients.add(new Ingredient("Milk", "lt", 1));
 
 
-        mockSteps.add(new Step(0, "Zero", "", "", ""));
-        mockSteps.add(new Step(1, "One", "", "", ""));
-        mockSteps.add(new Step(2, "Two", "", "", ""));
-        mockSteps.add(new Step(3, "Three", "", "", ""));
+        mockSteps.add(new Step(0, "Zero", "desc0", "", ""));
+        mockSteps.add(new Step(1, "One", "desc1", "", ""));
+        mockSteps.add(new Step(2, "Two", "desc2", "", ""));
+        mockSteps.add(new Step(3, "Three", "desc3", "", ""));
 
 
         return new Recipe.Builder(0, "Pancake")

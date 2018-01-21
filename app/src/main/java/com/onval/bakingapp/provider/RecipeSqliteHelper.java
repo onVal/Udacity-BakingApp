@@ -18,7 +18,7 @@ import static com.onval.bakingapp.provider.RecipeContract.StepsTable;
 
 public class RecipeSqliteHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "baking.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     RecipeSqliteHelper(Context context) {
         super(context, DB_NAME, null,  DB_VERSION);
@@ -27,28 +27,28 @@ public class RecipeSqliteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String recipeTableSQL = "CREATE TABLE " + RecipesTable.NAME + " (" +
-                RecipesTable._ID + " INT PRIMARY KEY NOT NULL, " +
+                RecipesTable._ID + " INTEGER PRIMARY KEY NOT NULL, " +
                 RecipesTable.NAME_COLUMN + " TEXT NOT NULL," +
-                RecipesTable.SERVINGS_COLUMN + " INT NOT NULL, " +
+                RecipesTable.SERVINGS_COLUMN + " INTEGER NOT NULL, " +
                 RecipesTable.IMAGE_COLUMN + " TEXT);";
 
         final String ingredientTableSQL = "CREATE TABLE " + IngredientsTable.NAME + " (" +
-                IngredientsTable._ID + "INT PRIMARY KEY NOT NULL, " +
+                IngredientsTable._ID + " INTEGER PRIMARY KEY NOT NULL, " +
                 IngredientsTable.QUANTITY_COLUMN + " INT, " +
                 IngredientsTable.MEASURE_COLUMN + " TEXT, " +
                 IngredientsTable.INGREDIENT_COLUMN + " TEXT, " +
-                IngredientsTable.RECIPE_ID_COLUMN + " INT NOT NULL, " +
+                IngredientsTable.RECIPE_ID_COLUMN + " INTEGER NOT NULL, " +
                 "FOREIGN KEY (" + IngredientsTable.RECIPE_ID_COLUMN + ") " +
                 "REFERENCES " + RecipesTable.NAME + "(" + RecipesTable._ID + "));";
 
 
         final String stepsTableSQL = "CREATE TABLE " + StepsTable.NAME + " (" +
-                StepsTable._ID + " INT PRIMARY KEY NOT NULL, " +
+                StepsTable._ID + " INTEGER PRIMARY KEY NOT NULL, " +
                 StepsTable.SHORT_DESC_COLUMN + " TEXT NOT NULL, " +
                 StepsTable.DESC_COLUMN + " TEXT NOT NULL, " +
                 StepsTable.VIDEO_COLUMN + " TEXT, " +
-                StepsTable.THUMBNAIL_COLUMN + "TEXT , " +
-                StepsTable.RECIPE_ID_COLUMN + " INT NOT NULL," +
+                StepsTable.THUMBNAIL_COLUMN + " TEXT , " +
+                StepsTable.RECIPE_ID_COLUMN + " INTEGER NOT NULL," +
                         "FOREIGN KEY (" + StepsTable.RECIPE_ID_COLUMN + ") " +
                         "REFERENCES " + RecipesTable.NAME + "(" + RecipesTable._ID + "));";
 
