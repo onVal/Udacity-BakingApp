@@ -17,9 +17,9 @@ import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.data.Step;
 
 import static com.onval.bakingapp.provider.RecipeContract.AUTHORITY;
-import static com.onval.bakingapp.provider.RecipeContract.IngredientsTable;
-import static com.onval.bakingapp.provider.RecipeContract.RecipesTable;
-import static com.onval.bakingapp.provider.RecipeContract.StepsTable;
+import static com.onval.bakingapp.provider.RecipeContract.IngredientsEntry;
+import static com.onval.bakingapp.provider.RecipeContract.RecipesEntry;
+import static com.onval.bakingapp.provider.RecipeContract.StepsEntry;
 
 
 
@@ -80,17 +80,17 @@ public class RecipeProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case RECIPE_CODE:
-                c = db.query(RecipesTable.NAME,
+                c = db.query(RecipesEntry.TABLE_NAME,
                         null, null, null,
                         null, null, null);
                 break;
             case INGREDIENT_CODE:
-                c = db.query(IngredientsTable.NAME,
+                c = db.query(RecipeContract.IngredientsEntry.TABLE_NAME,
                         null, null, null,
                         null, null, null);
                 break;
             case STEP_CODE:
-                c = db.query(StepsTable.NAME,
+                c = db.query(StepsEntry.TABLE_NAME,
                         null, null, null,
                         null, null, null);
                 break;
@@ -119,13 +119,13 @@ public class RecipeProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case RECIPE_CODE:
-                table = RecipesTable.NAME;
+                table = RecipesEntry.TABLE_NAME;
                 break;
             case INGREDIENT_CODE:
-                table = IngredientsTable.NAME;
+                table = IngredientsEntry.TABLE_NAME;
                 break;
             case STEP_CODE:
-                table = StepsTable.NAME;
+                table = StepsEntry.TABLE_NAME;
                 break;
 
             default:
@@ -133,8 +133,6 @@ public class RecipeProvider extends ContentProvider {
         }
 
         rowId = db.insert(table, null, contentValues);
-
-//        Log.d("WOW", "TABLE = " + IngredientsTable.NAME);
 
         if (rowId != -1)
             rowUri = uri.buildUpon()
@@ -151,10 +149,19 @@ public class RecipeProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
         SQLiteOpenHelper helper = new RecipeSqliteHelper(getContext());
-        SQLiteDatabase db = helper.getReadableDatabase();
+        SQLiteDatabase db = helper.getWritableDatabase();
 
-
-        return 0;
+        int row;
+        switch(uriMatcher.match(uri)) {
+            case RECIPE_CODE:
+                row = db.delete(RecipesEntry.TABLE_NAME, "1", null);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            default:
+                row = 0;
+                break;
+        }
+        return row;
     }
 
     public static void insertRecipe(ContentResolver resolver, Recipe r) {
@@ -162,11 +169,11 @@ public class RecipeProvider extends ContentProvider {
         //convert recipe into contentvalues and put it in provider
         ContentValues recipeValues = new ContentValues();
 
-        recipeValues.put(RecipesTable.NAME_COLUMN, r.getName());
-        recipeValues.put(RecipesTable.SERVINGS_COLUMN, r.getServingsNum());
-        recipeValues.put(RecipesTable.IMAGE_COLUMN, r.getImagePath());
+        recipeValues.put(RecipesEntry.NAME_COLUMN, r.getName());
+        recipeValues.put(RecipesEntry.SERVINGS_COLUMN, r.getServingsNum());
+        recipeValues.put(RecipesEntry.IMAGE_COLUMN, r.getImagePath());
 
-        Uri recipeUri = resolver.insert(RecipesTable.RECIPE_URI, recipeValues);
+        Uri recipeUri = resolver.insert(RecipesEntry.RECIPE_URI, recipeValues);
 
         //get the recipe_id from recipe uri
         int recipeId = Integer.parseInt(recipeUri.getLastPathSegment());
@@ -176,25 +183,25 @@ public class RecipeProvider extends ContentProvider {
         ContentValues ingredValues = new ContentValues();
 
         for (Ingredient i : r.getIngredients()) {
-            ingredValues.put(IngredientsTable.QUANTITY_COLUMN, i.getQuantity());
-            ingredValues.put(IngredientsTable.MEASURE_COLUMN, i.getMeasure());
-            ingredValues.put(IngredientsTable.INGREDIENT_COLUMN, i.getName());
-            ingredValues.put(IngredientsTable.RECIPE_ID_COLUMN, recipeId);
+            ingredValues.put(RecipeContract.IngredientsEntry.QUANTITY_COLUMN, i.getQuantity());
+            ingredValues.put(RecipeContract.IngredientsEntry.MEASURE_COLUMN, i.getMeasure());
+            ingredValues.put(RecipeContract.IngredientsEntry.INGREDIENT_COLUMN, i.getName());
+            ingredValues.put(RecipeContract.IngredientsEntry.RECIPE_ID_COLUMN, recipeId);
 
-            resolver.insert(IngredientsTable.INGREDIENTS_URI, ingredValues);
+            resolver.insert(RecipeContract.IngredientsEntry.INGREDIENTS_URI, ingredValues);
         }
 
         //extract steps from recipe into content values and put it in provider
         ContentValues stepValues = new ContentValues();
 
         for (Step s : r.getSteps()) {
-            stepValues.put(StepsTable.SHORT_DESC_COLUMN, s.getShortDescription());
-            stepValues.put(StepsTable.DESC_COLUMN, s.getDescription());
-            stepValues.put(StepsTable.VIDEO_COLUMN, s.getVideoURL());
-            stepValues.put(StepsTable.THUMBNAIL_COLUMN, s.getThumbnailURL());
-            stepValues.put(StepsTable.RECIPE_ID_COLUMN, recipeId);
+            stepValues.put(StepsEntry.SHORT_DESC_COLUMN, s.getShortDescription());
+            stepValues.put(StepsEntry.DESC_COLUMN, s.getDescription());
+            stepValues.put(StepsEntry.VIDEO_COLUMN, s.getVideoURL());
+            stepValues.put(StepsEntry.THUMBNAIL_COLUMN, s.getThumbnailURL());
+            stepValues.put(StepsEntry.RECIPE_ID_COLUMN, recipeId);
 
-            resolver.insert(StepsTable.STEPS_URI, stepValues);
+            resolver.insert(StepsEntry.STEPS_URI, stepValues);
         }
 
     }

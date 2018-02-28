@@ -7,10 +7,10 @@ import android.test.ProviderTestCase2;
 
 import com.onval.bakingapp.TestUtils.TestUtilities;
 import com.onval.bakingapp.data.Recipe;
+import com.onval.bakingapp.provider.RecipeContract.IngredientsEntry;
 
-import static com.onval.bakingapp.provider.RecipeContract.IngredientsTable;
-import static com.onval.bakingapp.provider.RecipeContract.RecipesTable;
-import static com.onval.bakingapp.provider.RecipeContract.StepsTable;
+import static com.onval.bakingapp.provider.RecipeContract.RecipesEntry;
+import static com.onval.bakingapp.provider.RecipeContract.StepsEntry;
 
 
 
@@ -32,7 +32,7 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
 
     public void testQuidMethods() throws Exception {
         // create uri to insert / query
-        Uri uri = RecipeContract.RecipesTable.RECIPE_URI;
+        Uri uri = RecipesEntry.RECIPE_URI;
 
         //test uri validity
         assertEquals(uri.getPath(), "/recipe");
@@ -40,7 +40,6 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
         //--INSERT--
         insertMockData(uri);
 
-        //todo:TEST QUERY
         // -- QUERY -- get elements from database
         Cursor c = getMockContentResolver().query(uri, null,
                 null, null, null);
@@ -57,14 +56,29 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
 
         // assert that the elements inserted are the right ones
         c.moveToPosition(0);
-        assertEquals("Meat", c.getString(c.getColumnIndex(RecipesTable.NAME_COLUMN)));
-        assertEquals("", c.getString(c.getColumnIndex(RecipesTable.IMAGE_COLUMN)));
-        assertEquals(5, c.getInt(c.getColumnIndex(RecipesTable.SERVINGS_COLUMN)));
+        assertEquals("Meat", c.getString(c.getColumnIndex(RecipesEntry.NAME_COLUMN)));
+        assertEquals("", c.getString(c.getColumnIndex(RecipesEntry.IMAGE_COLUMN)));
+        assertEquals(5, c.getInt(c.getColumnIndex(RecipesEntry.SERVINGS_COLUMN)));
 
-        //close the cursor
         c.close();
 
         //todo:TEST DELETE
+        int row = getMockContentResolver().delete(uri, null, null);
+
+        //assert that everything is being deleted
+        c = getMockContentResolver().query(uri, null,
+                null, null, null);
+        assertFalse(c.moveToFirst());
+
+        c = getMockContentResolver().query(StepsEntry.STEPS_URI, null,
+                null, null, null);
+        assertFalse(c.moveToFirst());
+
+        c = getMockContentResolver().query(IngredientsEntry.INGREDIENTS_URI, null,
+                null, null, null);
+        assertFalse(c.moveToFirst());
+
+        c.close();
 
         //todo:TEST UPDATE
 
@@ -74,16 +88,16 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
     private void insertMockData(Uri uri) throws Exception {
         // create mock values to insert
         ContentValues recipe1 = new ContentValues();
-        recipe1.put(RecipesTable._ID, 1);
-        recipe1.put(RecipesTable.NAME_COLUMN, "Meat");
-        recipe1.put(RecipesTable.IMAGE_COLUMN, "");
-        recipe1.put(RecipesTable.SERVINGS_COLUMN, 5);
+        recipe1.put(RecipesEntry._ID, 1);
+        recipe1.put(RecipesEntry.NAME_COLUMN, "Meat");
+        recipe1.put(RecipesEntry.IMAGE_COLUMN, "");
+        recipe1.put(RecipesEntry.SERVINGS_COLUMN, 5);
 
         ContentValues recipe2 = new ContentValues();
-        recipe2.put(RecipesTable._ID, 2);
-        recipe2.put(RecipesTable.NAME_COLUMN, "Fruit");
-        recipe2.put(RecipesTable.IMAGE_COLUMN, "");
-        recipe2.put(RecipesTable.SERVINGS_COLUMN, 12);
+        recipe2.put(RecipesEntry._ID, 2);
+        recipe2.put(RecipesEntry.NAME_COLUMN, "Fruit");
+        recipe2.put(RecipesEntry.IMAGE_COLUMN, "");
+        recipe2.put(RecipesEntry.SERVINGS_COLUMN, 12);
 
         // call content resolver and insert elements in the provider
         getMockContentResolver().insert(uri, recipe1);
@@ -98,7 +112,7 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
 
         //test that stuff was inserted properly
         //query the three tables and assert that data is valid
-        Cursor c = getMockContentResolver().query(RecipesTable.RECIPE_URI, null,
+        Cursor c = getMockContentResolver().query(RecipesEntry.RECIPE_URI, null,
                 null, null, null);
 
         //test recipe table
@@ -106,12 +120,12 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
         assertTrue("Cursor shouldn't be empty", c.moveToFirst());
         assertEquals("There should be only one recipe", 1, c.getCount());
         assertEquals("Incorrect recipe name",
-                "Pancake", c.getString(c.getColumnIndex(RecipesTable.NAME_COLUMN)));
+                "Pancake", c.getString(c.getColumnIndex(RecipesEntry.NAME_COLUMN)));
 
         c.close();
 
         //test ingredient
-        c = getMockContentResolver().query(IngredientsTable.INGREDIENTS_URI, null,
+        c = getMockContentResolver().query(IngredientsEntry.INGREDIENTS_URI, null,
                 null, null, null);
 
         //test ingredient table
@@ -120,22 +134,22 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
         assertEquals("There should be three ingredients", 3, c.getCount());
 
         assertEquals("Incorrect recipe name",
-                "Yog", c.getString(c.getColumnIndex(IngredientsTable.INGREDIENT_COLUMN)));
+                "Yog", c.getString(c.getColumnIndex(IngredientsEntry.INGREDIENT_COLUMN)));
 
         c.moveToNext();
         assertEquals("Incorrect recipe name",
-                "Oat", c.getString(c.getColumnIndex(IngredientsTable.INGREDIENT_COLUMN)));
+                "Oat", c.getString(c.getColumnIndex(IngredientsEntry.INGREDIENT_COLUMN)));
 
         c.moveToNext();
         assertEquals("Incorrect recipe name",
-                1, c.getInt(c.getColumnIndex(IngredientsTable.QUANTITY_COLUMN)));
+                1, c.getInt(c.getColumnIndex(IngredientsEntry.QUANTITY_COLUMN)));
 
         assertFalse("There is no other element", c.moveToNext());
 
         c.close();
 
         //test steps
-        c = getMockContentResolver().query(StepsTable.STEPS_URI, null,
+        c = getMockContentResolver().query(StepsEntry.STEPS_URI, null,
                 null, null, null);
 
         //test steps table
@@ -145,7 +159,7 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
 
         c.moveToPosition(3);
         assertEquals("Incorrect recipe name",
-                "Three", c.getString(c.getColumnIndex(StepsTable.SHORT_DESC_COLUMN)));
+                "Three", c.getString(c.getColumnIndex(StepsEntry.SHORT_DESC_COLUMN)));
 
         assertFalse("There is no other element", c.moveToNext());
 
