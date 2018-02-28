@@ -155,6 +155,9 @@ public class RecipeProvider extends ContentProvider {
         switch(uriMatcher.match(uri)) {
             case RECIPE_CODE:
                 row = db.delete(RecipesEntry.TABLE_NAME, "1", null);
+                db.delete(StepsEntry.TABLE_NAME, "1", null);
+                db.delete(IngredientsEntry.TABLE_NAME, "1", null);
+
                 getContext().getContentResolver().notifyChange(uri, null);
                 break;
             default:
