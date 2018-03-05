@@ -38,6 +38,14 @@ public class RecipeContract {
         public static final String INGREDIENT_COLUMN = "name";
         public static final String RECIPE_ID_COLUMN = "recipe_id";
 
+        //Short way to access columns easily
+        public static final int ID = 0;
+        public static final int QUANTITY = 1;
+        public static final int MEASURE = 2;
+        public static final int INGREDIENT = 3;
+        public static final int RECIPE_ID = 4;
+
+
         //Uri for accessing ingredient list
         public static final Uri INGREDIENTS_URI =
                 BASE_URI.buildUpon().appendPath(TABLE_NAME).build();
@@ -51,6 +59,15 @@ public class RecipeContract {
         public static final String VIDEO_COLUMN = "video_url";
         public static final String THUMBNAIL_COLUMN = "thumbnail_url";
         public static final String RECIPE_ID_COLUMN = "recipe_id";
+
+        //Short way to access columns easily
+        public static final int ID = 0;
+        public static final int SHORT_DESC = 1;
+        public static final int DESC = 2;
+        public static final int VIDEO = 3;
+        public static final int THUMBNAIL = 4;
+        public static final int RECIPE_ID = 5;
+
 
         //Uri for accessing steps list
         public static final Uri STEPS_URI =

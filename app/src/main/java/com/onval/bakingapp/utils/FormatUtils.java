@@ -1,8 +1,10 @@
 package com.onval.bakingapp.utils;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.onval.bakingapp.data.Ingredient;
+import com.onval.bakingapp.provider.RecipeContract.IngredientsEntry;
 
 import java.util.ArrayList;
 
@@ -25,26 +27,16 @@ public class FormatUtils {
         return builder.toString();
     }
 
-    public static String formatIngredients(ArrayList<Ingredient> ingredients) {
+    public static String formatIngredients(Cursor i) {
         StringBuilder ingredientString = new StringBuilder();
 
-//        String servings = String.valueOf(recipeParcel.getServingsNum());
-
-//        //Title: INGREDIENTS (for n people)
-//        ingredientString.append("INGREDIENTS (for ")
-//                .append(servings)
-//                .append(" people)\n")
-//                .setSpan(
-//                new StyleSpan(android.graphics.Typeface.BOLD), 0, ingredientString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-
         //Build the ingredient list
-        for (Ingredient i : ingredients) {
+        while(i.moveToNext()) {
             ingredientString
                     .append("\u2022 ") //tab followed by a bullet point
-                    .append(i.getName()).append(" (")
-                    .append(i.getQuantity() + "").append(" ")
-                    .append(i.getMeasure()).append(")\n");
+                    .append(i.getString(IngredientsEntry.INGREDIENT)).append(" (")
+                    .append(i.getString(IngredientsEntry.QUANTITY)).append(" ")
+                    .append(i.getString(IngredientsEntry.MEASURE)).append(")\n");
         }
 
         //remove final trailing '\n'

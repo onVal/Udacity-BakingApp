@@ -57,6 +57,40 @@ public class RecipeProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, "/recipe/#/step/#", SINGLE_STEP_CODE);
     }
 
+    static public Uri getIngredUri(int id) {
+//        /recipe/#/ingredient
+        return RecipeContract.RecipesEntry.RECIPE_URI.buildUpon()
+                .appendPath(String.valueOf(id))
+                .appendPath("ingredient")
+                .build();
+    }
+
+    static public Uri getRecipeStepUri(int id) {
+//        /recipe/#/step/description
+        return RecipeContract.RecipesEntry.RECIPE_URI.buildUpon()
+                .appendPath(String.valueOf(id))
+                .appendPath("step")
+                .appendPath("description")
+                .build();
+    }
+
+    static public Uri getSingleStepUri(int id, int step_id) {
+        //recipe/#/step/#
+        return RecipeContract.RecipesEntry.RECIPE_URI.buildUpon()
+                .appendPath(String.valueOf(id))
+                .appendPath("step")
+                .appendPath(String.valueOf(step_id))
+                .build();
+    }
+
+    static private String getRecipeIdFromUri(Uri uri) throws Error {
+        int type = uriMatcher.match(uri);
+        if (type == RECIPE_INGRED_CODE || type == RECIPE_STEP_CODE || type == SINGLE_STEP_CODE) {
+            return uri.getPathSegments().get(1);
+        }
+        throw new Error("not valid uri");
+    }
+
     @Override
     public boolean onCreate() {
         helper = new RecipeSqliteHelper(getContext());
@@ -71,28 +105,65 @@ public class RecipeProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s,
-                        @Nullable String[] strings1, @Nullable String s1) {
+    public Cursor query(@NonNull Uri uri, @Nullable String[] columns, @Nullable String selection,
+                        @Nullable String[] selectionArgs, @Nullable String s1) {
         SQLiteOpenHelper helper = new RecipeSqliteHelper(getContext());
         SQLiteDatabase db = helper.getReadableDatabase();
 
         Cursor c;
+        String query;
+
 
         switch (uriMatcher.match(uri)) {
+
             case RECIPE_CODE:
                 c = db.query(RecipesEntry.TABLE_NAME,
-                        null, null, null,
+                        columns, selection, selectionArgs,
                         null, null, null);
                 break;
             case INGREDIENT_CODE:
                 c = db.query(RecipeContract.IngredientsEntry.TABLE_NAME,
-                        null, null, null,
+                        columns, selection, selectionArgs,
                         null, null, null);
                 break;
             case STEP_CODE:
                 c = db.query(StepsEntry.TABLE_NAME,
-                        null, null, null,
+                        columns, selection, selectionArgs,
                         null, null, null);
+                break;
+            case RECIPE_STEP_CODE:
+
+                query = "SELECT S." + StepsEntry._ID + ", S." + StepsEntry.SHORT_DESC_COLUMN +
+                        ", S." + StepsEntry.DESC_COLUMN + ", S." + StepsEntry.VIDEO_COLUMN +
+                        ", S." + StepsEntry.THUMBNAIL_COLUMN +
+                        " FROM " + RecipesEntry.TABLE_NAME + " as R INNER JOIN "
+                                 + StepsEntry.TABLE_NAME + " as S " +
+                        " ON S." + StepsEntry.RECIPE_ID_COLUMN + " = R." + RecipesEntry._ID +
+                        " WHERE R." + RecipesEntry._ID + " = ?";
+
+                c = db.rawQuery(query, new String[]{getRecipeIdFromUri(uri)});
+                break;
+
+            case RECIPE_INGRED_CODE:
+                query = "SELECT I." + IngredientsEntry._ID + ", I." + IngredientsEntry.QUANTITY_COLUMN +
+                        ", I." + IngredientsEntry.MEASURE_COLUMN + ", I." + IngredientsEntry.INGREDIENT_COLUMN +
+                        " FROM " + RecipesEntry.TABLE_NAME + " as R INNER JOIN "
+                        + IngredientsEntry.TABLE_NAME + " as I " +
+                        " ON I." + IngredientsEntry.RECIPE_ID_COLUMN + " = R." + RecipesEntry._ID +
+                        " WHERE R." + RecipesEntry._ID + " = ?";
+
+                c = db.rawQuery(query, new String[]{getRecipeIdFromUri(uri)});
+                break;
+            case SINGLE_STEP_CODE:
+                query = "SELECT S." + StepsEntry._ID + ", S." + StepsEntry.SHORT_DESC_COLUMN +
+                            ", S." + StepsEntry.DESC_COLUMN + ", S." + StepsEntry.VIDEO_COLUMN +
+                            ", S." + StepsEntry.THUMBNAIL_COLUMN +
+                        " FROM " + RecipesEntry.TABLE_NAME + " as R INNER JOIN "
+                        + StepsEntry.TABLE_NAME + " as S " +
+                        " ON S." + StepsEntry.RECIPE_ID_COLUMN + " = R." + RecipesEntry._ID +
+                        " WHERE R." + RecipesEntry._ID + " = ? AND "
+                             + "S." +  StepsEntry._ID + " = ?";
+                c = db.rawQuery(query, new String[]{getRecipeIdFromUri(uri), uri.getLastPathSegment()});
                 break;
             default:
                 c = null;
@@ -206,6 +277,5 @@ public class RecipeProvider extends ContentProvider {
 
             resolver.insert(StepsEntry.STEPS_URI, stepValues);
         }
-
     }
 }

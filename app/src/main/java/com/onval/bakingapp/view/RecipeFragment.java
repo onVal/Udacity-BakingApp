@@ -28,6 +28,8 @@ import com.onval.bakingapp.provider.RecipeContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.onval.bakingapp.view.StepDetailFragment.RECIPE_ID_TAG;
+
 
 public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView.Listener {
     private IRecipePresenter presenter;
@@ -75,7 +77,6 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         else
             layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
-
         recyclerView.setLayoutManager(layoutManager);
     }
 
@@ -111,12 +112,9 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
                 Toast.LENGTH_SHORT).show();
     }
 
-    public void onRecipeClicked(int idRecipe) {
+    public void onRecipeClicked(int recipeId) {
         Intent intent = new Intent(context, StepDetailActivity.class);
-
-        //TODO: put this constant in a better place
-        intent.putExtra("RECIPE_ID", idRecipe);
-
+        intent.putExtra(RECIPE_ID_TAG, recipeId);
         startActivity(intent);
     }
 }

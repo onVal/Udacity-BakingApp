@@ -50,8 +50,6 @@ implements View.OnClickListener
                 recipes.moveToPosition(position);
                 listener.onRecipeClicked(
                         recipes.getInt(recipes.getColumnIndex(RecipesEntry._ID)));
-
-                //todo: couldn't I just do: listener.onRecipeClicked(position) ???
             }
         });
 
