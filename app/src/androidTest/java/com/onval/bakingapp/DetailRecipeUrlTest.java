@@ -18,6 +18,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static com.onval.bakingapp.view.StepDetailFragment.STEP_LIST_TAG;
 import static com.onval.bakingapp.view.StepDetailFragment.STEP_POSITION_TAG;
 
 /**
@@ -33,8 +34,7 @@ public class DetailRecipeUrlTest {
     @Before
     public void setUp() {
         Intent intent = new Intent();
-        //todo: fix this
-//        intent.putExtra(RECIPE_ID_TAG, makeMockStepWithInvalidUrl());
+        intent.putExtra(STEP_LIST_TAG, makeMockStepWithInvalidUrl());
         intent.putExtra(STEP_POSITION_TAG, 0);
 
         testRule.launchActivity(intent);
