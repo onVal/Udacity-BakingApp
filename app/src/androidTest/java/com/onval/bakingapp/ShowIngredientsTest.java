@@ -38,16 +38,16 @@ public class ShowIngredientsTest {
     @Test
     public void areIngredientsShowingCorrectly() {
 
-        final String nutellaPieIngredients = "INGREDIENTS (for 8 people)\n" +
-                "\t• Graham Cracker crumbs (2 CUP)\n" +
-                "\t• unsalted butter, melted (6 TBLSP)\n" +
-                "\t• granulated sugar (0 CUP)\n" +
-                "\t• salt (1 TSP)\n" +
-                "\t• vanilla (5 TBLSP)\n" +
-                "\t• Nutella or other chocolate-hazelnut spread (1 K)\n" +
-                "\t• Mascapone Cheese(room temperature) (500 G)\n" +
-                "\t• heavy cream(cold) (1 CUP)\n" +
-                "\t• cream cheese(softened) (4 OZ)";
+        final String nutellaPieIngredients =
+                "• Graham Cracker crumbs (2 CUP)\n" +
+                "• unsalted butter, melted (6 TBLSP)\n" +
+                "• granulated sugar (0 CUP)\n" +
+                "• salt (1 TSP)\n" +
+                "• vanilla (5 TBLSP)\n" +
+                "• Nutella or other chocolate-hazelnut spread (1 K)\n" +
+                "• Mascapone Cheese(room temperature) (500 G)\n" +
+                "• heavy cream(cold) (1 CUP)\n" +
+                "• cream cheese(softened) (4 OZ)";
 
         onView(withId(R.id.recipes_recyclerview))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(NUTELLAPIE_POSITION, click()));
