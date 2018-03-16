@@ -120,15 +120,17 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
 
             String stepImageUrl = step.getThumbnailURL();
 
-            if (!stepImageUrl.equals("")) //if there's an image url
+            if (!stepImageUrl.equals("")) { //if there's an image url
                 Picasso.with(getContext())
                         .load(stepImageUrl)
                         .into(thumbnailView);
-            else //otherwise load a default 'no media message'
+            }
+            else { //otherwise load a default 'no media message'
                 thumbnailView.setImageResource(R.drawable.no_media);
+            }
         }
         else { // if there is a video uri...
-            Log.d("DERPO", videoUri.toString());
+            Log.d("debug", videoUri.toString());
             initializePlayer(videoUri);
         }
 
