@@ -1,5 +1,8 @@
 package com.onval.bakingapp;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.onval.bakingapp.data.Recipe;
@@ -14,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by gval on 25/09/2017.
@@ -25,10 +27,12 @@ public class RecipePresenterTest {
     IFetcher model;
     RecipePresenter presenter;
 
+    private Context context;
+
     //These tests make no more sense
     @Before
     public void setUp() {
-
+        context = InstrumentationRegistry.getContext();
     }
 
     @Test
@@ -36,7 +40,7 @@ public class RecipePresenterTest {
         view = new MockRecipeView();
         model = new MockFetcher();
 
-        presenter = new RecipePresenter(view, model);
+        presenter = new RecipePresenter(context, view, model);
 
         presenter.loadRecipes();
 
@@ -49,7 +53,7 @@ public class RecipePresenterTest {
         view = new MockRecipeView();
         model = new NoFetcher();
 
-        presenter = new RecipePresenter(view, model);
+        presenter = new RecipePresenter(context, view, model);
 
         presenter.loadRecipes();
 
@@ -61,9 +65,14 @@ public class RecipePresenterTest {
         int numOfRecipes;
         boolean displayErrorMsgCalled;
 
+//        @Override
+//        public void displayRecipe() {
+//            numOfRecipes = recipes.size();
+//        }
+
         @Override
-        public void addRecipes(List<Recipe> recipes) {
-            numOfRecipes = recipes.size();
+        public void displayRecipes() {
+
         }
 
         @Override
