@@ -1,8 +1,12 @@
 package com.onval.bakingapp.view;
 
 
+import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,21 +20,20 @@ import android.widget.Toast;
 
 import com.onval.bakingapp.R;
 import com.onval.bakingapp.adapter.RecipeAdapter;
-import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.model.Fetcher;
 import com.onval.bakingapp.presenter.IRecipePresenter;
 import com.onval.bakingapp.presenter.RecipePresenter;
-
-import java.util.List;
+import com.onval.bakingapp.provider.RecipeContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
+import static com.onval.bakingapp.view.StepDetailFragment.RECIPE_ID_TAG;
 
 
 public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView.Listener {
     private IRecipePresenter presenter;
+    private Context context;
 
     @BindView(R.id.recipes_recyclerview) RecyclerView recyclerView;
 
@@ -47,16 +50,12 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, root);
 
+        context = getContext();
+
         //todo: should I use dependency injection for this?
-        presenter = new RecipePresenter(this, new Fetcher(getActivity()));
+        presenter = new RecipePresenter(context, this, new Fetcher(getActivity()));
 
-        adapter = new RecipeAdapter(getContext(), this);
-
-        if (RecipePresenter.idlingResource != null)
-            Log.d("B_LOAD", "Before launching loadrecipes: Recipe res is idle? " + RecipePresenter.idlingResource.isIdleNow());
-        else
-            Log.d("B_LOAD", "Before launching loadrecipes: Recipe res is null ");
-
+        adapter = new RecipeAdapter(context, this);
 
         presenter.loadRecipes(); //calls addAllRecipes when finishes
         recyclerView.setAdapter(adapter);
@@ -72,20 +71,28 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         // (and on tablets, regardless of orientation)
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ||
                 getResources().getBoolean(R.bool.isTablet))
-            layoutManager = new GridLayoutManager(getContext(), 3);
+            layoutManager = new GridLayoutManager(context, 3);
 
 
         else
-            layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-
+            layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
         recyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
-    public void addRecipes(List<Recipe> recipes) {
+    public void displayRecipes() {
+        Uri uri = RecipeContract.RecipesEntry.RECIPE_URI;
+
+        CursorLoader loader = new CursorLoader(context, uri, null,
+                    null, null, null);
+
+        Cursor recipes = loader.loadInBackground();
         adapter.addAllRecipes(recipes);
-        adapter.notifyDataSetChanged();
+
+//        c.close();
+//        adapter.addAllRecipes(recipes);
+//        adapter.notifyDataSetChanged();
 
         //this will be true only in testing
 //        if (idlingResource != null)
@@ -94,25 +101,20 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
 
     @Override
     public void displayErrorMsg(String msg) {
-        Toast.makeText(getContext(), msg,
+        Toast.makeText(context, msg,
                 Toast.LENGTH_SHORT).show();
         Log.d("TAG", msg);
     }
 
     @Override
     public void onNoInternetConnection() {
-        Toast.makeText(getContext(), "Couldn't load recipes. No internet connection.",
+        Toast.makeText(context, "Couldn't load recipes. No internet connection.",
                 Toast.LENGTH_SHORT).show();
     }
 
-    public void onRecipeClicked(int idRecipe) {
-        Intent intent = new Intent(getContext(), StepDetailActivity.class);
-
-        //I'm using the recipe id field returned from the server
-        //as an unique key identifier of a recipe
-        Recipe recipe = adapter.findRecipeById(idRecipe);
-        intent.putExtra(RECIPE_PARCEL, recipe);
-
+    public void onRecipeClicked(int recipeId) {
+        Intent intent = new Intent(context, StepDetailActivity.class);
+        intent.putExtra(RECIPE_ID_TAG, recipeId);
         startActivity(intent);
     }
 }

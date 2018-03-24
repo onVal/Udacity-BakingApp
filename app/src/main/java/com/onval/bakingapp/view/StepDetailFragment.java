@@ -1,6 +1,7 @@
 package com.onval.bakingapp.view;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,17 +13,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.onval.bakingapp.R;
-import com.onval.bakingapp.data.Recipe;
+import com.onval.bakingapp.provider.RecipeContract.RecipesEntry;
+import com.onval.bakingapp.provider.RecipeProvider;
+import com.onval.bakingapp.utils.FormatUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
-import static com.onval.bakingapp.utils.FormatUtils.formatIngredients;
-
 public class StepDetailFragment extends Fragment {
-    public static final String STEP_LIST_TAG = "step-instruction";
+    public static final String RECIPE_ID_TAG = "recipe-id-tag";
     public static final String STEP_POSITION_TAG = "step-position-tag";
+    public static final String STEP_LIST_TAG = "step-list-tag";
 
 
     @BindView(R.id.steps_ingredients_title)TextView titleTV;
@@ -30,9 +31,7 @@ public class StepDetailFragment extends Fragment {
     @BindView(R.id.steps_recyclerview) RecyclerView stepsView;
 
     private LinearLayoutManager layoutManager;
-    private
-
-    Recipe recipeParcel;
+    private Cursor c;
 
     public StepDetailFragment() {
         // Required empty public constructor
@@ -47,11 +46,20 @@ public class StepDetailFragment extends Fragment {
         ButterKnife.bind(this, root);
 
         //get the recipe info for this particular fragment
-        recipeParcel = getActivity().getIntent().getExtras().getParcelable(RECIPE_PARCEL);
+        int recipeId = getActivity().getIntent().getExtras().getInt(RECIPE_ID_TAG);
+
+        c = getActivity().getContentResolver().query(RecipesEntry.RECIPE_URI, null,
+                RecipesEntry._ID + " = ?", new String[]{String.valueOf(recipeId)}, null);
+
+        Cursor i = getActivity().getContentResolver().query(RecipeProvider.getIngredUri(recipeId), null,
+                null, null, null);
 
         //Show ingredients
-        titleTV.setText("INGREDIENTS (" + recipeParcel.getServingsNum() + " servings)");
-        ingredientsTV.setText(formatIngredients(recipeParcel.getIngredients()));
+        c.moveToFirst();
+        titleTV.setText("INGREDIENTS (" + c.getInt(RecipesEntry.SERVINGS) + " servings)");
+
+        ingredientsTV.setText(FormatUtils.formatIngredients(i));
+        i.close();
 
         //set layoutManager for step list
         layoutManager = new LinearLayoutManager(getContext());
@@ -68,8 +76,13 @@ public class StepDetailFragment extends Fragment {
         return root;
     }
 
-
     public interface OnStepClickListener {
         void onStepClicked(int stepId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        c.close();
     }
 }

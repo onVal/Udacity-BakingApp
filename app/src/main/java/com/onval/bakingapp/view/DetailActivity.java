@@ -23,15 +23,15 @@ public class DetailActivity extends AppCompatActivity {
         //Since I want the fragment itself to contain the arraylist of steps and the position
         //in order to manage the twopane option (when I don't create an activity for the fragment)
         //I 'transform' the intent extras into arguments to pass to the fragment
-        ArrayList<Step> steps = getIntent().getExtras().getParcelableArrayList(STEP_LIST_TAG);
-        int position = getIntent().getExtras().getInt(STEP_POSITION_TAG);
+        ArrayList<Step> stepList = getIntent().getExtras().getParcelableArrayList(STEP_LIST_TAG);
+        int stepPosition = getIntent().getExtras().getInt(STEP_POSITION_TAG);
 
-        setTitle(steps.get(position).getId() + ". " + steps.get(position).getShortDescription());
+        setTitle(stepList.get(stepPosition).getShortDescription());
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_container,
-                            DetailFragment.newInstance(steps, position))
+                            DetailFragment.newInstance(stepList, stepPosition))
                     .commit();
         }
     }

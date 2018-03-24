@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/recipe_list_title"
@@ -13,7 +14,6 @@
         <activity android:name=".view.RecipeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -21,6 +21,11 @@
         <activity
             android:name=".view.StepDetailActivity"
             android:parentActivityName=".view.RecipeActivity" />
+        
+        <provider
+            android:authorities="com.onval.bakingapp.provider.RecipeProvider"
+            android:name=".provider.RecipeProvider"
+            android:exported="false" />
 
         <receiver android:name=".widget.RecipeIngredientsWidget">
             <intent-filter>

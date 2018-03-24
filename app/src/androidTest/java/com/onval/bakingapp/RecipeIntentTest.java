@@ -18,7 +18,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtraWithKey;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static com.onval.bakingapp.data.Recipe.RECIPE_PARCEL;
+import static com.onval.bakingapp.view.StepDetailFragment.RECIPE_ID_TAG;
 
 /**
  * Created by gval on 03/11/2017.
@@ -43,7 +43,7 @@ public class RecipeIntentTest {
         onView(withId(R.id.recipes_recyclerview))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
 
-        intended(hasExtraWithKey(RECIPE_PARCEL));
+        intended(hasExtraWithKey(RECIPE_ID_TAG));
     }
 
     @After
