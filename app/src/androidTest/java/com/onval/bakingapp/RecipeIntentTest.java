@@ -1,5 +1,6 @@
 package com.onval.bakingapp;
 
+import android.content.Intent;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -29,11 +30,12 @@ public class RecipeIntentTest {
 
     @Rule
     public IntentsTestRule<RecipeActivity> testRule =
-            new IntentsTestRule<>(RecipeActivity.class);
+            new IntentsTestRule<>(RecipeActivity.class, true, false);
 
     @Before
     public void setUp() {
         TestUtilities.setupCountingIdlingResource();
+        testRule.launchActivity(new Intent());
 
     }
 

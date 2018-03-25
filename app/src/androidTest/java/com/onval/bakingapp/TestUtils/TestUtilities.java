@@ -31,7 +31,6 @@ public class TestUtilities {
 
     public static void teardownCountingIdlingResource() {
         unregisterIdlingResources(RecipePresenter.idlingResource);
-        RecipePresenter.idlingResource = null;
     }
 
     public static Recipe mockRecipe() {

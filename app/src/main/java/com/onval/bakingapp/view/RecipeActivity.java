@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.onval.bakingapp.R;
 
+import static com.onval.bakingapp.presenter.RecipePresenter.IDLING_RESOURCE_TAG;
+
 public class RecipeActivity extends AppCompatActivity {
 
     @Nullable
-    private CountingIdlingResource idlingResource;
+    public CountingIdlingResource idlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +24,11 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
 //    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-//    public void initializeIdlingResource() {
-//        if (idlingResource == null)
-//            idlingResource = new CountingIdlingResource(IDLING_RESOURCE_TAG);
-//    }
-//
+    public void initializeIdlingResource() {
+        if (idlingResource == null)
+            idlingResource = new CountingIdlingResource(IDLING_RESOURCE_TAG);
+    }
+
 //    @Nullable
 //    public CountingIdlingResource getCountingIdlingResource() {
 //        return idlingResource;

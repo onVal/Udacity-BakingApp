@@ -29,7 +29,7 @@ import static com.onval.bakingapp.view.StepDetailFragment.STEP_POSITION_TAG;
 public class DetailRecipeUrlTest {
 
     ActivityTestRule<DetailActivity> testRule =
-            new ActivityTestRule<>(DetailActivity.class, false, false);
+            new ActivityTestRule<>(DetailActivity.class, true, false);
 
     @Before
     public void setUp() {

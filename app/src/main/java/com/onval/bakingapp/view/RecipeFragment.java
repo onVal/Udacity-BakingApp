@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,8 @@ import com.onval.bakingapp.presenter.IRecipePresenter;
 import com.onval.bakingapp.presenter.RecipePresenter;
 import com.onval.bakingapp.provider.RecipeContract;
 
+import javax.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -39,6 +42,8 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
 
     private RecipeAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    @Nullable
+    private CountingIdlingResource idlingResource;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -51,9 +56,10 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         ButterKnife.bind(this, root);
 
         context = getContext();
+        idlingResource = ((RecipeActivity) getActivity()).idlingResource;
 
         //todo: should I use dependency injection for this?
-        presenter = new RecipePresenter(context, this, new Fetcher(getActivity()));
+        presenter = new RecipePresenter(context, this, new Fetcher(getActivity()), idlingResource);
 
         adapter = new RecipeAdapter(context, this);
 
