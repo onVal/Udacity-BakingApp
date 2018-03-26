@@ -56,7 +56,7 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
         ButterKnife.bind(this, root);
 
         context = getContext();
-        idlingResource = ((RecipeActivity) getActivity()).idlingResource;
+        idlingResource = ((RecipeActivity) getActivity()).getIdlingResource();
 
         //todo: should I use dependency injection for this?
         presenter = new RecipePresenter(context, this, new Fetcher(getActivity()), idlingResource);

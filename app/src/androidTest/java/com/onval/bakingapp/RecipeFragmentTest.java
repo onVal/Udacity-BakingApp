@@ -1,7 +1,8 @@
 package com.onval.bakingapp;
 
-import android.content.Intent;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -14,7 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.registerIdlingResources;
 import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -31,17 +31,16 @@ import static com.onval.bakingapp.TestUtils.TestUtilities.NUTELLAPIE_POSITION;
 
 @RunWith(AndroidJUnit4.class)
 public class RecipeFragmentTest {
+    private CountingIdlingResource idlingResource;
 
     @Rule
     public ActivityTestRule<RecipeActivity> testRule =
-            new ActivityTestRule<>(RecipeActivity.class, true, false);
+            new ActivityTestRule<>(RecipeActivity.class);
 
     @Before
     public void setUp() {
-        testRule.getActivity().initializeIdlingResource();
-        registerIdlingResources(testRule.getActivity().idlingResource);
-
-        testRule.launchActivity(new Intent());
+        idlingResource = testRule.getActivity().getIdlingResource();
+        Espresso.registerIdlingResources(idlingResource);
     }
 
     @Test
@@ -73,7 +72,8 @@ public class RecipeFragmentTest {
 
     @After
     public void tearDown() {
-        unregisterIdlingResources(testRule.getActivity().idlingResource);
+        if (idlingResource != null)
+            unregisterIdlingResources(idlingResource);
     }
 
 }

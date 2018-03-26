@@ -1,7 +1,9 @@
 package com.onval.bakingapp;
 
 import android.content.Intent;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -14,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.registerIdlingResources;
 import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.intent.Intents.intended;
@@ -28,6 +29,7 @@ import static com.onval.bakingapp.view.StepDetailFragment.RECIPE_ID_TAG;
 
 @RunWith(AndroidJUnit4.class)
 public class RecipeIntentTest {
+    CountingIdlingResource idlingResource;
 
     @Rule
     public IntentsTestRule<RecipeActivity> testRule =
@@ -35,8 +37,8 @@ public class RecipeIntentTest {
 
     @Before
     public void setUp() {
-        testRule.getActivity().initializeIdlingResource();
-        registerIdlingResources(testRule.getActivity().idlingResource);
+        idlingResource = testRule.getActivity().getIdlingResource();
+        Espresso.registerIdlingResources(idlingResource);
         testRule.launchActivity(new Intent());
 
     }
@@ -52,7 +54,7 @@ public class RecipeIntentTest {
 
     @After
     public void tearDown() {
-        unregisterIdlingResources(testRule.getActivity().idlingResource);
+        unregisterIdlingResources(idlingResource);
 
     }
 }
