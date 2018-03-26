@@ -5,7 +5,6 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.onval.bakingapp.TestUtils.TestUtilities;
 import com.onval.bakingapp.view.RecipeActivity;
 
 import org.junit.After;
@@ -15,6 +14,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.registerIdlingResources;
+import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
@@ -37,7 +38,8 @@ public class RecipeFragmentTest {
 
     @Before
     public void setUp() {
-        TestUtilities.setupCountingIdlingResource();
+        testRule.getActivity().initializeIdlingResource();
+        registerIdlingResources(testRule.getActivity().idlingResource);
 
         testRule.launchActivity(new Intent());
     }
@@ -71,7 +73,7 @@ public class RecipeFragmentTest {
 
     @After
     public void tearDown() {
-        TestUtilities.teardownCountingIdlingResource();
+        unregisterIdlingResources(testRule.getActivity().idlingResource);
     }
 
 }
