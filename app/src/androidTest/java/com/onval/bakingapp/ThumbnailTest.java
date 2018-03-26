@@ -1,6 +1,5 @@
 package com.onval.bakingapp;
 
-import android.content.Intent;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.idling.CountingIdlingResource;
@@ -33,13 +32,12 @@ public class ThumbnailTest {
 
     @Rule
     public ActivityTestRule<RecipeActivity> testRule =
-            new ActivityTestRule<>(RecipeActivity.class, true, false);
+            new ActivityTestRule<>(RecipeActivity.class);
 
     @Before
     public void setUp() {
         idlingResource = testRule.getActivity().getIdlingResource();
         Espresso.registerIdlingResources(idlingResource);
-        testRule.launchActivity(new Intent());
     }
 
     @Test
