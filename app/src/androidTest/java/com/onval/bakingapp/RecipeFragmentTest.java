@@ -1,10 +1,12 @@
 package com.onval.bakingapp;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import com.onval.bakingapp.view.RecipeActivity;
 
@@ -72,6 +74,12 @@ public class RecipeFragmentTest {
 
     @After
     public void tearDown() {
+        try {
+            Espresso.pressBack();
+        } catch (NoActivityResumedException e) {
+            Log.d("TEST", "Pressed back button");
+        }
+
         if (idlingResource != null)
             unregisterIdlingResources(idlingResource);
     }

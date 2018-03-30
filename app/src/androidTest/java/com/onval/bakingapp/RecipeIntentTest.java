@@ -1,11 +1,14 @@
 package com.onval.bakingapp;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
+import com.onval.bakingapp.TestUtils.TestUtilities;
 import com.onval.bakingapp.view.RecipeActivity;
 
 import org.junit.After;
@@ -45,14 +48,21 @@ public class RecipeIntentTest {
     public void doesIntentWork() {
 
         onView(withId(R.id.recipes_recyclerview))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(TestUtilities.YELLOWCAKE_POSITION, click()));
 
         intended(hasExtraWithKey(RECIPE_ID_TAG));
     }
 
     @After
     public void tearDown() {
-        unregisterIdlingResources(idlingResource);
+        try {
+            Espresso.pressBack();
+        } catch (NoActivityResumedException e) {
+            Log.d("TEST", "Pressed back button");
+        }
+
+        if (idlingResource != null)
+            unregisterIdlingResources(idlingResource);
 
     }
 }
