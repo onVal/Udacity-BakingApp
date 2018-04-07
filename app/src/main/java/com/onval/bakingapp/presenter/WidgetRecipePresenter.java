@@ -36,50 +36,50 @@ public class WidgetRecipePresenter {
     }
 
     public void loadIngredients() {
-
         //todo: should it check for internet connection with isOnline method here?
+        model.fetchFromServer(response, error);
 
-        Response.Listener<JSONArray> response = new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
+    }
+
+    private Response.Listener<JSONArray> response = new Response.Listener<JSONArray>() {
+        @Override
+        public void onResponse(JSONArray response) {
+            ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
 
 
-                Log.d("derp", "a call to the server is being made");
-                if (recipes.size() > 0) {
-                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                    int[] appWidgetId = appWidgetManager.getAppWidgetIds(
-                            new ComponentName(context, RecipeIngredientsWidget.class));
+            Log.d("derp", "a call to the server is being made");
+            if (recipes.size() > 0) {
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                int[] appWidgetId = appWidgetManager.getAppWidgetIds(
+                        new ComponentName(context, RecipeIngredientsWidget.class));
 
-                    SharedPreferences pref = context.getSharedPreferences
-                            (context.getString(R.string.widget_shared_prefs), 0);
+                SharedPreferences pref = context.getSharedPreferences
+                        (context.getString(R.string.widget_shared_prefs), 0);
 
-                    if (!pref.contains(DISPLAYED_RECIPE_ID)) {
-                        pref.edit().putInt(DISPLAYED_RECIPE_ID, 0).apply();
-                    }
-
-                    int index = pref.getInt(DISPLAYED_RECIPE_ID, 0);
-                    Recipe currentRecipe = recipes.get(Math.abs(index % 4));
-
-                    view.loadRecipeIngredient(context, appWidgetManager, appWidgetId,
-                            currentRecipe.getName(),
-                            extractIngredientNames(currentRecipe.getIngredients()));
+                if (!pref.contains(DISPLAYED_RECIPE_ID)) {
+                    pref.edit().putInt(DISPLAYED_RECIPE_ID, 0).apply();
                 }
+
+                int index = pref.getInt(DISPLAYED_RECIPE_ID, 0);
+                Recipe currentRecipe = recipes.get(Math.abs(index % 4));
+
+
+                view.loadRecipeIngredient(context, appWidgetManager, appWidgetId,
+                        currentRecipe.getName(),
+                        extractIngredientNames(currentRecipe.getIngredients()));
+            }
 
 //                else
 //                    view.displayErrorMsg("No recipes returned.");
-            }
-        };
+        }
+    };
 
-        Response.ErrorListener error = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+    private Response.ErrorListener error = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
 //                view.displayErrorMsg("Couldn't load recipes");
-            }
-        };
-
-        model.fetchFromServer(response, error);
-    }
+        }
+    };
 
     private String[] extractIngredientNames(ArrayList<Ingredient> ingr) {
         String[] names = new String[ingr.size()];
