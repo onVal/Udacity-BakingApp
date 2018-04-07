@@ -37,7 +37,7 @@ public class RecipeIngredientsWidget extends AppWidgetProvider implements IWidge
         views.setTextViewText(R.id.widget_recipe_title, name);
 
         Intent intent = new Intent(context, WidgetRemoteViewsService.class);
-        intent.putExtra(WIDGET_INGREDIENT, ingredients);
+//        intent.putExtra(WIDGET_INGREDIENT, ingredients);
         views.setRemoteAdapter(R.id.widget_recipe_ingredient_list, intent);
         //todo: handle empty view with views.setEmptyView()
 
