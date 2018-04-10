@@ -26,7 +26,7 @@
         <provider
             android:authorities="com.onval.bakingapp.provider.RecipeProvider"
             android:name=".provider.RecipeProvider"
-            android:exported="false" />
+            android:exported="true" />
 
         <receiver android:name=".widget.RecipeIngredientsWidget">
             <intent-filter>

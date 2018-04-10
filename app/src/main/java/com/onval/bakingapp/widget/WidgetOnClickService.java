@@ -35,9 +35,9 @@ public class WidgetOnClickService extends IntentService {
         //update shared preferences
         if (action.equals(getString(R.string.actionClickPreviousWidget))) {
             Log.d("debug", "click left");
-            if (currentValue > 0)
-                preferences.edit().putInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, currentValue-1).commit();
-
+            if (currentValue > 0) {
+                preferences.edit().putInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, currentValue - 1).commit();
+            }
         }
         else if (action.equals(getString(R.string.actionClickNextWidget))) {
             Log.d("debug", "click right");

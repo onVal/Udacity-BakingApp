@@ -38,7 +38,6 @@ public class WidgetRecipePresenter {
     public void loadIngredients() {
         //todo: should it check for internet connection with isOnline method here?
         model.fetchFromServer(response, error);
-
     }
 
     private Response.Listener<JSONArray> response = new Response.Listener<JSONArray>() {
@@ -57,16 +56,17 @@ public class WidgetRecipePresenter {
                         (context.getString(R.string.widget_shared_prefs), 0);
 
                 if (!pref.contains(DISPLAYED_RECIPE_ID)) {
-                    pref.edit().putInt(DISPLAYED_RECIPE_ID, 0).apply();
+                    pref.edit().putInt(DISPLAYED_RECIPE_ID, 1).apply();
                 }
 
-                int index = pref.getInt(DISPLAYED_RECIPE_ID, 0);
+                int index = pref.getInt(DISPLAYED_RECIPE_ID, 1);
                 Recipe currentRecipe = recipes.get(Math.abs(index % 4));
 
 
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_recipe_ingredient_list);
+
                 view.loadRecipeIngredient(context, appWidgetManager, appWidgetId,
-                        currentRecipe.getName(),
-                        extractIngredientNames(currentRecipe.getIngredients()));
+                        currentRecipe.getName());
             }
 
 //                else

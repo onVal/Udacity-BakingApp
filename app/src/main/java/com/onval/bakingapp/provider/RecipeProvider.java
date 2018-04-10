@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.onval.bakingapp.data.Ingredient;
 import com.onval.bakingapp.data.Recipe;
@@ -251,7 +250,6 @@ public class RecipeProvider extends ContentProvider {
 
         //get the recipe_id from recipe uri
         int recipeId = Integer.parseInt(recipeUri.getLastPathSegment());
-        Log.d("WOW", "recipe id = " + recipeId);
 
         //extract ingredient from recipe into contentvalues and put it in provider
         ContentValues ingredValues = new ContentValues();

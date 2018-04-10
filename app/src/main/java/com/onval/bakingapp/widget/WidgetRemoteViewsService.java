@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -20,25 +21,20 @@ import static com.onval.bakingapp.widget.RecipeIngredientsWidget.DISPLAYED_RECIP
 public class WidgetRemoteViewsService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-//        String[] ingredients
-//                = intent.getStringArrayExtra(WIDGET_INGREDIENT);
-
         return new WidgetRemoteViewsFactory(this.getApplicationContext());
     }
 
     class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context context;
-//        private String[] ingredients;
         private Cursor ingredients;
 
-        public WidgetRemoteViewsFactory(Context context) {
+        WidgetRemoteViewsFactory(Context context) {
             this.context = context;
         }
 
-        @Override
-        public void onCreate() {
+        private void loadIngredientData() {
             SharedPreferences pref = context.getSharedPreferences(context.getString(R.string.widget_shared_prefs), MODE_PRIVATE);
-            int recipeId = pref.getInt(DISPLAYED_RECIPE_ID, 0);
+            int recipeId = pref.getInt(DISPLAYED_RECIPE_ID, 1);
 
             ingredients = context.getContentResolver().query(
                     RecipeProvider.getIngredUri(recipeId),
@@ -46,6 +42,18 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                     null,
                     null,
                     null);
+
+            Log.d("RemoteVFactory", "getcount = " + ingredients.getCount());
+            while (ingredients.moveToNext()) {
+                Log.d("DEBUG", ingredients.getString(IngredientsEntry.INGREDIENT));
+            }
+            Log.d("RemoteVFactory", "recipeId = " + recipeId);
+
+        }
+
+        @Override
+        public void onCreate() {
+            loadIngredientData();
         }
 
         @Override
@@ -58,7 +66,7 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            //todo: do I need to implent this?
+            loadIngredientData();
         }
 
         @Override
@@ -81,8 +89,8 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
         }
 
         @Override
-        public long getItemId(int i) {
-            return i;
+        public long getItemId(int position) {
+            return position;
         }
 
         @Override
