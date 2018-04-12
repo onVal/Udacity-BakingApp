@@ -46,7 +46,7 @@ public class WidgetRecipePresenter {
             ArrayList<Recipe> recipes = (ArrayList<Recipe>) model.parseRecipes(response);
 
 
-            Log.d("derp", "a call to the server is being made");
+            Log.d("WidgetPresenter", "onResponse: a call to the server is being made");
             if (recipes.size() > 0) {
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                 int[] appWidgetId = appWidgetManager.getAppWidgetIds(
@@ -61,7 +61,6 @@ public class WidgetRecipePresenter {
 
                 int index = pref.getInt(DISPLAYED_RECIPE_ID, 1);
                 Recipe currentRecipe = recipes.get(Math.abs(index % 4));
-
 
                 appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_recipe_ingredient_list);
 

@@ -26,26 +26,26 @@ public class WidgetOnClickService extends IntentService {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.widget_shared_prefs), 0);
         int currentValue = preferences.getInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, 0);
 
-        Log.d("debug", "previous value of pref: " + preferences.getInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, 0));
+        Log.d("OnClickService", "previous value of pref: " + currentValue);
 
         String action = intent.getAction();
 
-        Log.d("debug", "actions is: " + action);
+        Log.d("OnClickService", "actions is: " + action);
 
         //update shared preferences
         if (action.equals(getString(R.string.actionClickPreviousWidget))) {
-            Log.d("debug", "click left");
+            Log.d("OnClickService", "click left");
             if (currentValue > 0) {
                 preferences.edit().putInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, currentValue - 1).commit();
             }
         }
         else if (action.equals(getString(R.string.actionClickNextWidget))) {
-            Log.d("debug", "click right");
+            Log.d("OnClickService", "click right");
             preferences.edit().putInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, currentValue+1).commit();
 
         }
 
-        Log.d("debug", "now pref is: " + preferences.getInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, 0));
+        Log.d("OnClickService", "now pref is: " + preferences.getInt(RecipeIngredientsWidget.DISPLAYED_RECIPE_ID, 0));
 
         //call widget update
         Intent updateIntent = new Intent(getApplication(), RecipeIngredientsWidget.class);

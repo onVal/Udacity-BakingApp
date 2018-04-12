@@ -36,7 +36,6 @@ public class RecipeIngredientsWidget extends AppWidgetProvider implements IWidge
         //todo: handle empty view with views.setEmptyView()
 
         //handling onClick events with Pending Intents
-
         //create pending intent for previous button
         Intent onclickIntent = new Intent(context, WidgetOnClickService.class);
         onclickIntent.setAction(context.getString(R.string.actionClickPreviousWidget));

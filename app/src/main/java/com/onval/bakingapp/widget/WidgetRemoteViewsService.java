@@ -45,7 +45,7 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
 
             Log.d("RemoteVFactory", "getcount = " + ingredients.getCount());
             while (ingredients.moveToNext()) {
-                Log.d("DEBUG", ingredients.getString(IngredientsEntry.INGREDIENT));
+                Log.d("RemoteVFactory", ingredients.getString(IngredientsEntry.INGREDIENT));
             }
             Log.d("RemoteVFactory", "recipeId = " + recipeId);
 
