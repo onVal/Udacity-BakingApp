@@ -5,6 +5,7 @@ import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ import static com.onval.bakingapp.view.StepDetailFragment.RECIPE_ID_TAG;
  * Created by gval on 03/11/2017.
  */
 
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class RecipeIntentTest {
     CountingIdlingResource idlingResource;
