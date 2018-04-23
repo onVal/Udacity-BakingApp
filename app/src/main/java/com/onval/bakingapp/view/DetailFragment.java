@@ -198,8 +198,10 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putLong(PLAYER_CURRENT_POSITION, player.getCurrentPosition());
-        outState.putBoolean(PLAYER_CURRENT_STATE, player.getPlayWhenReady());
+        if (player != null) {
+            outState.putLong(PLAYER_CURRENT_POSITION, player.getCurrentPosition());
+            outState.putBoolean(PLAYER_CURRENT_STATE, player.getPlayWhenReady());
+        }
     }
 
     @Override
