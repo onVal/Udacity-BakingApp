@@ -36,7 +36,6 @@ public class WidgetRecipePresenter {
     }
 
     public void loadIngredients() {
-        //todo: should it check for internet connection with isOnline method here?
         model.fetchFromServer(response, error);
     }
 

@@ -23,7 +23,6 @@ public class Recipe implements Parcelable {
     private Recipe(Parcel parcel) {
         this.id = parcel.readInt();
         this.name = parcel.readString();
-        //TODO: understand this stuff about ClassLoader properly
         this.ingredients = parcel.readArrayList(Ingredient.class.getClassLoader());
         this.steps = parcel.readArrayList(Step.class.getClassLoader());
         this.servingsNum = parcel.readInt();

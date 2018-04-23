@@ -33,7 +33,6 @@ public class RecipeIngredientsWidget extends AppWidgetProvider implements IWidge
 
         Intent intent = new Intent(context, WidgetRemoteViewsService.class);
         views.setRemoteAdapter(R.id.widget_recipe_ingredient_list, intent);
-        //todo: handle empty view with views.setEmptyView()
 
         //handling onClick events with Pending Intents
         //create pending intent for previous button

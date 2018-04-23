@@ -62,7 +62,6 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
 
         c.close();
 
-        //todo:TEST DELETE
         int row = getMockContentResolver().delete(uri, null, null);
 
         //assert that everything is being deleted
@@ -79,10 +78,6 @@ public class RecipeProviderTest extends ProviderTestCase2<RecipeProvider> {
         assertFalse(c.moveToFirst());
 
         c.close();
-
-        //todo:TEST UPDATE
-
-
     }
 
     private void insertMockData(Uri uri) throws Exception {
