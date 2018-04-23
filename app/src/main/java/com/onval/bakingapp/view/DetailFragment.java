@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -45,6 +45,7 @@ import static com.onval.bakingapp.view.StepDetailFragment.STEP_POSITION_TAG;
  */
 public class DetailFragment extends Fragment implements IDetailView.Listener {
 
+    public static final String PLAYER_CURRENT_POSITION = "CURRENT_POSITION";
     ArrayList<Step> stepList;
     int stepPosition;
 
@@ -123,19 +124,25 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
             }
         }
         else { // if there is a video uri...
-            Log.d("debug", videoUri.toString());
-            initializePlayer(videoUri);
+            if (savedInstanceState == null)
+                initializePlayer(videoUri, C.TIME_UNSET);
+            else
+                initializePlayer(videoUri,
+                        savedInstanceState.getLong(PLAYER_CURRENT_POSITION));
         }
 
         return root;
     }
 
-    private void initializePlayer(Uri uri) {
+    private void initializePlayer(Uri uri, long savedPosition) {
         TrackSelector trackSelector = new DefaultTrackSelector();
         LoadControl loadControl = new DefaultLoadControl();
 
         player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
         exoPlayerView.setPlayer(player);
+
+        if (savedPosition != C.TIME_UNSET)
+            player.seekTo(savedPosition);
 
         //prepare the MediaSource
         String userAgent = Util.getUserAgent(getContext(), getString(R.string.recipe_list_title));
@@ -182,6 +189,15 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong(PLAYER_CURRENT_POSITION, player.getCurrentPosition());
+        outState.putInt("PLAYER_CURRENT_STATE", player.getPlaybackState());
+
     }
 
     @Override
