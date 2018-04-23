@@ -95,14 +95,6 @@ public class RecipeFragment extends Fragment implements IRecipeView, IRecipeView
 
         Cursor recipes = loader.loadInBackground();
         adapter.addAllRecipes(recipes);
-
-//        c.close();
-//        adapter.addAllRecipes(recipes);
-//        adapter.notifyDataSetChanged();
-
-        //this will be true only in testing
-//        if (idlingResource != null)
-//            idlingResource.decrement();
     }
 
     @Override

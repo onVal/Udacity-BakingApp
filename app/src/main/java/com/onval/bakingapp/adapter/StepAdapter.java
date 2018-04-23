@@ -66,7 +66,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         return stepCursor.getCount();
     }
 
-    //todo: retain state selection upon rotation (probably not only from here)
     @Override
     public void onBindViewHolder(StepHolder holder, int position) {
         if (context.getResources().getBoolean(R.bool.isTablet)) {

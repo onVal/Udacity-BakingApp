@@ -34,10 +34,10 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
 
         private void loadIngredientData() {
             SharedPreferences pref = context.getSharedPreferences(context.getString(R.string.widget_shared_prefs), MODE_PRIVATE);
-            int recipeId = pref.getInt(DISPLAYED_RECIPE_ID, 1);
+            int recipeId = pref.getInt(DISPLAYED_RECIPE_ID, 0);
 
             ingredients = context.getContentResolver().query(
-                    RecipeProvider.getIngredUri(recipeId),
+                    RecipeProvider.getIngredUri(recipeId+1),
                     null,
                     null,
                     null,

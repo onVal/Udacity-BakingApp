@@ -2,12 +2,14 @@ package com.onval.bakingapp.presenter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.test.espresso.idling.CountingIdlingResource;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.onval.bakingapp.data.Recipe;
 import com.onval.bakingapp.model.IFetcher;
+import com.onval.bakingapp.provider.RecipeContract;
 import com.onval.bakingapp.provider.RecipeContract.RecipesEntry;
 import com.onval.bakingapp.provider.RecipeProvider;
 import com.onval.bakingapp.view.IRecipeView;
@@ -42,11 +44,22 @@ public class RecipePresenter implements IRecipePresenter {
 
     @Override
     public void loadRecipes() {
-        //todo: should it check for internet connection with isOnline method here?
-        if (idlingResource != null)
-            idlingResource.increment(); //this is for testing purposes
-        model.fetchFromServer(response, error);
+        //Check if provider is not empty
+        Uri recipeUri = RecipeContract.RecipesEntry.RECIPE_URI;
+        Cursor recipe = context.getContentResolver()
+                .query(recipeUri, null, null, null, null);
 
+
+        if (recipe == null || recipe.getCount() == 0) {
+            if (idlingResource != null)
+                idlingResource.increment(); //this is for testing purposes
+
+            model.fetchFromServer(response, error);
+        }
+        else {
+            recipe.close();
+            view.displayRecipes();
+        }
     }
 
     //Preparing callback methods

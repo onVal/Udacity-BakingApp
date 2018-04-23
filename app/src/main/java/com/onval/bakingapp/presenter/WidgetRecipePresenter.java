@@ -36,7 +36,6 @@ public class WidgetRecipePresenter {
     }
 
     public void loadIngredients() {
-        //todo: should it check for internet connection with isOnline method here?
         model.fetchFromServer(response, error);
     }
 
@@ -59,8 +58,10 @@ public class WidgetRecipePresenter {
                     pref.edit().putInt(DISPLAYED_RECIPE_ID, 1).apply();
                 }
 
-                int index = pref.getInt(DISPLAYED_RECIPE_ID, 1);
-                Recipe currentRecipe = recipes.get(Math.abs(index % 4));
+                int index = pref.getInt(DISPLAYED_RECIPE_ID, 0);
+                Recipe currentRecipe = recipes.get(index);
+
+                Log.d("WidgetPresenter", "recipe index is " + index);
 
                 appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_recipe_ingredient_list);
 
