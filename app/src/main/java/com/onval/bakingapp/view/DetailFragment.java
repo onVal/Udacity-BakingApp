@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -46,6 +45,7 @@ import static com.onval.bakingapp.view.StepDetailFragment.STEP_POSITION_TAG;
 public class DetailFragment extends Fragment implements IDetailView.Listener {
 
     public static final String PLAYER_CURRENT_POSITION = "CURRENT_POSITION";
+    public static final String PLAYER_CURRENT_STATE = "PLAYER_CURRENT_STATE";
     ArrayList<Step> stepList;
     int stepPosition;
 
@@ -124,25 +124,21 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
             }
         }
         else { // if there is a video uri...
-            if (savedInstanceState == null)
-                initializePlayer(videoUri, C.TIME_UNSET);
-            else
-                initializePlayer(videoUri,
-                        savedInstanceState.getLong(PLAYER_CURRENT_POSITION));
+                initializePlayer(videoUri, savedInstanceState);
         }
 
         return root;
     }
 
-    private void initializePlayer(Uri uri, long savedPosition) {
+    private void initializePlayer(Uri uri, Bundle restoreOptions) {
         TrackSelector trackSelector = new DefaultTrackSelector();
         LoadControl loadControl = new DefaultLoadControl();
 
         player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
         exoPlayerView.setPlayer(player);
 
-        if (savedPosition != C.TIME_UNSET)
-            player.seekTo(savedPosition);
+        if (restoreOptions != null)
+            player.seekTo(restoreOptions.getLong(PLAYER_CURRENT_POSITION));
 
         //prepare the MediaSource
         String userAgent = Util.getUserAgent(getContext(), getString(R.string.recipe_list_title));
@@ -156,7 +152,8 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
         );
 
         player.prepare(mediaSource);
-        player.setPlayWhenReady(true);
+        if (restoreOptions != null)
+            player.setPlayWhenReady(restoreOptions.getBoolean(PLAYER_CURRENT_STATE));
     }
 
     private void releasePlayer() {
@@ -192,12 +189,17 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putLong(PLAYER_CURRENT_POSITION, player.getCurrentPosition());
-        outState.putInt("PLAYER_CURRENT_STATE", player.getPlaybackState());
-
+        outState.putBoolean(PLAYER_CURRENT_STATE, player.getPlayWhenReady());
     }
 
     @Override
