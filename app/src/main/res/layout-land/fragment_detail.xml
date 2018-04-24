@@ -1,47 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/exoplayer_view"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/thumbnail_img"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:contentDescription="Video not available here."
-        />
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/exoplayer_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
 
-    <TextView
-        android:id="@+id/step_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/step_title"
+            app:layout_constraintDimensionRatio="h,16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        />
+        <ImageView
+            android:id="@+id/thumbnail_img"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+
+            android:contentDescription="Video not available here."
+            app:layout_constraintBottom_toTopOf="@+id/step_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintDimensionRatio="h,16:9"
 
 
-    <TextView
-        android:id="@+id/step_instruction"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        />
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
 
-    <Button
-        android:id="@+id/btn_previous"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:visibility="gone"
-        />
+            />
 
-    <Button
-        android:id="@+id/btn_next"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:visibility="gone"
-        />
+        <TextView
+            android:id="@+id/step_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
 
-</FrameLayout>
+            app:layout_constraintBottom_toTopOf="@+id/step_instruction"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            tools:text="TITLE" />
+
+
+        <TextView
+            android:id="@+id/step_instruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="16dp"
+
+            android:textSize="16sp"
+
+            app:layout_constraintBottom_toTopOf="@+id/relativeLayout2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+
+            tools:text="0. Step instructions.\nSecond instruction." />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <Button
+                android:id="@+id/btn_previous"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/ic_navigate_before_black_24dp"
+                android:backgroundTint="@color/cardview_dark_background"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:width="50dp"
+                android:height="50dp"
+                android:background="@drawable/ic_navigate_next_black_24dp"
+                android:backgroundTint="@color/cardview_dark_background" />
+
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</ScrollView>

@@ -66,10 +66,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="16dp" />
 
-    <!--android:text="@string/previous_step_btn"-->
-    <!--android:text="@string/next_step_btn"-->
-
-
     <Button
         android:id="@+id/btn_next"
         android:layout_width="50dp"

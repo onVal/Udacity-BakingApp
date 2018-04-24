@@ -117,6 +117,8 @@ public class DetailFragment extends Fragment implements IDetailView.Listener {
             if (!stepImageUrl.equals("")) { //if there's an image url
                 Picasso.with(getContext())
                         .load(stepImageUrl)
+                        .placeholder(R.drawable.no_media)
+                        .error(R.drawable.no_media)
                         .into(thumbnailView);
             }
             else { //otherwise load a default 'no media message'
